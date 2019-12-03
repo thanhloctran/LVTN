@@ -1,0 +1,34 @@
+.product-list{
+    display: flex;
+    padding: 5px;
+    flex-direction: column;
+    height: 100%;
+    max-width: 1325px;
+    margin: 0px auto;
+
+}
+.product-list-title{
+    color: #53504ebf;
+    font-size: 36px;
+    margin-left: 10px;
+        
+}
+ .circular{
+    position:absolute;  
+    left:0; right:0;
+    top:0; bottom:0;
+    margin:auto;
+ }
+ 
+.product-list-header {
+    height: 65px;
+     display: flex;
+}
+.prodict-list-filter{
+    max-width: 530px;
+    margin-top: 5px;
+    display: flex; 
+}
+.react-dropdown {
+    font-size: 13px;
+}

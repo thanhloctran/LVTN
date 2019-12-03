@@ -1,0 +1,30 @@
+.colImage{
+    width: 180px;
+    background-color: white !important;
+    padding: 8px 20px 8px 30px  !important;
+}
+.editable-cell {
+    position: relative;
+  }
+  
+  .editable-cell-value-wrap {
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+  
+  .editable-row:hover .editable-cell-value-wrap {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 4px 11px;
+  }
+  .ant-table-row-cell-break-word{
+    border-left: none !important;
+    border-right: none !important;
+  }
+  .ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+    padding: 10px 12px !important;
+  }
+  .colImage{
+    /* height: 130px; */
+    padding:  0px !important;
+  }

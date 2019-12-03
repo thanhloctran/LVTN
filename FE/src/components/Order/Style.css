@@ -1,0 +1,61 @@
+.row-border{
+ border:none !important;
+ padding:10px 15px !important;
+ text-align: right !important;
+}
+.row-table:hover{
+    background-color: #D0F2F1;
+}
+.detail-title{
+    font-size: 32px;
+    color: rgb(80, 79, 90);
+}
+.detail-title-head{
+    padding: 10px 20px -3px 20px;
+     border-radius: 5px
+}
+.action-group{
+    margin-top: 30px;
+    padding-bottom: 23px;
+    display: flex;
+    justify-content: space-around;
+}
+.buton-orderAction{
+    width:200px;
+}
+.payment-container{
+    height:80%;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+}
+.payment-container .ant-form-item-label{
+    line-height: 0 !important;
+}
+.payment-container .ant-form-item {
+    line-height: 0 !important;
+    margin-bottom: 0 !important;
+}
+.payment-container .button-checkout{
+    margin-top: 20px;
+    width: 100%;
+    height: 55px;
+    font-size: 23px;
+    font-weight: lighter;
+    background-color:
+    rgb(255, 109, 71);
+    color:
+    white;
+    border: medium none;
+    
+
+}
+.invoiceDetail .productName{
+    font-size: 18px;
+    color: tomato;
+    padding-left: 13px;
+}
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    padding: 16px 5px !important;
+    overflow-wrap: break-word;
+}

@@ -1,0 +1,162 @@
+.slick-slide, .slick-slide * {
+    outline: none !important;
+}
+
+.slick-prev:before, .slick-next:before {
+    color: gray!important;
+}
+.details{
+    padding: 10px 10px 30px 40px;
+    margin: 0 auto;
+    background: white;
+}
+.details .ant-input-number-input{
+    text-align: center;
+}
+.details .ant-input-number{
+    width: 200px;
+}
+.details-name{
+        color: #53504ebf;
+        margin-top: 15px;
+        margin-bottom: 20px;
+        font-size: 42px;
+        font-family:cursive;
+     
+}
+.details .comment-text{
+    color: gray;
+    margin-left: 5px;
+    height: 575px;
+    font-size: 21px;
+    font-weight: lighter;
+}
+.details .comment-date{
+    margin-bottom: 0px;
+}
+.details .comment-account{
+    font-size: 23px;
+    font-weight: normal;
+    margin-bottom: 2px;
+}
+.details-image{
+        width: 410px;
+        height: 308px;
+        padding: 5px 40px;
+}
+.details-infor {
+    display: flex;
+    flex: 1;
+    margin-left: 20px;
+    flex-direction: column;
+}
+.details-price{
+    font-size: 22px;
+    margin-top: 10px;
+}
+.popular-item{
+    color: #1a9349;
+     margin-top: 5px;
+     font-size: 14px;
+}
+.btn-control{
+   position: relative;
+   top: -5px
+}
+.soLuong{
+    margin-top: 20px
+}
+.details-soLuong{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100px;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+}
+.details-title{
+    font-family:cursive;
+        color:rgb(80, 79, 90);
+        margin-top: 50px;
+        /* margin-bottom: 10px; */
+        font-size: 30px;
+        font-weight: lighter;
+}
+.details .detail-review{
+    margin-left: 25px;
+    max-height: 380px;
+    overflow: hidden;
+}
+.MuiInputBase-input-104 {
+
+    text-align: center;
+}
+.details .description{
+    color: gray;
+    margin-left: 5px;
+    /* height: 575px; */
+    font-size: 15px;
+    /* overflow: hidden; */
+    width: 100%;
+
+}.details .description img{
+    display: block;
+    margin: 0 auto;
+}
+.details  .decription-viewAll{
+    color: white;
+    font-size: 18px;
+    background: orange;
+    /* width: 80px; */
+    display: block;
+    width: max-content;
+    padding: 2px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+.details .decription-viewAll:hover  .description{
+  background: orangered;
+  transition: all 0.5s;
+}
+.circular {
+    position: absolute; 
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+.slick-next {
+    right: -19px !important;
+}
+
+.slick-prev {
+    left: -19px !important;
+    z-index: 10;
+}
+.details .button-add{
+    width: 200px;
+    color: white;
+    margin-top: 5px;
+    background:linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+    border:
+    navajowhite;
+    box-shadow: 1px 2px 2px
+    gray;
+}
+.details .btn-container button{
+        user-select:none;
+        -webkit-user-select:none;
+        -moz-user-select:none;
+        -ms-user-select:none;
+        cursor:pointer;
+        border:none;
+        padding: 6px;
+        font-size: 15px;
+        background:linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+        color:white;
+        font-family:cursive;
+        box-sizing:border-box;
+        border-radius:  10px;
+}

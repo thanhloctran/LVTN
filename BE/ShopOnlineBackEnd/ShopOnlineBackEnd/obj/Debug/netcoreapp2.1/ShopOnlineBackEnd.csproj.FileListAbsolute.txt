@@ -1,0 +1,17 @@
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\bin\Debug\netcoreapp2.1\ShopOnlineBackEnd.deps.json
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\bin\Debug\netcoreapp2.1\ShopOnlineBackEnd.runtimeconfig.json
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\bin\Debug\netcoreapp2.1\ShopOnlineBackEnd.runtimeconfig.dev.json
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\bin\Debug\netcoreapp2.1\ShopOnlineBackEnd.dll
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\bin\Debug\netcoreapp2.1\ShopOnlineBackEnd.pdb
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd.csprojAssemblyReference.cache
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd.csproj.CoreCompileInputs.cache
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd.RazorAssemblyInfo.cache
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd.RazorAssemblyInfo.cs
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd.AssemblyInfoInputs.cache
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd.AssemblyInfo.cs
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd.RazorTargetAssemblyInfo.cache
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd.dll
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd.pdb
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\bin\Debug\netcoreapp2.1\ShopOnlineBackEnd_Data.dll
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\bin\Debug\netcoreapp2.1\ShopOnlineBackEnd_Data.pdb
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd.csproj.CopyComplete

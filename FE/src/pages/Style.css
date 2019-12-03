@@ -1,0 +1,382 @@
+  .row-border{
+    border:none !important;
+    padding:10px 15px !important;
+    text-align: right !important;
+    }
+  .cover{
+    padding:0px 0px 30px 20px;
+    background-color: #F1F5F5;
+    /* height: 100% */
+  }
+  .cover-title{
+    padding:50px 0px 0px 20px;
+    font-Size: 30px;
+    color: #504F5A
+  }
+
+  /* .content{
+    display: flex;
+    margin-top: 40px;
+    justify-content: space-between;
+  } */
+  .content-left{
+    padding-bottom: 40px;
+    background-color: white;
+  }
+  .content_title{
+    font-size: 25px;
+    color: #504F5A
+  }
+  .textfield_style{
+    width: 100%;
+    background-Color: #F1F5F5
+  }
+  .btn_upload{
+    margin-Right: 20;
+    float:right;
+    background-color: "#F1F5F5"
+  }
+  .paper_col{
+    background-Color: white ;
+    padding:0px 15px 15px 15px;
+  }
+  .group_button{
+    margin: 20px 0px ;
+    display:flex;
+    justify-content: space-between
+  }
+  .ant-upload-list-picture-card .ant-upload-list-item{
+    width: auto !important;
+    height: auto !important;
+    border: none !important;
+  }
+  .ant-upload-list-item-info{
+    width: 167px !important;
+  }
+  /* .ant-upload-picture-card-wrapper{
+    width: auto !important;
+    margin-left: 30px;
+  } */
+
+  /* homejsx */
+  /* .ant-carousel{
+    width: 80%;
+  } */
+  .ant-carousel .slick-slide {
+    text-align: center;
+    height: 640px;
+    /* line-height: 160px; */
+    /* background: #364d79; */
+    overflow: hidden;
+  }
+
+  .ant-carousel .slick-slide h3 {
+    color: #fff;
+  }
+  .container-caroul{
+      /* margin-top: 10px; */
+      height: 430px;
+      overflow: hidden;
+      background-size: cover;
+  }
+  .content-caroul{
+      text-align: left;
+      position: relative;
+      top: 20%;
+      border-left: 1px solid gray ;
+      border-top:  1px solid gray;
+      border-radius: 5px;
+      width: 70%;
+      margin: 0 auto;
+      padding: 45px 50px;
+      background-color: rgba(27, 25, 25, 0.363);
+      box-shadow: 3px 3px 1px rgb(26, 25, 25);
+      /* opacity: 0.5; */
+      box-shadow: 2px lightcoral;
+      line-height: 5px;
+      text-shadow: 4px 3px 1px rgb(27, 27, 27);
+  }
+  .slick-dots li button::before{
+      font-size: 0px;
+  }
+
+  .caroul-caption{
+      text-align: left;
+      font-size: 30px;
+      color: white;
+  }
+  .caroul-caption span{
+      font-size: 40px;
+      color: orange;
+      font-weight: bold;
+  }
+  .caroul-title{
+      font-size: 50px;
+      font-weight: bold;
+      text-align: left;
+      text-shadow:4px 3px 1px rgb(27, 27, 27);
+  }
+  .caroul-title span{
+      color: orange;
+
+  }
+  .caroul-button{
+      background-color:  orange   !important;
+      /* font-weight: bold !important; */
+  }
+  .caroul-button:hover{
+    background-color:  rgb(240, 73, 12) !important;
+    transition: 0.3s;
+    color: white !important;
+  }
+  .homepage{
+  background: #edbb8e0f;
+  }
+
+  .homepage .list-discount{
+  width: 1325px;
+  margin: 0 auto;
+  }
+  .homepage .card-body{
+  padding: 0px 10px !important;
+  }
+  .list-icon .icon-laptop{
+  display: inline-block;
+  width: 14%;
+  border: 1px solid
+  #eee;
+  height: 42px;
+  line-height: 34px;
+  vertical-align: middle;
+  text-align: center;
+  color:
+  #288ad6;
+  background-color:
+  white;
+
+  }
+  .list-home{
+    display: flex;
+      flex-wrap:wrap;
+      height: 524px;
+      width: 74%;
+      margin: 0 auto;
+      overflow: hidden
+  }
+  .listHome-title{
+  color: orange;
+  font-size: 45px;
+  text-align: left;
+  margin-left: 10px;
+  padding-top: 20px;
+  /* font-family: cursive; */
+  margin-bottom: 0px !important;
+  }
+  .listhome-content{
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1314px;
+  margin: 0px auto;
+  overflow: hidden;
+  }
+
+
+  /* admin */
+  .admin-box{
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 24%;
+    height: 100px;
+    background:
+    white none repeat scroll 0% 0%;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .admin-box-title{
+    font-size: 24px;
+    color:
+    rgb(61, 61, 61);
+  }
+  .admin-box-number{
+    font-size: 32px;
+    color:
+    rgb(61, 61, 61);
+  }
+  .admin-box-icon{
+    font-size: 40px;
+    color:
+    rgb(43, 213, 197);
+  }
+  .admin-box-right{
+    margin-top: 10px;
+    font-size: 22px;
+    background:
+        white none repeat scroll 0% 0%;
+        width: 50%;
+        border-radius: 5px;
+        padding: 10px;
+    
+  }
+  .admin-box-right i{
+      float: right;
+  }
+  .admin-review{
+    background:
+    white none repeat scroll 0% 0%;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  .text-view{
+    font-size: 28px;
+    padding-right: 39px;
+    color:tomato;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    /* background:bisque; */
+    width: max-content;
+    padding: 2px 22px;
+    border-radius: 5px;
+    
+  }
+  .product-action .editor{
+    width: 100%;
+    margin-bottom: 40px;
+    max-height: 1500px;
+    overflow: scroll;
+    
+    /* float: right; */
+    /* margin-right: 0; */
+  }
+  .product-action .editor-title{
+    font-size: 15px;
+    color:
+    black;
+    position: relative;
+    /* top: 35px; */
+    /* right: 80px; */
+  }
+  /* login */
+  .login-icon{
+    width: min-content;
+    margin: 0 auto;
+  }
+  .icon-lock{
+    text-align: center;
+    font-size: 50px !important;
+    color:
+    rgb(245, 0, 87);
+    cursor: pointer;
+    margin: 0px auto;
+  }
+  .login-title{
+    margin-bottom: 20px;
+    font-size: 26px;
+    text-align: center;
+  }
+
+  #components-form-demo-normal-login .login-form {
+    max-width: 300px;
+  }
+  #components-form-demo-normal-login .login-form-forgot {
+    float: right;
+  }
+  #components-form-demo-normal-login .login-form-button {
+    width: 100%;
+  }
+  .discount .MuiTableCell-root{
+    padding: 10px !important;
+  }
+
+  .discount .MuiTableRow-root:hover{
+    background-color: #F1F5F5;
+  }
+
+  /* review */
+  .ant-modal-body {
+      padding: unset !important;
+  }
+
+  .ant-modal-header ,.ant-modal-footer {
+    padding: 11px 24px !important;
+    border: none !important;
+  }
+
+  .ant-modal-close-x {
+    width: 48px !important;
+    height: 38px !important;
+    line-height: 38px !important;
+  }
+
+  .review .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    padding: 10px 5px !important;
+    overflow-wrap: break-word;
+  }
+
+  .review .ant-table-wrapper{
+  background-color: white;
+  box-shadow: 0px 1px 1px lightslategrey !important;
+  border-radius: 5px !important;
+  min-height: 100% !important;
+  overflow: auto;
+  }
+  /* {
+    border: none;
+  } */
+
+
+  .homepage .list-head-cover{
+  display: flex;
+  flex-wrap: wrap;
+  height: 830px;
+  max-width: 1314px;
+  margin: 0px auto;
+  overflow: hidden;
+  }
+
+  .homepage .list-slide{
+  max-width: 1300px;
+  height: 580px;
+  margin:  0 auto;
+  }
+
+  .list-icon{
+  width: 97.5%;
+  margin: 0px auto;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  }
+
+  .homepage .list-head{
+  width: 515px;
+  margin-top: 12px;
+  margin-right: 10px;
+  /* background-color:rgba(135, 206, 250, 0.3); */
+  height: 395px;
+  border-radius: 20px;
+  overflow: hidden;
+  }
+
+  .homepage .type-icon{
+  width: 17%;
+  display: block;
+  cursor: pointer;
+  }
+
+  .homepage .type-icon:hover{
+  transform: rotate(45deg);
+  transition: all 0.5s linear;
+  }
+
+  .icon-image{
+  display: block;
+  width: 100%;
+  }
+
+  .list-icon .icon-laptop:hover >img{
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  }

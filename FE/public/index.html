@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+  <link rel="icon" type="image/png" href="%PUBLIC_URL%/faviconBag.png" />
+  <link rel="stylesheet" href="js/vendors/animate.css">
+
+  <title>Online Shop</title>
+</head>
+
+<body style="padding: 0px !important">
+  <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
+  <div id="root"></div>
+  <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-database.js"></script>
+  <script
+    src="https://www.paypal.com/sdk/js?client-id=Aep2qkRElBhQaNTCmsFPQyoWPIapoeEeU5EaG8mXP-XrMmgineg7bpTqIZtvtpSfP9YIbeF8FkNQoGG-"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+  </script>
+  <script src="js/vendors/wow.min.js"></script>
+  <script>
+    new WOW().init();
+  </script>
+
+  <!-- send mail -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"></script>
+  <script type="text/javascript">
+     (function(){
+        emailjs.init("user_QjJ2xI8tto5p7sBwmt4Jg");
+     })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+.item-card{
+    width: 242px;
+    height: 395px !important;
+    margin: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    box-shadow: 0px 3px 5px lightgray;
+    border-radius: 20px !important;
+}
+
+.item-image{
+    max-height: 220px;
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    position: relative;
+}
+.item-title{
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+}
+.card-text{
+    font-size: 20px;
+    color: brown;
+    font-weight: bold;
+}
+
+.item-card:hover .itemcircle-hover{
+    width: 80px;
+    height: 80px;
+    left: 35%;
+   transition: all  0.2s linear;
+   /* transform: translateY(280px); */
+   font-size: 15px;
+   line-height: 80px;
+   
+}
+
+.item-card:hover .item-image{
+    margin-top: 0px;
+    /* width: 253px;
+    margin-right: 5px;
+    margin-left: 4px;
+    margin-bottom: 15px;
+    
+    box-shadow: 0px 2px 2px orangered;
+    border-radius: 10px; */
+    transition: all  0.2s linear;
+}
+.itemcircle-hover{
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    background-color: rgba(255, 165, 0, 0.9);
+    /* display: none; */
+    position: absolute;
+    box-shadow: 0px 3px 10px orangered;
+    /* transition:all 1s ease-in; */
+    line-height: 50px;
+    font-size: 5px;
+    color: white;
+    left: 40%;
+    top: 30%;
+    /* top: -150px; */
+}
+.button-addcart{
+    width: 100%;
+    height: 100%;
+
+}
+.button-addcart:active .card-move{
+    width: 100px;
+    height: 100px;
+    background-color: orangered;
+    transition: all 1;
+    display: none;
+}
+/* .card-move{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: orangered;
+    position: relative;
+    
+} */
+.button-detail{
+    margin-top: 10px !important;
+    width: 100%;
+    background-color:
+orange !important;
+    color:
+white !important;
+    box-shadow: 0px 3px 6px
+gray;
+/* border-bottom: 4px solid gray !important; */
+}
+.card-discount{
+    width: 60px;
+    height: 38px;
+    background-color:
+    tomato;
+    color:
+    white;
+    position: absolute;
+    font-size: 21px;
+    top: 0;
+    left: 20px;
+}
+.card-discount:after {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: 38px;
+    width: 19px;
+    height: 0;
+    border: 30px solid
+    transparent;
+        border-top-color: transparent;
+    border-top-color:
+    tomato;
+
+}
+.old-price{
+    text-decoration: line-through;
+    font-size: 13px ;
+}

@@ -1,0 +1,6 @@
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\bin\Debug\netcoreapp2.1\ShopOnlineBackEnd_Data.deps.json
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\bin\Debug\netcoreapp2.1\ShopOnlineBackEnd_Data.dll
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd_Data.csproj.CoreCompileInputs.cache
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd_Data.AssemblyInfoInputs.cache
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd_Data.AssemblyInfo.cs
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netcoreapp2.1\ShopOnlineBackEnd_Data.csprojAssemblyReference.cache

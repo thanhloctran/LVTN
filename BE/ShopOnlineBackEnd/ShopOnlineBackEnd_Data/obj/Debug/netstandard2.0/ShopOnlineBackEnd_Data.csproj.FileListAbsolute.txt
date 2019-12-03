@@ -1,0 +1,14 @@
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\bin\Debug\netstandard2.0\ShopOnlineBackEnd_Data.deps.json
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\bin\Debug\netstandard2.0\ShopOnlineBackEnd_Data.dll
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netstandard2.0\ShopOnlineBackEnd_Data.csprojAssemblyReference.cache
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netstandard2.0\ShopOnlineBackEnd_Data.csproj.CoreCompileInputs.cache
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netstandard2.0\ShopOnlineBackEnd_Data.AssemblyInfoInputs.cache
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netstandard2.0\ShopOnlineBackEnd_Data.AssemblyInfo.cs
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\bin\Debug\netstandard2.0\ShopOnlineBackEnd_Data.pdb
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netstandard2.0\ShopOnlineBackEnd_Data.dll
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netstandard2.0\ShopOnlineBackEnd_Data.pdb
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\bin\Debug\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\bin\Debug\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.xml
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\obj\Debug\netstandard2.0\ShopOnlineBackEnd_Data.csproj.CopyComplete
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\bin\Debug\netstandard2.0\Microsoft.Extensions.Configuration.dll
+E:\LUANVANTN\ShopOnline_BE\ShopOnlineBackEnd\ShopOnlineBackEnd_Data\bin\Debug\netstandard2.0\Microsoft.Extensions.Configuration.xml
