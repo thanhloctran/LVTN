@@ -9,14 +9,10 @@ import Paper from '@material-ui/core/Paper';
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import "./Style.css";
-// import { Timeline } from 'antd';
-// import Swal from 'sweetalert2';
+
 import {
-    // Form,
-    // Input,
-    // Button,
     Modal
-  } from 'antd';
+} from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import {
     getDetailOrderAction,
@@ -29,32 +25,54 @@ class DetailOrder extends Component {
     state = {
         item: {},
         itemCopy: {},
-        result: "",
+        result: this.props.result,
         userInfor: this.props.userInfor,
         visible: false
     }
+    handleSubmitMail() {
+        const templateId = 'deliveryTempale';
+        const serviceId = 'ShopO_gmail_com';
+        const userId = 'user_QjJ2xI8tto5p7sBwmt4Jg';
+        const receiveMail = this.state.item.email;
+
+        var templateParams = {
+            name: 'James',
+            notes: 'Check this out!',
+            from_name: 'ShopO@gmail.com',
+            to_name: receiveMail,
+            to_mail: 'n15dccn118@student.ptithcm.edu.vn',
+
+        };
+
+        window.emailjs.send(serviceId, templateId, templateParams, userId).then(function (response) {
+            console.log('SUCCESS!', response.status, response.text);
+        }, function (error) {
+            console.log('FAILED...', error);
+        });
+    }
+
     showModal = () => {
         this.setState({
-          visible: true,
+            visible: true,
         });
-      };
-    
-      handleOk = e => {
+    };
+
+    handleOk = e => {
         // console.log(e);
         this.setState({
-          visible: false,
+            visible: false,
         });
-      };
-    
-      handleCancel = e => {
+    };
+
+    handleCancel = e => {
         // console.log(e);
         this.setState({
-          visible: false,
+            visible: false,
         });
-      };
+    };
     componentDidMount() {
         this.props.getOrderDetailAD(this.props.match.params.id);
-        console.log(this.state.userInfor);
+        console.log(this.state.item);
 
     }
 
@@ -64,19 +82,21 @@ class DetailOrder extends Component {
         }
     }
     checkOrderOnclick = (trangThai) => {
+        if (trangThai === "1") {
+            this.handleSubmitMail();
+        }
         let retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
         this.setState({
             itemCopy: {
                 maDDH: this.props.item.maDDH,
-                maNV: retrievedObject.maND,
+                maNV: !retrievedObject? null : retrievedObject.maND,
                 ngayXuLy: moment().format('MM/DD/YYYY HH:mm:ss'),
                 trangThai: trangThai
             }
         });
         setTimeout(() => {
             this.props.updateOrderAD(this.state.itemCopy);
-            console.log(this.state.itemCopy);
-
+            // this.props.getOrderDetailAD(this.props.match.params.id);
         }, 1000)
 
     }
@@ -86,6 +106,8 @@ class DetailOrder extends Component {
         if (!this.state.item || !this.state.item.dsSanPhamDDH) {
             return <p style={{ margin: "20px" }}>NO VALUE </p>;
         }
+        // console.log(this.state.item);
+        // 
         return (
             <div className="m-2 ">
                 <p className="detail-title">DETAIL ORDER </p>
@@ -94,10 +116,10 @@ class DetailOrder extends Component {
                     <div className="col-md-8 " >
                         <div className=" d-flex justify-content-between detail-title-head">
                             <p style={{ fontSize: 23 }}>Order #{this.props.item.maDDH + 4900} <br /> <span style={{ fontSize: 15, color: "gray" }}>Placed on {this.props.item.ngayDat}</span></p>
-                            <p style={{ fontSize: 15, color: "gray", paddingTop: 10 }}>FULFILLED</p>
+                            <p style={{ fontSize: 15, color: "gray", paddingTop: 10, lineHeight: "31px" }}>FULFILLED  <br /> <span style={{ fontSize: 15, color: "gray" }}>Time checked:  {this.props.item.ngayXuLy}</span></p>
                         </div>
 
-                        <Paper>
+                        <Paper style={{minHeight: 457}}>
                             <Table className="mb-2 " style={{ height: "215px !important" }}>
                                 <TableHead>
                                     <TableRow>
@@ -159,8 +181,11 @@ class DetailOrder extends Component {
                                     <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
                                     <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
                                 </Timeline>
+                             
                             </div> */}
-                            {!this.state.userInfor.maLoaiND === "KH" || typeof(this.state.userInfor.maLoaiND)==="undefined"? <div className="action-group" >
+                            {console.log(this.state.userInfor)
+                            }
+                            {!this.state.userInfor.maLoaiND === "KH"|| this.state.userInfor.maLoaiND === "NV"|| typeof(this.state.userInfor.maLoaiND) === "undefined" ? <div className="action-group" >
                                 <Button
                                     className="buton-orderAction"
                                     variant="outlined"
@@ -192,7 +217,7 @@ class DetailOrder extends Component {
                                 >
                                     Cancel Order
                                 </Button>
-                               
+
                                 <Button
                                     className="buton-orderAction"
                                     variant="outlined"
@@ -201,23 +226,23 @@ class DetailOrder extends Component {
                                     Send Notification
                                 </Button>
                                 <Modal
-          title="Send mail notify to Custommer "
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-          <SendingMail receiveMail={this.state.item.email}/>
-        </Modal>
-                            </div> : <div className="mt-3 ml-2 pb-4" ><Button
-                                    className="buton-orderAction"
-                                    variant="outlined"
-                                    color="primary"
-                                    disabled={this.state.item.trangThai === 2 || this.state.item.trangThai === 0 ? false : true}
-                                    onClick={() => {
-                                        this.checkOrderOnclick("-1");
-                                    }}
+                                    title="Send mail notify to Custommer "
+                                    visible={this.state.visible}
+                                    onOk={this.handleOk}
+                                    onCancel={this.handleCancel}
                                 >
-                                    Cancel Order
+                                    <SendingMail receiveMail={this.state.item.email} />
+                                </Modal>
+                            </div> : <div className="mt-3 ml-2 pb-4" ><Button
+                                className="buton-orderAction"
+                                variant="outlined"
+                                color="primary"
+                                disabled={this.state.item.trangThai === 2 || this.state.item.trangThai === 0 ? false : true}
+                                onClick={() => {
+                                    this.checkOrderOnclick("-1");
+                                }}
+                            >
+                                Cancel Order
                                 </Button></div>}
                         </Paper>
                     </div> {/* end div left  */}

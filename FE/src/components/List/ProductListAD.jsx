@@ -5,114 +5,177 @@ import "./listStyle.css";
 // import Button from "@material-ui/core/Button";
 // import SearchIcon from "@material-ui/icons/Search";
 // import TextField from "@material-ui/core/TextField";
+import Highlighter from 'react-highlight-words';
 import { 
-  Divider, 
+  // Divider, 
   Table, 
   Button, 
-  // message, 
+  Input,
+  Icon,
   Tabs , 
-  Popconfirm} from 'antd';
+  Popconfirm } from 'antd';
+
+
 import {
   getListProductAction,
   deleteProductAction
 } from './../../redux/actions/AdminData';
 import BackToTop from "../ProtectedRoute/BackToTop";
-// import Swal from 'sweetalert2'
-
-// function confirm(e) {
-//   console.log(e);
-//   message.success('Click on Yes');
-// }
-
-// function cancel(e) {
-//   console.log(e);
-//   message.error('Click on No');
-// }
 
 
 class ProductListAdmin extends Component {
 
   state= {
     resultDelete : this.props.resultDelete,
+    listItem:[],
+    searchText: '',
+    searchedColumn: '',
   }
-  columns = [
-    {
-      title: 'Image',
-      dataIndex: 'hinhAnh',
-      className: "colImage",
-      render(dataIndex) {
-        return (
-          <img style={{ width: 130}} alt="Product" src={dataIndex} />
-        )
-      }
-    },
-    {
-      title: 'Name',
-      dataIndex: 'tenSP',
-    },
-    {
-      title: 'Price',
-      dataIndex: 'donGia',
-      render(dataIndex) {
-        return (
-          <p> {(dataIndex*1).toLocaleString("en-US", { 
-            style: "currency", 
-            currency: "USD"
-          })} </p>
-        )
-      }
-    },
-    {
-      title: 'In Stock',
-      dataIndex: 'soLuongTon',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'trangThai',
-      render: (dataIndex) =>
-      <div>
-          {(() => {
-              switch (dataIndex) {
-                case 1: return "Publish";
-                case 2: return "UnPublish";
-                default: return "Deleted Product";
-            }
-          })()}
-      </div>
-    },
-    {
-      title: "Action",
-      rowIndex: "maSP" ,
-      render:(text, record) =>
-          <span key={record.maSP}>
-            <span>Edit</span>
-            <Divider type="vertical" />
-            <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteProductAD(record.maSP)}>
-            <span>Delete</span>
-            </Popconfirm>
-       </span>
-    }
   
-  ];
 
   deleteProduct=maSP=> {
     this.props.deleteProductAD(maSP);
   }
   componentDidMount() {
-    this.props.getListProductAD("1");
+    console.log(this.props.match.params);
+    this.props.getListProductAD(this.props.match.params.status);
   }
-
   static getDerivedStateFromProps(nextProps, prevState) {
     return {
-      ...prevState, resultDelete: nextProps.resultDelete
+      ...prevState, resultDelete: nextProps.resultDelete, listItem: nextProps.listDataAD
     }
   }
-
   callback = (key) => {
+    this.props.history.push("/dashboard/listproduct/"+key);
     this.props.getListProductAD(key);
   }
 
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: filtered => (
+      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    render: text =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text.toString()}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
   render() {
+    const columns = [
+      {
+        title: 'Image',
+        dataIndex: 'hinhAnh',
+        className: "colImage",
+        render(dataIndex) {
+          return (
+            <img style={{ width: 130}} alt="Product" src={dataIndex} />
+          )
+        }
+      },
+      {
+        title: 'Name',
+        dataIndex: 'tenSP',
+        ...this.getColumnSearchProps('tenSP'),
+      },
+      {
+        title: 'Price',
+        dataIndex: 'donGia',
+        render(dataIndex) {
+          return (
+            <p> {(dataIndex*1).toLocaleString("en-US", { 
+              style: "currency", 
+              currency: "USD"
+            })} </p>
+          )
+        }
+      },
+      {
+        title: 'In Stock',
+        dataIndex: 'soLuongTon',
+      },
+      {
+        title: 'Status',
+        dataIndex: 'trangThai',
+        render: (dataIndex) =>
+        <div>
+            {(() => {
+                switch (dataIndex) {
+                  case 1: return "Publish";
+                  case 2: return "UnPublish";
+                  default: return "Deleted Product";
+              }
+            })()}
+        </div>
+      },
+      {
+        title: "Action",
+        rowIndex: "maSP" ,
+        styte:"width=150",
+        render:(text, record) =>
+            <span key={record.maSP}>
+              <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteProductAD(record.maSP)}>
+              <div style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
+                              Delete </div>
+              </Popconfirm>
+         </span>
+      }
+    
+    ];
     const { TabPane } = Tabs;
     return (
       <div style={{ padding: 10 }}>
@@ -130,7 +193,7 @@ class ProductListAdmin extends Component {
           </div>
         </div>
         <div>
-        <Tabs defaultActiveKey="1" onChange={this.callback}>
+        <Tabs activeKey={this.props.match.params.status} onChange={this.callback}>
           <TabPane tab="Publish Product" key="1">
             <div>
             <Table
@@ -140,7 +203,7 @@ class ProductListAdmin extends Component {
                 onDoubleClick: event => { this.props.history.push("/dashboard/productCRUD/" + record.maSP) }, // click row
               };
             }}
-            columns={this.columns} dataSource={this.props.listDataAD} style={{ backgroundColor: "white" }} />
+            columns={columns} dataSource={this.props.listDataAD} style={{ backgroundColor: "white" }} />
             </div>
           </TabPane>
           <TabPane tab="UnPublish Product" key="2">
@@ -152,10 +215,10 @@ class ProductListAdmin extends Component {
                 onDoubleClick: event => { this.props.history.push("/dashboard/productCRUD/" + record.maSP) }, // click row
               };
             }}
-            columns={this.columns} dataSource={this.props.listDataAD} style={{ backgroundColor: "white" }} />
+            columns={columns} dataSource={this.props.listDataAD} style={{ backgroundColor: "white" }} />
             </div>
           </TabPane>
-          {/* <TabPane tab="Deleted Product" key="0">
+          <TabPane tab="Product Out Of Stock" key="-1">
             <div>
             <Table
             onRow={(record, rowIndex) => {
@@ -164,9 +227,9 @@ class ProductListAdmin extends Component {
                 onDoubleClick: event => { this.props.history.push("/dashboard/productCRUD/" + record.maSP) }, // click row
               };
             }}
-            columns={this.columns} dataSource={this.props.listDataAD} style={{ backgroundColor: "white" }} />
+            columns={columns} dataSource={this.props.listDataAD} style={{ backgroundColor: "white" }} />
             </div>
-          </TabPane> */}
+          </TabPane>
         </Tabs>
         <BackToTop/>
         </div>

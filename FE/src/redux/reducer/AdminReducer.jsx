@@ -3,17 +3,19 @@ import Swal from 'sweetalert2'
 // If multiple components need access to some data, in that case we store such data in redux.
 const stateDefault = {
     listDataAD: [],
-    listOrder:[],
+    listOrder: [],
     listReview: [],
     detail: {},
     //reviewDetail:{},
-    //  orderDetail:{},
+    orderDetail: {},
     listProvider: [],
     listProducer: [],
     listTypeProduct: [],
     result: "",
-    statisticData:{},
-    listOrderByYear:[]
+    deleteResult: "",
+    statisticData: {},
+    listOrderByYear: [],
+    listInvoiceYear: [],
     // resultDelete: "",
 };
 
@@ -24,11 +26,6 @@ function showMassage(type, mesage) {
         timer: 1500,
         showConfirmButton: false
     });
-    if (type === "success") {
-        // window.location.reload();
-        // event.preventDefault();
-    }
-
 }
 const rootReducerAD = (state = stateDefault, action) => {
     switch (action.type) {
@@ -52,6 +49,7 @@ const rootReducerAD = (state = stateDefault, action) => {
         case types.GET_LISTREVIEW_AD:  //review
             {
                 state.listReview = action.listReviewAD;
+                state.deleteResult = "";
                 return { ...state }
             }
         case types.GET_LISTCUSTOMER_AD:  //customer
@@ -97,9 +95,14 @@ const rootReducerAD = (state = stateDefault, action) => {
                 state.statisticData = action.statisticData;
                 return { ...state }
             }
-            case types.GETORDERYEAR:  //doanh so ban ra the nam
+        case types.GETORDERYEAR:  //doanh so ban ra the nam
             {
                 state.listOrderByYear = action.result;
+                return { ...state }
+            }
+        case types.GETINVOICEYEAR:  //doanh so ban ra the nam
+            {
+                state.listInvoiceYear = action.result;
                 return { ...state }
             }
 
@@ -146,22 +149,22 @@ const rootReducerAD = (state = stateDefault, action) => {
 
                 state.result = action.result;
                 return { ...state }
-            }      
+            }
         case types.UPDATEORDERSTATUS_AD:  //cap nhat trang thai don hang      
             {
-                if (action.result === "success") {
+                if (typeof (action.result) === "object") {
                     showMassage("success", "Update order Successfull")
-                    state.result = action.result;
+                    state.orderDetail = action.result;
                     return { ...state }
                 }
                 showMassage("error", action.result);
                 break;
             }
-         case types.UPDATEDISCOUNT_AD://cap nhat khuyen mai           
+        case types.UPDATEDISCOUNT_AD://cap nhat khuyen mai           
             {
-                if (action.result === "success") {
+                if (typeof(action.result) !== "string") {
                     showMassage("success", "Update discount Successfull")
-                    state.result = action.result;
+                    state.detail = action.result;
                     return { ...state }
                 }
                 showMassage("error", action.result);
@@ -177,7 +180,7 @@ const rootReducerAD = (state = stateDefault, action) => {
                 showMassage("error", action.result);
                 break;
             }
-       
+
         case types.DELETE_ORDER: //delete order 
             {
 
@@ -191,13 +194,14 @@ const rootReducerAD = (state = stateDefault, action) => {
             }
         case types.DELETE_DISCOUNT://delete discount
             {
-                if (action.result === "success") {
-                    showMassage("success", "Delete discount Successfull")
-                    state.result = action.result;
-                    return { ...state }
+                if (typeof(action.result) === "string") {
+                    showMassage("error", action.result);
+                    break;
                 }
-                showMassage("error", action.result);
-                break;
+                showMassage("success", "Delete discount Successfull")
+                state.listDataAD = action.result;
+                return { ...state }
+
             }
         //delete invoice
         case types.DELETE_INVOICE:
@@ -209,6 +213,55 @@ const rootReducerAD = (state = stateDefault, action) => {
                 }
                 showMassage("error", action.result);
                 break;
+            }
+        //delete review
+        case types.DELETE_REVIEW:
+            {
+                // console.log(typeof(action.result));
+                if (typeof (action.result) === "string") {
+                    showMassage("error", action.result);
+                    break;
+
+                }
+                showMassage("success", "Update order Successfull")
+                state.listReview = action.result;
+                return { ...state }
+
+            }
+        //delete reply review
+        case types.DELETE_REPLYREVIEW:
+            {
+                // console.log(typeof(action.result));
+                if (typeof (action.result) === "string") {
+                    showMassage("error", action.result);
+                    break;
+
+                }
+                state.detail = action.result;
+                return { ...state }
+
+            }
+        //delete user
+        case types.DELETE_USER: {
+            if (typeof (action.result) === "string") {
+                showMassage("error", action.result);
+                break;
+
+            }
+            state.listDataAD = action.result;
+            return { ...state }
+        }
+        //add repply    
+        case types.ADD_REPLY_AD:
+            {
+                // console.log(typeof(action.result));
+                if (typeof (action.result) === "string") {
+                    showMassage("error", action.result);
+                    break;
+                }
+                state.detail = action.result;
+                return { ...state }
+
             }
         //add product
         case types.ADD_PRODUCT:

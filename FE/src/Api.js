@@ -19,7 +19,7 @@ getListProductAction = () => {
     
   }
   getItemUsingID(id) {
-   
+   this.getListProductAction();
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         let res = this.sampleProducts.filter(x => x.maSP === id);     
@@ -81,6 +81,13 @@ getListProductAction = () => {
           if (category === "Discount") {
             return item.giamGia;
           }
+          if (category === "Bestseller") {
+            return item.soLanMua;
+          }
+          if (category === "HighRate") {
+            return item.luotBC;
+          }
+
 
           if (category !== "All categories" && category !== item.maLoaiSP)
             return false;

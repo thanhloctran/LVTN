@@ -219,7 +219,7 @@ class ConnectedHeader extends Component {
               <MenuItem
               onClick={() => {
                 this.setState({ anchorEl: null });
-                this.props.history.push("/userOrder/"+this.props.userInfor.taiKhoan);
+                this.props.history.push("/userOrder/"+this.props.userInfor.taiKhoan+"/0");
               }}
             >
               Monitor Order

@@ -12,7 +12,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import moment from 'moment';
 
 import {
-    getDetailDiscountAction,
+    getDetailDiscountAction,updateDiscountAction
 } from './../redux/actions/AdminData';
 
  class Disccount extends Component {
@@ -32,9 +32,53 @@ import {
 }
     static getDerivedStateFromProps(nextProps, prevState){
         return{
-            ...prevState, disscountInfor: nextProps.item
+            ...prevState, disscountInfor: nextProps.disscountInfor
         }
     }
+    cancelDiscount = () => {
+        let  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
+        let maNV = retrievedObject.maND;
+        // this.props.form.validateFields((err, values) => {
+        //   if (!err) {
+        //     let dsSanPhamKM = [];
+        //     values.dsSanPham.forEach(element => {
+        //       let item = {
+        //         maSP: element,
+        //         giamGia: values.giamGia,
+        //       }
+        //       dsSanPhamKM.push(item);
+        //     });
+        //     const fieldsValue = {
+        //       'maKM': this.props.match.params.id,
+        //       'code': values.code,
+        //       'dsSanPhamKM': dsSanPhamKM,
+        //       'trangThai': 1,
+        //       'maNV': maNV,
+        //       'ngayBD': this.state.date[0],
+        //       'ngayKT': this.state.date[1],
+        //       'moTa': values.moTa,
+        //       'maKM': maKM
+        //     }
+        //     console.log("fieldsValue",fieldsValue);
+        //     if (this.props.match.params.id) {
+        //       this.props.updateDiscount(fieldsValue);
+        //     }
+        //     else {
+        //       this.props.addDiscount(fieldsValue);
+        //     }
+            
+    
+        //   }
+        // });
+        let discount={
+            ...this.state.disscountInfor,
+            maNV: maNV,
+            ngayKT: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),   
+        }
+        console.log(discount);
+        this.props.updateDiscount(discount)
+        
+      };
 
     render() {
         if (!this.state.disscountInfor || !this.state.disscountInfor.dsSanPhamKM) {
@@ -116,28 +160,34 @@ import {
                                     defaultValue={[moment(this.state.disscountInfor.ngayBD, dateFormat), moment(this.state.disscountInfor.ngayKT, dateFormat)]}
                                     format={dateFormat}
                                     showTime
+                                    disabled={true}
                                 />
                                 <div style={{
                                     display: 'flex',
-
                                     justifyContent: 'space-between',
                                     position: 'absolute',
-
                                     bottom: '10px',
-
                                     width: '86%',
                                 }} >
                                     <Button
                                         style={{ width: '45%' }}
                                         variant="outlined"
-                                        color="secondary">
-                                        Save
+                                        color="secondary" 
+                                        onClick={()=>{
+                                            this.props.history.push("/dashboard/discountCRUD/"+this.state.disscountInfor.maKM)
+                                        }}
+                                        >
+                                        Edit
                                     </Button>
                                     <Button
                                         style={{ width: '45%' }}
                                         variant="outlined"
-                                        color="primary">
-                                        Cancel
+                                        color="primary"
+                                        onClick={()=>{
+                                            this.cancelDiscount()
+                                        }}
+                                        >
+                                        END DISCOUNT
                                     </Button>
                                 </div>
                             </Paper>
@@ -158,14 +208,17 @@ import {
 }
 const mapStateToProps = (state) => {
     return {
-        item: state.rootReducerAD.detail,
+        disscountInfor: state.rootReducerAD.detail,
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return {
         getDetailDiscountAD: (maKM) => {
             dispatch(getDetailDiscountAction(maKM))
-        }
+        },
+        updateDiscount:(discountInfor)=>{
+            dispatch(updateDiscountAction(discountInfor))
+          },
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Disccount)

@@ -13,7 +13,9 @@ import {
 
 class ReviewListAdmin extends Component {
   state = {
-    propertiesName: []
+    propertiesName: [],
+    deleteResult: this.props.deleteResult,
+    listDataAD:[]
   };
   columns = [
     {
@@ -54,19 +56,20 @@ class ReviewListAdmin extends Component {
       title: "Action",
       key: "action",
       render: (text, record)=> 
-          <span key={record.maBL} onClick={()=>{this.props.deleteReview(record.maBL);
-          }}>Delete</span>
+      <div style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}
+      key={record.maBL} onClick={()=>{this.props.deleteReview(record.maBL);
+      }}> 
+         Delete </div>
         
       
     }
   ];
   componentDidMount() {
-    // console.log("dataReceive",this.props.listDataAD);
     this.props.getList();
   }
   static getDerivedStateFromProps(nextProps, prevState) {
     return {
-      ...prevState,
+      ...prevState, listDataAD: nextProps.listDataAD
     }
   }
 
@@ -98,6 +101,7 @@ class ReviewListAdmin extends Component {
 const mapStateToProps = (state) => {
   return {
     listDataAD: state.rootReducerAD.listReview,
+    deleteResult:state.rootReducerAD.deleteResult
   }
 }
 const mapDispatchToProps = (dispatch) => {

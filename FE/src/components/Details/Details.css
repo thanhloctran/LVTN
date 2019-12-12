@@ -94,14 +94,16 @@
 .details .description{
     color: gray;
     margin-left: 5px;
+    font-size: 17px;
     /* height: 575px; */
     font-size: 15px;
     /* overflow: hidden; */
-    width: 100%;
+    width: 73%;
 
 }.details .description img{
     display: block;
     margin: 0 auto;
+    width: 70%;
 }
 .details  .decription-viewAll{
     color: white;

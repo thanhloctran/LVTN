@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 // import SearchIcon from "@material-ui/icons/Search";
 // import TextField from "@material-ui/core/TextField";
 import {
-  Divider,
+  // Divider,
   Table,
   Button,
   Popconfirm
@@ -18,13 +18,18 @@ import { CircularProgress } from "@material-ui/core";
 
 
 class DiscountListAdmin extends Component {
-
+ state={
+  listDataAD:[]
+ }
   componentDidMount() {
     this.props.getListDiscountAD();
   }
-  componentWillReceiveProps() {
-    return { ...this.state }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      ...prevState, listDataAD: nextProps.listDataAD
+    }
   }
+
   columns = [
     {
       title: 'Code Text',
@@ -59,10 +64,11 @@ class DiscountListAdmin extends Component {
       key: "action",
       render: (text, record) =>
         <span key={record.maKM}>
-           <span onClick={()=> this.props.history.push("/dashboard/discountCRUD/" + record.maKM)} >Edit </span>
-          <Divider type="vertical" />
+           {/* <span onClick={()=> this.props.history.push("/dashboard/discountCRUD/" + record.maKM)} >Edit </span>
+          <Divider type="vertical" /> */}
           <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteDiscountAD(record.maKM)}>
-          <span>Delete </span>
+          <span style={{ backgroundColor: "rgb(234, 66, 66)" }} className="statusInList"> 
+                            Delete </span>
           </Popconfirm>
         </span>
 
@@ -93,11 +99,11 @@ class DiscountListAdmin extends Component {
           <Table
             onRow={(record, rowIndex) => {
               return {
-                rowKey: 'maBL',
+                rowKey: 'maKM',
                 onDoubleClick: event => { this.props.history.push("/dashboard/discounts/" + record.maKM) }, // click row
               };
             }}
-            columns={this.columns} dataSource={this.props.listDataAD} style={{ backgroundColor: "white" }} />
+            columns={this.columns} dataSource={this.props.listDataAD} rowKey="maKM" style={{ backgroundColor: "white" }} />
         </div>
 
       </div>

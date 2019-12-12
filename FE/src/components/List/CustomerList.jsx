@@ -5,13 +5,15 @@ import { connect } from "react-redux";
 // import Button from "@material-ui/core/Button";
 // import SearchIcon from "@material-ui/icons/Search";
 // import TextField from "@material-ui/core/TextField";
+import Highlighter from 'react-highlight-words';
 import { 
   Divider, 
-  Table,
-   Button, 
-  //  message,
-   Popconfirm, 
-   Tabs } from 'antd';
+  Table, 
+  Button, 
+  Input,
+  Icon,
+  Tabs , 
+  Popconfirm } from 'antd';
 import {
   getListCustomerAction,
   deleteUserAction
@@ -19,57 +21,14 @@ import {
 import { CircularProgress } from "@material-ui/core";
 
 class CustomerListAdmin extends Component {
-
-  columns = [
-    {
-      title: 'Account',
-      dataIndex: 'taiKhoan',
+  state= {
+    resultDelete : this.props.resultDelete,
+    listItem:[],
+    searchText: '',
+    searchedColumn: '',
+  }
   
-    },
-    {
-      title: 'Name',
-      dataIndex: 'hoTen',
-    },
-    {
-      title: 'Number Phone',
-      dataIndex: 'soDT',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'diaChi',
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'trangThai',
-      render(dataIndex) {
-        return (!dataIndex ?
-          <div style={{ color: "#375975" }}> <i className="fas fa-circle" style={{ color: "#lightgray", fontSize: 10 }}></i> &nbsp;
-                Unactive </div> :
-          <div><i className="fas fa-circle" style={{ color: "#13BEBB", fontSize: 10 }}></i> &nbsp;
-             Active     </div>)
-      }
-    },
-    {
-      title: "Action",
-      key: "action",
-      render:(text, record) =>
-          <span>
-             <span>Edit</span>
-            <Divider type="vertical" />
-            <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteUser(record.maND)}>
-            <span>Delete </span>
-            </Popconfirm>
-            
-          </span>
-      
-    }
   
-  ];
-
   componentWillMount() {
     // console.log("dataReceive",this.props.listDataAD);
     this.props.getList("KH");
@@ -81,10 +40,127 @@ class CustomerListAdmin extends Component {
   handelOnclick(id){
     // console.log(id);
     this.props.history.push("accountCRUD/" + id)
-    
-    
   }
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search value`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: filtered => (
+      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    render: text =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text.toString()}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
   render() {
+    const columns = [
+      {
+        title: 'Account',
+        dataIndex: 'taiKhoan',
+        ...this.getColumnSearchProps('taiKhoan'),
+    
+      },
+      {
+        title: 'Name',
+        dataIndex: 'hoTen',
+        ...this.getColumnSearchProps('hoTen'),
+      },
+      {
+        title: 'Number Phone',
+        dataIndex: 'soDT',
+      },
+      {
+        title: 'Address',
+        dataIndex: 'diaChi',
+      },
+      {
+        title: 'Email',
+        dataIndex: 'email',
+        ...this.getColumnSearchProps('email'),
+      },
+      {
+        title: 'Status',
+        dataIndex: 'trangThai',
+        render(dataIndex) {
+          return (!dataIndex ?
+            <div style={{ color: "#375975" }}> <i className="fas fa-circle" style={{ color: "#lightgray", fontSize: 10 }}></i> &nbsp;
+                  Unactive </div> :
+            <div><i className="fas fa-circle" style={{ color: "#13BEBB", fontSize: 10 }}></i> &nbsp;
+               Active     </div>)
+        }
+      },
+      {
+        title: "Action",
+        key: "action",
+        render:(text, record) =>
+            <span>
+               <span>Edit</span>
+              <Divider type="vertical" />
+              <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteUser(record.maND, record.loaiND)}>
+              <span style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
+                              Delete </span>
+              </Popconfirm>
+              
+            </span>
+        
+      }
+    
+    ];
+  
     const { TabPane } = Tabs;
     if(!this.props.listDataAD){
       return(
@@ -108,7 +184,7 @@ class CustomerListAdmin extends Component {
             <Button
               style={{ margin: 5, backgroundColor: "#2BD5C5", color: "white" }}
               onClick={() => {
-               this.handelOnclick("");
+               this.handelOnclick(null);
               }}
             >
               ADD ACCOUNT &nbsp; <i className="fas fa-plus"></i>
@@ -121,11 +197,12 @@ class CustomerListAdmin extends Component {
               <Table
                 onRow={(record, rowIndex) => {
                   return {
+                    rowKey: 'maND',
                     key: rowIndex,
                     onDoubleClick: event => { this.handelOnclick(record.taiKhoan) }, // click row
                   };
                 }}
-                columns={this.columns} dataSource={this.props.listDataAD} rowKey='maND' style={{ backgroundColor: "white" }} />
+                columns={columns} dataSource={this.props.listDataAD} rowKey='maND' style={{ backgroundColor: "white" }} />
             </div>
           </TabPane>
           <TabPane tab=" Employee Account" key="NV">
@@ -133,10 +210,11 @@ class CustomerListAdmin extends Component {
               <Table
                 onRow={(record, rowIndex) => {
                   return {
+                    rowKey: 'maND',
                     onDoubleClick: event => { this.handelOnclick(record.taiKhoan)}, // click row
                   };
                 }}
-                columns={this.columns} dataSource={this.props.listDataAD} rowKey='maND' style={{ backgroundColor: "white" }} />
+                columns={columns} dataSource={this.props.listDataAD} rowKey='maND' style={{ backgroundColor: "white" }} />
             </div>
           </TabPane>
         </Tabs>
@@ -157,8 +235,8 @@ const mapDispatchToProps = (dispatch) => {
     getList: (key) => {
       dispatch(getListCustomerAction(key))
     },
-    deleteUser:(maND)=>{
-      dispatch(deleteUserAction(maND))
+    deleteUser:(maND,loaiND)=>{
+      dispatch(deleteUserAction(maND, loaiND))
     }
   }
 }

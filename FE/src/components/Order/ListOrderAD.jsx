@@ -1,31 +1,21 @@
 import React, { Component } from 'react'
-// import { Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import { getListOrderAction , deleteOrderAction,getListOrderClientAction} from './../../redux/actions/AdminData'
-// import TextField from "@material-ui/core/TextField";
-// import Button from "@material-ui/core/Button";
-// import Table from "@material-ui/core/Table";
-// import SearchIcon from "@material-ui/icons/Search";
 import { 
-    // Divider, 
     Table, 
     Tabs , 
     Popconfirm} from 'antd';
 const { TabPane } = Tabs;
 
 class ListOrderAD extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
     state = {
         selectedRowKeys: [], // Check here to configure the default column
         loading: false,
-        listItem: []
+        listItem: [],
     }
 
     start = () => {
         this.setState({ loading: true });
-        // ajax request after empty completing
         setTimeout(() => {
             this.setState({
                 selectedRowKeys: [],
@@ -35,21 +25,27 @@ class ListOrderAD extends Component {
     };
 
     callback = (key) => {
+        
         if(typeof(this.props.match)==="undefined" ||!this.props.match.params.id){
+            this.props.history.push("/dashboard/listorder/"+key);
             this.props.getListOrderAD(key);
         }else
-        this.props.getListOrderCL(this.props.match.params.id, key)
+        {
+            this.props.history.push("/userOrder/"+this.props.match.params.id+"/"+key);
+            this.props.getListOrderCL(this.props.match.params.id, key)
+        }
+        
         
         
     }
 
     componentDidMount() {
+        console.log(this.props.match.params);
         if(typeof(this.props.match)==="undefined" || !this.props.match.params.id){
-            this.props.getListOrderAD("0");
+            this.props.getListOrderAD(this.props.match.params.status);
         }
         else
-        
-        this.props.getListOrderCL(this.props.match.params.id, "0")
+        this.props.getListOrderCL(this.props.match.params.id, this.props.match.params.status)
     }// Store
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -78,14 +74,17 @@ class ListOrderAD extends Component {
                     {(() => {
                         switch (dataIndex) {
                             case 2: 
-                                return <div style={{ color: "#375975" }}> <i className="fas fa-circle" style={{ color: "#lightgray", fontSize: 10 }}></i> &nbsp;
+                                return <div className="statusInList" style={{ backgroundColor: "#13BEBB"}}> 
+                                {/* <i className="fas fa-circle" style={{ color: "#lightgray", fontSize: 10 }}></i> &nbsp; */}
                               Checked </div>;
                             case 1: 
-                                return "Deliveried";
+                            return <div className="statusInList" style={{ backgroundColor: "rgb(27, 137, 191)"}}> 
+                            Deliveried </div>;
                             case -1: 
-                                return "Cancled";
+                            return <div className="statusInList" style={{ backgroundColor: "rgb(79, 10, 10)"}}> 
+                            Cancled </div>;
                             default: 
-                                return <div><i className="fas fa-circle" style={{ color: "#13BEBB", fontSize: 10 }}></i> &nbsp;
+                                return <div className="statusInList" style={{ backgroundColor: "rgb(64, 123, 5)"}}>
                                     UnCheck</div>;
                         }
                     })()}
@@ -99,9 +98,12 @@ class ListOrderAD extends Component {
             <div> 
                 {(() => {
                     switch (dataIndex) {
-                        case 1: return "Paided";
-                        case -1: return "ReFund";
-                        default: return "UnPaid";
+                        case 1: return  <div className="statusInList" style={{ backgroundColor: "orange" }}>Paided
+                         </div>;
+                        case -1: return<div className="statusInList" style={{ backgroundColor: "orange"}}>ReFund
+                        </div> ;
+                        default: return<div className="statusInList" style={{ backgroundColor: "#28317d"}}>UnPaid
+                        </div> ;
                     }
                 })()}
             </div>
@@ -140,7 +142,8 @@ class ListOrderAD extends Component {
                   <Popconfirm title="Sure to delete?" 
                   onConfirm={() => this.props.deleteOrder(record.maDDH)}
                   >
-                    <span>Delete</span>
+                    <div style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
+                            Delete </div>
                   </Popconfirm>
              </span>
           }
@@ -153,7 +156,7 @@ class ListOrderAD extends Component {
                     <div className="online-shop-title"> Orders ready for shipment </div>
                 </div>
                 <div>
-                    <Tabs defaultActiveKey="0" onChange={this.callback}>
+                    <Tabs activeKey={this.props.match.params.status} onChange={this.callback}>
                         <TabPane tab="Order already to check" key="0">
                             <div>
                                 <Table

@@ -37,18 +37,28 @@ class DiscountAction extends Component {
   componentDidMount() {
     this.props.getListProduct();
     if(typeof(this.props.match.params.id)==="undefined"){
-      console.log("123");
+    //  console.log("123");
       
       this.props.getDetailDiscountAD(0);
     }
     else{  
       this.props.getDetailDiscountAD(this.props.match.params.id);
+      setTimeout(()=>{
+        this.state.discountInfor.dsSanPhamKM.map((item, index)=>{
+          this.setState({
+            dsSanPhamSate: this.state.dsSanPhamSate.concat(item.maSP)
+          })
+        })
+        //console.log(this.props.discountInfor);
+        
+      },1000)
+      
     }
   }
 
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps.item);
+   // console.log(nextProps.item);
     
     return {
       ...prevState,discountInfor: nextProps.item
@@ -145,9 +155,8 @@ class DiscountAction extends Component {
     //   },
     // };
 
-    
     return (
-
+      
       <Paper className="col-md-10 m-auto pb-5">
         <span className="cover-title">DISCOUNT GENERAL</span>
 
@@ -165,11 +174,14 @@ class DiscountAction extends Component {
           </Form.Item>
 
           <Form.Item label="List Product">
-            {getFieldDecorator('dsSanPham', {rules: [{ required: true, message: 'Please select product!' } ]})(<Select
+            {getFieldDecorator('dsSanPham', {rules: [{ required: true, message: 'Please select product!' }], initialValue: this.state.dsSanPhamSate  })(<Select
               mode="multiple"
               style={{ width: '100%' }}
               placeholder="Please select"
-              onChange={handleChange}>
+              onChange={handleChange}
+           //   defaultValue={["SP01", "SP02"]}
+              >
+              
               {this.props.listProduct.map((item, index) => {
                 return (<Option key={index} value={item.maSP}>{item.maSP} | {item.tenSP}</Option>)
               })}
@@ -198,12 +210,14 @@ class DiscountAction extends Component {
           </Form.Item>
 
           <Form.Item label="RangePicker">
-            {getFieldDecorator('ngay', { rules: [{ type: 'array', required: true, message: 'Please select time!' }], initialValue:[moment(this.props.item.ngayBD, dateFormat), moment(this.props.item.ngayKT, dateFormat)] })(<RangePicker
+            {getFieldDecorator('ngay', { rules: [{ type: 'array', required: true, message: 'Please select time!' }], 
+           initialValue: typeof(this.props.item)!=="string"? [moment(this.props.item.ngayBD, dateFormat), moment(this.props.item.ngayKT, dateFormat)] : [moment("12-16-2019", dateFormat),moment("12-16-2019", dateFormat)]
+          })(<RangePicker
                 onChange={this.onChange}
                 showTime={{ format: 'HH:mm:ss' }}
                 format="MM/DD/YYYY HH:mm:ss"
                 placeholder={['Date Started', 'Date Finished']}
-                value={[moment(this.props.item.ngayBD, dateFormat), moment(this.props.item.ngayKT, dateFormat)]}
+               setFieldsValue={[moment(this.props.item.ngayBD, dateFormat), moment(this.props.item.ngayKT, dateFormat)]}
                 onOk={this.onOk}
               />)}
           </Form.Item>

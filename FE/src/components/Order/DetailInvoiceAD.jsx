@@ -107,13 +107,14 @@ class DetailInvoiceAD extends Component {
                             <p style={{marginLeft:10, fontSize:20}}>Product</p>
                             {this.state.item.dsSanPhamNhap.map((item, index)=>{
                             return(
-                                <div style={{margin:"10px 3px"}}>
-                                   <span className="productName" key={index}>{item.tenSP}</span>
-                                   <span style={{float:"right"}}>
+                                <div style={{margin:"10px 3px"}} key={index}>
+                                   <span className="productName" >{item.tenSP}</span>
+                                   <br/>
+                                   <span  style={{float:"right", textAlign:"center"}}>
                                    {
                                        item.dsSeriSanPham.map((itemsub, indexsub)=>{
-                                    console.log(itemsub);
-                                    return <span style={{ margin: 5}} key={indexsub}>[{itemsub}]&nbsp; </span>
+                                 //   console.log(itemsub);
+                                    return <span className="invoice-seri" style={{ margin: 5}} key={indexsub}>{itemsub}&nbsp; </span>
                                         
                                 } )
                                    }
@@ -124,7 +125,7 @@ class DetailInvoiceAD extends Component {
                             })}
                             {/* <hr/> */}
                             {!this.state.adminAccess ?
-                                (<button className=" w-100 btn" style={{ backgroundColor: "orange", color: "white" }} onClick={() => this.props.history.push('/dashboard/admin')}>Back Monitor Order Page</button>) : (<button className=" w-100 btn btn-dark" onClick={() => this.props.history.push('/admin')}>Back Admin Page</button>)}
+                                (<button className=" w-100 btn" style={{ backgroundColor: "orange", color: "white", marginTop:55 }} onClick={() => this.props.history.push('/dashboard/admin')}>Back Monitor Order Page</button>) : (<button className=" w-100 btn btn-dark" onClick={() => this.props.history.push('/admin')}>Back Admin Page</button>)}
 
                         </Paper>
 
@@ -157,7 +158,7 @@ class DetailInvoiceAD extends Component {
                         </Paper>
                         <Paper style={{ padding: 15 }}>
                             {/* <div style={{backgroundColor:"white", padding:"15px" , borderRadius:5}}> */}
-                            <p style={{ fontSize: "22px", color: "#504F5A", marginBottom: "0px !important" }}>Order Status</p>
+                            <p style={{ fontSize: "22px", color: "#504F5A", marginBottom: "0px !important" }}>Invoice Status</p>
                             <TextField
                                 label="Handling Status"
                                 fullWidth
@@ -168,7 +169,7 @@ class DetailInvoiceAD extends Component {
                                 }}
                                 value={(() => {
                                     switch (this.state.item.trangThai) {
-                                        case 1: return "FullFill";
+                                        case true: return "FullFill";
                                         default: return "UnFullFill";
                                     }
                                 })()}

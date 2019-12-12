@@ -6,14 +6,11 @@ import MenuIcon from "@material-ui/icons/Menu";
 import {
   withRouter, 
   NavLink , 
-  // Redirect
 } from "react-router-dom";
 import { connect } from "react-redux";
 import {
-  // showCartDlg,
   toggleMenu,
   setLoggedInUser,
-  // setCheckedOutItems
 } from "../../redux/actions/Data";
 import { categories } from "../../Data";
 import Person from "@material-ui/icons/PersonOutline";
@@ -22,18 +19,8 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-// import firebase from 'firebase';
 import Swal from 'sweetalert2'
 
-
-
-// const categoryOptions = categories.map(x => {
-//   return (
-//     <MenuItem key={x.name} value={x.name}>
-//       {x.name}
-//     </MenuItem>
-//   );
-// });
 
 class ConnectedHeader extends Component {
   state = {

@@ -66,7 +66,8 @@ class InvoiceListAdmin extends Component {
              <span onClick={()=> this.props.history.push("/dashboard/invoice/"+record.maPN)} >Edit </span>
             <Divider type="vertical" />
             <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteInvoiceAD(record.maPN)}>
-            <span>Delete </span>
+            <div style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
+                            Delete </div>
             </Popconfirm>
           </span>
     }

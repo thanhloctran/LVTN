@@ -1,5 +1,6 @@
 import * as CONSTANTS from "../constants/Data";
 import Swal from 'sweetalert2'
+import { swalMessage } from "../../components/Dialog/Swal";
 
 const initialState = {
     showCartDialog: false,
@@ -30,6 +31,7 @@ const initialState = {
     listProductType:[],
     listComment: [],
     listOrder: [],
+    listHighRate:[],
     productDetail: {}, //chi tiet san pham 
 };
 
@@ -203,32 +205,34 @@ const rootReducer = (state = initialState, action) => {
         //add order
         case CONSTANTS.ADD_ORDER: {
             if (action.result === "success") {
-                Swal.fire({
-                    type: 'success',
-                    title: 'Your order has been save',
-                    showConfirmButton: false,
-                    timer: 1000
-                })
+                swalMessage("success", "Thank !","Your order saved success! Check mail!");
+                return { ...state };
             }
-            return { ...state };
+            else{
+                swalMessage("error", "Oopp...!",action.result);
+                break;
+            } 
         }
         //add comment
         case CONSTANTS.ADD_COMMENT: {
-            if (action.result === "success") {
+            if (typeof(action.result) === "object") {
                 Swal.fire({
                     type: 'success',
                     title: 'Pose review success',
                     showConfirmButton: false,
                     timer: 1000
                 })
+                state.productDetail = action.result;
+                return { ...state };
             }
             Swal.fire({
                 type: 'error',
                 title: action.result,
                 showConfirmButton: true,
                 // timer: 1000
-            })
-            return { ...state };
+            });
+            break;
+            
         }
         //login
         case CONSTANTS.LOGIN: {
@@ -280,6 +284,7 @@ const rootReducer = (state = initialState, action) => {
             state.userInfor = action.result;
             return { ...state };
         }
+        
         // case CONSTANTS.GET_PRODUCT_DATA:
         //     {
         //         state.productData = action.productData;
@@ -288,6 +293,11 @@ const rootReducer = (state = initialState, action) => {
         case CONSTANTS.GET_LISTNEWPRODUCT:
             {
                 state.listNewProduct = action.listProduct;
+                return { ...state };
+            }
+        case CONSTANTS.GET_LISTPRODUCT_AD:
+            {
+                state.listHighRate = action.listProduct;
                 return { ...state };
             }
         case CONSTANTS.GET_LISTDISCOUNTPRODUCT:

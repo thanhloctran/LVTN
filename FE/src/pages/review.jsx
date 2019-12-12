@@ -123,7 +123,6 @@ class Review extends Component {
                                 <p style={{ fontSize: "20px", color: "#504F5A" }}>Rating &nbsp;
                                 <span>
                                         {function () {
-                                            //let danhGia = this.state.item.danhGia;
                                             let row = [];
                                             for (let i = 0; i < 4; i++) {
                                                 row.push(<i key={i} className="fas fa-star" style={{ color: "#F1C40F" }}></i>)

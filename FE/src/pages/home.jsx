@@ -9,6 +9,7 @@ import {
     getListNewProductAction,
     getListDiscountProductAction,
     getListProductByTypeAction,
+    getListProductAction
 } from './../redux/actions/Data';
 import Item from '../components/Item/Item';
 import BackToTop from '../components/ProtectedRoute/BackToTop';
@@ -22,6 +23,7 @@ class Home extends Component {
         this.props.getListNewProduct();
         this.props.getListDiscountProduct();
         this.props.getListProductByType("LSP02");
+        this.props.getListProductAD("-3");
     }
     changeType(maLoai, image) {
         this.props.getListProductByType(maLoai);
@@ -249,11 +251,11 @@ class Home extends Component {
                             <img className="wow fadeInDown" alt="#" src="./img/1.png" style={{ width: "100%", height: "50%", marginTop: 10 }} />
 
                         </div>
-                        {this.props.listDiscountProduct.map(item => {
+                        {this.props.listHighRate.map(item => {
                             return <Item key={item.maSP} item={item}   /*reducesoLuongTon={this.reducesoLuongTon}*/ />;
                         })}
                     </div>
-                    <p className="text-view wow flash"  data-wow-duration="2s" data-wow-iteration="infinite" onClick={() => { this.props.history.push("/search/?category=Discount") }}>View All</p>
+                    <p className="text-view wow flash"  data-wow-duration="2s" data-wow-iteration="infinite" onClick={() => { this.props.history.push("/search/?category=HighRate") }}>View All</p>
 
                 </div>
                  {/* list product bestsell */}
@@ -264,7 +266,7 @@ class Home extends Component {
                             return <Item key={x.maSP} item={x} />;
                         })}
                     </Slider>
-                    <p className="text-view wow flash" data-wow-duration="2s" data-wow-iteration="infinite">View All</p>
+                    <p className="text-view wow flash" data-wow-duration="2s" data-wow-iteration="infinite" onClick={() => { this.props.history.push("/search/?category=Bestseller") }}>View All</p>
                 </div>
                 {/* list product by type */}
                 <div className="home-container d-flex justify-content-around">
@@ -278,7 +280,7 @@ class Home extends Component {
                     {!this.props.listProductType.length ?
                         <CircularProgress className="circular" /> :
                         <div className="listhome-content">
-                            <div style={{ height: 420 }}>
+                            <div style={{ height: 420 , display:"none"}}>
                                 <img alt="#" src={this.state.listHead} style={{ width: "100%" }} />
                             </div>
                             {this.props.listProductType.map(item => {
@@ -299,7 +301,8 @@ const mapStateToProps = (state) => {
     return {
         listNewProduct: state.rootReducer.listNewProduct,
         listDiscountProduct: state.rootReducer.listDiscountProduct,
-        listProductType: state.rootReducer.listProductType
+        listProductType: state.rootReducer.listProductType,
+        listHighRate: state.rootReducer.listHighRate
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -312,7 +315,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         getListProductByType: (maLoai) => {
             dispatch(getListProductByTypeAction(maLoai))
-        }
+        },
+        getListProductAD: (trangThai) => {
+            dispatch(getListProductAction(trangThai))
+        },
     }
 }
 

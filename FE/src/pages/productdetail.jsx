@@ -341,4 +341,4 @@ const mapDispatchToProps = (dispatch) => {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)
-//export default ProductDetail
+// export default ProductDetail

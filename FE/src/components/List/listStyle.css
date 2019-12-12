@@ -28,3 +28,10 @@
     /* height: 130px; */
     padding:  0px !important;
   }
+  .ant-table-thead > tr > th .anticon-filter, .ant-table-thead > tr > th .ant-table-filter-icon{
+    color: orangered !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    /* top: -4px !important; */
+    right: 13px !important;
+  }

@@ -14,6 +14,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {
   setCheckedOutItems,
   deleteCartItem,
+  clearCartAction
 } from "../../redux/actions/Data";
 import Swal from 'sweetalert2'
 
@@ -135,8 +136,7 @@ class ConnectedOrder extends Component {
             }).then((result) => {
 
               if (result.value) {
-                this.props.dispatch(setCheckedOutItems([]));
-                // this.props.dispatch(clearCartAction());
+                this.props.dispatch(clearCartAction());
                 Swal.fire(
                   'Deleted!',
                   'Your cart has been deleted.',

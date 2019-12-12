@@ -35,7 +35,9 @@ class Account extends React.Component {
   };
 
   componentDidMount() {
-    if(typeof(this.props.match.params.id)==="undefined"){
+    console.log(this.props.match.params.id);
+    
+    if(typeof(this.props.match.params.id)==="undefined" && this.props.match.params.id!==""){
       let  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
       this.setState({
         ...this.state,
@@ -69,7 +71,7 @@ class Account extends React.Component {
           'maND': this.state.userInfor.maND
         }
         // console.log('Received values of form: ', fieldsValue);
-        if (this.props.match.params.id) {
+        if (this.props.match.params.id!=="null") {
           this.props.updateAccountInfor(fieldsValue);
         }
         else {

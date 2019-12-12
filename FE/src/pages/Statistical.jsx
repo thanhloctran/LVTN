@@ -20,12 +20,13 @@ import moment from 'moment';
 
 import {
   getOrderYearAction,
-  statisticAction
+  statisticAction,
+  getInvoiceYearAction
 } from './../redux/actions/AdminData';
 import { ExportCSV } from '../components/ProtectedRoute/ExportCSV';
 import { CircularProgress } from '@material-ui/core';
 
-const { RangePicker } = DatePicker;
+const { RangePicker , MonthPicker} = DatePicker;
 const dateFormat = 'MM-DD-YYYY';
 class Statistical extends Component {
 
@@ -33,6 +34,8 @@ class Statistical extends Component {
     listItem: [],
     data : [],
     listOrderByYear:[],
+    listInvoiceYear:[]
+    
   }
   columnInvoice = [
     {
@@ -99,20 +102,30 @@ class Statistical extends Component {
     const startOfMonth = moment().startOf('month').format('MM-DD-YYYY HH:mm:ss');
     const endOfMonth = moment().endOf('month').format('MM-DD-YYYY HH:mm:ss');
     this.props.statistic(startOfMonth, endOfMonth);
-    this.props.getOrderYear();
-    if(typeof(this.props.statisticData.thongKeBanHang)!=="undefined"){
-      this.getProfit();
-    }
+    this.props.getOrderYear( moment().year());
+    this.props.getInvoiceYear(moment().year());
+    // if(typeof(this.props.statisticData.thongKeBanHang)!=="undefined"){
+    //   // this.getProfit();
+    // }
    
   }
   static getDerivedStateFromProps(nextProps, prevState) {
     return {
-      ...prevState, item: nextProps.statisticData,listOrderByYear :nextProps.listOrderByYear
+      ...prevState, 
+      item: nextProps.statisticData,
+      listOrderByYear :nextProps.listOrderByYear, 
+      listInvoiceYear:nextProps.listInvoiceYear
     }
   }
 
-  onChange = (date, dateStrings) => {
+  onChangeRange = (date, dateStrings) => {
     this.props.statistic(dateStrings[0], dateStrings[1]);
+  }
+  onChangeYear = (date, dateStrings) => {
+  //  console.log(date, dateStrings);
+    
+   this.props.getOrderYear(dateStrings);
+   this.props.getInvoiceYear(dateStrings);
   }
   
   render() {
@@ -121,18 +134,17 @@ class Statistical extends Component {
     }
     const { DataView } = DataSet;
     let data = [];
-    for(let i =0; i< this.state.listOrderByYear.length; i++){
-      // let month=(i+1).toString();
-      let col= {
-        State: this.state.listOrderByYear[i].thang.toString(),
-        "Revenue":  this.state.listOrderByYear[i].tongDoanhThu,
-        "Cost": this.props.statisticData.thongKeNhapHang.tongTien*i,
-      }
-      data.push(col);
-    }
+     for (let i = 1; i <= 12; i++) {
+                let col = {
+                    State: (i).toString(),
+                    "Revenue":  this.state.listOrderByYear[i-1].tongTien,
+                    "Invoice":  this.state.listInvoiceYear[i-1].tongTien,
+                }
+                data.push(col);
+        }
     const types = [
       "Revenue",
-      "Cost",
+      "Invoice",
     ];
     const dv = new DataView();
     dv.source(data)
@@ -165,20 +177,20 @@ class Statistical extends Component {
     };
     const cols = {
       population: {
-        tickInterval: 10000
+        tickInterval: 5000
       }
     };
     return (
       <div style={{ padding: 10 }}>
-        <div className="online-shop-title"> STATISTICAL &nbsp; <RangePicker
+        <div className="online-shop-title"> STATISTICAL &nbsp; <RangePicker 
           ranges={{
             Today: [moment(), moment()],
             'This Month': [moment().startOf('month'), moment().endOf('month')],
           }}
-          onChange={this.onChange}
+          onChange={this.onChangeRange}
           format={dateFormat}
           defaultValue={[moment().startOf('month'), moment().endOf('month')]}
-        /> </div>
+        /> <MonthPicker onChange={this.onChangeYear} placeholder="Select Year" format="YYYY"  /></div>
         <div>
           <Chart
             height={500}
@@ -287,7 +299,8 @@ class Statistical extends Component {
 const mapStateToProps = (state) => {
   return {
     statisticData: state.rootReducerAD.statisticData,
-    listOrderByYear: state.rootReducerAD.listOrderByYear
+    listOrderByYear: state.rootReducerAD.listOrderByYear,
+    listInvoiceYear: state.rootReducerAD.listInvoiceYear
   }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -295,8 +308,11 @@ const mapDispatchToProps = (dispatch) => {
     statistic: (ngayBD, ngayKT) => {
       dispatch(statisticAction(ngayBD, ngayKT))
     },
-    getOrderYear:()=>{
-      dispatch(getOrderYearAction())
+    getOrderYear:(year)=>{
+      dispatch(getOrderYearAction(year))
+    },
+    getInvoiceYear:(year)=>{
+      dispatch(getInvoiceYearAction(year))
     }
 
   }

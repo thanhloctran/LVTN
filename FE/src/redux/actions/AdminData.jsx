@@ -155,10 +155,9 @@ export const getListCategoryAction = () => {
 }
 //GET LIST INVOICE //PHIEU NHAP
 export const getListInvoiceAction = () => {
+  const  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
+  const token = retrievedObject.accessToken;
   return dispatch => {
-    
-    const  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
-    const token = retrievedObject.accessToken;
     axios({
       url: `${domain}QuanLyNhapHang/LayDanhSachPhieuNhap`,
       method: 'GET',
@@ -260,13 +259,15 @@ export const statisticAction = (ngayBD, ngayKT) => {
 }
 
 //GET THONG KE BAN RA THEO NAM
-export const getOrderYearAction = () => {
+export const getOrderYearAction = (year) => {
   // console.log(ngayBD, ngayKT);
   return dispatch => {
     axios({
-      url: `${domain}ThongKeBanHang/ThongKeBanHang`,
+      url: `${domain}ThongKeBanHang/ThongKeBanHang?nam=${year}`,
       method: 'GET'
     }).then((result) => {
+   //  console.log(result.data);
+      
       dispatch({
         type: CONSTANTS.GETORDERYEAR,
         result : result.data
@@ -278,7 +279,24 @@ export const getOrderYearAction = () => {
   }
 }
 
+//GET THONG KE BAN RA THEO NAM
+export const getInvoiceYearAction = (year) => {
+  return dispatch => {
+    axios({
+      url: `${domain}ThongKeBanHang/ThongKeNhapHang?nam=${year}`,
+      method: 'GET'
+    }).then((result) => {
+     // console.log(result.data);
+      dispatch({
+        type: CONSTANTS.GETINVOICEYEAR,
+        result : result.data
+      })
+    }).catch(error => {
+      console.log(error.data);
 
+    })
+  }
+}
 /*GET DEAIL*****************************************************/
 
 
@@ -597,7 +615,6 @@ export const addProviderAction = (item) => {
     })
   }).catch(error => {
     console.log(error);
-
   })
 }
 }
@@ -609,7 +626,6 @@ export const deleteReviewAction = (maBL) => {
     url: `${domain}BinhLuan/XoaBinhLuan?MaBL=${maBL}`,
     method: 'DELETE',
   }).then(result => {
-    console.log(result.data);
     dispatch({
       type: CONSTANTS.DELETE_REVIEW,
       result : result.data
@@ -621,13 +637,20 @@ export const deleteReviewAction = (maBL) => {
 }
 }
 //DELETE USER 
-export const deleteUserAction = (maND) => {
+export const deleteUserAction = (maND, loaiND) => {
+  const  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
+  const token = retrievedObject.accessToken;
   return dispatch => {
   axios({
-    url: `${domain}QuanLyNguoiDung/XoaNguoiDung?maND=${maND}`,
+    url: `${domain}QuanLyNguoiDung/XoaNguoiDung?maND=${maND}&loaiND=${loaiND}`,
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
   }).then(result => {
-    console.log(result.data);
+    //console.log(result.data);
     dispatch({
       type: CONSTANTS.DELETE_USER,
       result : result.data

@@ -27,11 +27,9 @@ class payment extends Component {
   state = {
     detailUser: {},
     listProduct: [],
-    // visible: false
   }
   cartInfor = {}
-  //handel when click pay pal button
-  handleSubmitPaypal=()=>{
+  checkEmty=()=>{
     if (this.props.checkedOutItems.length === 0) {
       Swal.fire({
         type: 'error',
@@ -46,18 +44,20 @@ class payment extends Component {
           this.props.history.push("/search");
         }
       })
-      return;
+      return false;
     }
+    return true;
 
+  }
+  //handel when click pay pal button
+  handleSubmitPaypal=()=>{
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let idKH = 0;
         if (typeof (this.props.userInfor.maND) !== "undefined") {
           idKH = this.props.userInfor.maND
         }
-        const fieldsValue = {
-          ...values,
-        }
+        const fieldsValue = {...values, }
         this.cartInfor = {
           dsSanPham: this.props.checkedOutItems,
           tenNguoiNhan: fieldsValue.tenNguoiNhan,
@@ -66,41 +66,51 @@ class payment extends Component {
           maKH: idKH,
           maNV: 0,
           trangThai: 0,
+          tinhTrang:1,
           diaChiNhan: fieldsValue.diaChiNhan,
           soDT: fieldsValue.soDT,
-          email: fieldsValue.email
+          email: fieldsValue.email,
+          dsInMail:"",
+          tongTien: (this.props.totalPrice).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })
+
         }
-        console.log(this.cartInfor);
+        let dsach= "";
+        this.props.checkedOutItems.map((item)=>{
+        dsach = dsach + `<div style=" width: 100%;display:flex ;margin: 0">
+          <p style="width: 45%; text-align: left; border-bottom: 1px solid lightgray; padding: 9px 0px; font-size:14px" >${item.tenSP}</p> 
+          <p style="text-align: left ; border-bottom: 1px solid lightgray; width: 18%;  padding: 9px 0px;  font-size:14px">
+          ${(item.donGia).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",})
+          }
+          </p>
+          <p style="text-align: left ; border-bottom: 1px solid lightgray; width: 12%;  padding: 9px 0px;  font-size:14px">
+          ${item.soLuong}</p>
+          <p style="text-align: right; border-bottom: 1px solid lightgray; width: 25%;  padding: 9px 0px;  font-size:14px">
+          ${(item.donGia * item.soLuong).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD"})
+          }
+          </p>
+          </div> `
+        });
+    this.cartInfor.dsInMail= dsach;
         setTimeout(() => {
-          this.props.addOrder(this.cartInfor)
+          this.props.addOrder(this.cartInfor);
         }, 1000)
-
-        this.props.clearCart();
-        this.props.history.push("/");
-
       }
     });
   }
+	
   //submit form when click check out
   handleSubmit = e => {
     e.preventDefault();
-    if (this.props.checkedOutItems.length === 0) {
-      Swal.fire({
-        type: 'error',
-        title: 'Oops...',
-        text: "You don't have any item in Cart! Go shopping",
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Start Shoping!'
-      }).then((result) => {
-        if (result.value) {
-          this.props.history.push("/search");
-        }
-      })
-      return;
+    if(!this.checkEmty()){
+      return ;
     }
-
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let idKH = 0;
@@ -118,39 +128,54 @@ class payment extends Component {
           maKH: idKH,
           maNV: 0,
           trangThai: 0,
+          tinhTrang:0,
           diaChiNhan: fieldsValue.diaChiNhan,
           soDT: fieldsValue.soDT,
-          email: fieldsValue.email
-        }
-        console.log(this.cartInfor);
-        setTimeout(() => {
-          this.props.addOrder(this.cartInfor)
-        }, 1000)
+          email: fieldsValue.email,
+          dsInMail:"",
+          tongTien: (this.props.totalPrice).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+            // maximumFractionDigits: 4
+          })
 
-        this.props.clearCart();
-        this.props.history.push("/");
+        }
+        let dsach= "";
+        this.props.checkedOutItems.map((item)=>{
+        
+        dsach = dsach + `<div style=" width: 100%;display:flex ;margin: 0">
+          <p style="width: 45%; text-align: left; border-bottom: 1px solid lightgray; padding: 9px 0px; font-size:14px" >${item.tenSP}</p> 
+          <p style="text-align: left ; border-bottom: 1px solid lightgray; width: 18%;  padding: 9px 0px;  font-size:14px">
+          ${(item.donGia).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",})
+          }
+          </p>
+          <p style="text-align: left ; border-bottom: 1px solid lightgray; width: 12%;  padding: 9px 0px;  font-size:14px">
+          ${item.soLuong}</p>
+          <p style="text-align: right; border-bottom: 1px solid lightgray; width: 25%;  padding: 9px 0px;  font-size:14px">
+          ${(item.donGia * item.soLuong).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD"})
+          }
+          </p>
+          </div> `
+    });
+    this.cartInfor.dsInMail= dsach;
+        setTimeout(() => {
+          this.props.addOrder(this.cartInfor);
+        }, 1000)
+       
+
 
       }
     });
   }
   //create Order item in paypal button
   createOrder(data, actions) {
-    if(!this.props.totalPrice){
-      Swal.fire({
-        type: 'error',
-        title: 'Oops...',
-        text: "You don't have any item in Cart! Go shopping",
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Start Shoping!'
-      }).then((result) => {
-        if (result.value) {
-          this.props.history.push("/search");
-        }
-      })
-      return;
-    }
+   if(!this.checkEmty()){
+     return;
+   }
     let listProduct = [];
     this.props.checkedOutItems.map((item, index) => {
       let productItem = {
@@ -183,12 +208,6 @@ class payment extends Component {
   }
   render() {
 
-    // const onSuccess = payment => console.log("Successful payment!", payment);
-
-    // const onError = error =>
-    //   console.log("Erroneous payment OR failed to load script!", error);
-
-    // const onCancel = data => console.log("Cancelled payment!", data);
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="payment-container">
@@ -212,9 +231,19 @@ class payment extends Component {
                 {this.props.checkedOutItems.map((item, index) => {
                   return <TableRow key={index}>
                     <TableCell style={{ color: "#2EA5D4" }}>{item.tenSP}</TableCell>
-                    <TableCell align="right">$ {item.donGia}</TableCell>
+                    <TableCell align="right">{(item.donGia).toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                      // maximumFractionDigits: 4
+                    })
+                    }</TableCell>
                     <TableCell align="right">{item.soLuong}</TableCell>
-                    <TableCell align="right">$ {item.soLuong * item.donGia}</TableCell>
+                    <TableCell align="right">{(item.soLuong * item.donGia).toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                      // maximumFractionDigits: 4
+                    })
+                    }</TableCell>
                   </TableRow>
 
                 })}
@@ -301,26 +330,23 @@ class payment extends Component {
 
           </div>
           <div className="col-md-6" >
-            <PayPalButton
-              createOrder={(data, actions) => this.createOrder(data, actions)}
-              onApprove={(data, actions) => this.onApprove(data, actions)}
-              onSuccess={(details, data) => {
-                this.handleSubmitPaypal();
-                // return fetch("/paypal-transaction-complete", {
-                //   method: "post",
-                //   body: JSON.stringify({
-                //     orderID: data.orderID
-                //   })
-                // });
-              }}
-
-            />
-            <hr />
+          
             <Form.Item >
                 <Button className="button-checkout"  type="danger" htmlType="submit">
                 Payment on Delivery
           </Button>
               </Form.Item>
+              <hr />
+            <PayPalButton
+              createOrder={(data, actions) => this.createOrder(data, actions)}
+              onApprove={(data, actions) => this.onApprove(data, actions)}
+              onSuccess={(details, data) => {
+                this.handleSubmitPaypal();
+              }}
+              
+
+            />
+            
 
           </div>
           </div>

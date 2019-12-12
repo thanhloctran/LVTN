@@ -21,21 +21,12 @@ import {
   Form,
   Input,
   InputNumber,
-  // Tooltip,
-  // Icon,
-  // Cascader,
-  // AutoComplete,
-  // Select,
   Row,
   Col,
   Checkbox,
   Button,
   DatePicker
 } from 'antd';
-
-// const { Option } = Select;
-// const AutoCompleteOption = AutoComplete.Option;
-
 
 class RegistrationForm extends React.Component {
   state = {
@@ -54,10 +45,15 @@ class RegistrationForm extends React.Component {
         }
         console.log('Received values of form: ', fieldsValue);
         this.props.registerAccount(fieldsValue);
-        // setTimeout(() => {
-        //   alert
-        // }, 2000);
+        setTimeout(()=>{
+          if(this.props.result==="success"){
+            this.props.history.push("/login")
+          }
+        },1000)
       }
+      console.log(this.props.result);
+      
+      
     });
   };
 
@@ -83,25 +79,12 @@ class RegistrationForm extends React.Component {
     callback();
   };
 
-  // handleWebsiteChange = value => {
-  //   let autoCompleteResult;
-  //   if (!value) {
-  //     autoCompleteResult = [];
-  //   } else {
-  //     autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-  //   }
-  //   this.setState({ autoCompleteResult });
-  // };
-
   render() {
     const { getFieldDecorator } = this.props.form;
-    // const { autoCompleteResult } = this.state;
-
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
     };
-
     const tailFormItemLayout = {
       wrapperCol: {
         xs: {
@@ -232,6 +215,12 @@ class RegistrationForm extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    result: state.rootReducerAD.result
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     registerAccount: (user) => {
@@ -241,4 +230,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default compose(connect(null, mapDispatchToProps)(Form.create()(RegistrationForm))) ;
+export default compose(connect(mapStateToProps, mapDispatchToProps)(Form.create()(RegistrationForm))) ;

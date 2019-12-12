@@ -6,77 +6,49 @@ import "./Details.css";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { addItemInCartAction, getDetailProductAction, getListCommentAction, addCommentAction, updateCartItemQnt } from "../../redux/actions/Data";
-import Api from "../../Api";
+//import Api from "../../Api";
 import Item from "../Item/Item";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Rate, Form, Input, Button, InputNumber } from 'antd';
 import BackToTop from "../ProtectedRoute/BackToTop";
+import moment from "moment";
 const { TextArea } = Input;
 // import Paper from '@material-ui/core/Paper';
 // import Swal from 'sweetalert2'
 
-
-// HET XAI ROI HET XAI ROI HET XAI ROI
 var Remarkable = require("remarkable");
 
-class ConnectedDetails extends Component {
+class ConnectedDetailsLoc extends Component {
   isCompMounted = false;
   state = {
     relatedItems: [],
     soLuong: "1",
     item: {},
+    itemCopy:{},
     unfinishedTasks: 0,
     comment: { //comment
       maSP: this.props.match.params.id,
       noiDung: "",
+      ngayTao: moment().format('MM/DD/YYYY HH:mm:ss'),
       danhGia: 3,
       maKH: this.props.user.maND
     }
 
   };
 
-  async fetchProductUsingID(id) {
-    this.setState(ps => ({ unfinishedTasks: ps.unfinishedTasks + 1 }));
-
-    // First, let's get the item, details of which we want to show.
-    let item = await Api.getItemUsingID(id);
-    if (item === "null") {
-      return <div>NO VALUE</div>
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps.item);
+    
+    return {
+      ...prevState, item: nextProps.item
     }
-    let relatedItems = await Api.searchItems({
-      category: item.maLoaiSP,
-      page: "1",
-      itemsPerPage: "5"
-    });
-
-    if (this.isCompMounted) {
-      this.setState(ps => {
-        return {
-          item,
-          unfinishedTasks: ps.unfinishedTasks - 1,
-          relatedItems: relatedItems.data.filter(x => x.maSP !== item.maSP)
-        };
-      });
-    }
-  }
-
-  componentWillReceiveProps(nextProps, prevSate) {
-    this.fetchProductUsingID(nextProps.match.params.id);
-    if (this.state.item.giamGia) {
-      this.setState({
-        item: {
-          ...this.state.item,
-          donGia: (this.state.item.donGia - (this.state.item.donGia * this.state.item.giamGia / 100))
-        }
-      })
-    }
-
   }
 
   componentDidMount() {
     this.isCompMounted = true;
+    this.props.getDetailProduct(this.props.match.params.id);
     this.props.getListComment(this.props.match.params.id);
   }
 
@@ -96,10 +68,6 @@ class ConnectedDetails extends Component {
 
   handleSubmit(values) {
     this.props.addComment(values);
-    setTimeout(()=>{
-      window.location.reload();
-    },1000)
-
   };
   onChangeNumber = (value) => {
     this.setState({
@@ -116,12 +84,8 @@ class ConnectedDetails extends Component {
     )
   }
   render() {
-    if (this.state.unfinishedTasks !== 0) {
+    if (this.state.unfinishedTasks !== 0 || !this.state.item || !this.state.item.binhLuan) {
       return <CircularProgress className="circular" />;
-    }
-
-    if (!this.state.item) {
-      return null;
     }
 
     // let settings = {
@@ -141,9 +105,9 @@ class ConnectedDetails extends Component {
       autoplay: true,
       focusOnSelect: false,
       slidesToShow:
-        this.state.relatedItems.length < 4 ? this.state.relatedItems.length : 4,
+        5 < 4 ? 5: 4,
       slidesToScroll:
-        this.state.relatedItems.length < 4 ? this.state.relatedItems.length : 3
+        5 < 4 ? 5 : 3
     };
     function isEmpty(obj) {
       for (var key in obj) {
@@ -156,7 +120,7 @@ class ConnectedDetails extends Component {
 
     return (
       <div className="details">
-        {console.log(this.state.item)}
+        {/* {console.log(this.state.item)} */}
         <div style={{ display: "flex" }}>
           <div className="details-image">
             {/* <Slider {...settings}>
@@ -195,19 +159,26 @@ class ConnectedDetails extends Component {
               </span>
               )}
             </div>
+            <div style={{width: "28%",}}>
+              <p >
+              <span  style={{color:"grey", fontSize:30}}>Rate: </span>
+              <span style={{color:"tomato", fontSize:30}}> {this.state.item.luotBC} <i className="fas fa-star"></i></span>
+              </p>
+              
+            </div>
             {this.state.item.giamGia ? (
 
-              <div className="details-price" >
+              <div className="details-price " >
 
                 <p style={{ fontSize: 15 }}>Old Price:
                 <span style={{ textDecoration: "line-through", color: "gray", fontSize: 15 }}>
-                    {this.state.item.donGia.toLocaleString("en-US", {
+                    {this.state.item.giaGoc.toLocaleString("en-US", {
                       style: "currency",
                       currency: "USD"
                     })}</span>  </p>
                 <p> New Price:
                   <span style={{ fontSize: 27 }}>
-                    {(this.state.item.donGia - (this.state.item.donGia * this.state.item.giamGia / 100)).toLocaleString("en-US", {
+                    {(this.state.item.donGia).toLocaleString("en-US", {
                       style: "currency",
                       currency: "USD",
                       maximumFractionDigits: 2
@@ -236,14 +207,16 @@ class ConnectedDetails extends Component {
                 let invertoryReduce = this.state.item.soLuongTon - 1;
                 // console.log(this.state.item);
                 this.setState({
-                  item: {
+                  itemCopy: {
                     ...this.state.item,
                     soLuong: parseInt(this.state.soLuong),
                     soLuongTon: invertoryReduce
                   }
                 })
                 setTimeout(() => {
-                  this.props.addItemInCart(this.state.item)
+                  this.props.addItemInCart(this.state.itemCopy);
+                  console.log(this.state.item);
+                  
                 }, 500)
 
               }}
@@ -252,13 +225,7 @@ class ConnectedDetails extends Component {
             </Button>
 
           </div>
-          <div style={{width: "28%", marginTop:"20px"}}>
-              <p >
-              <span  style={{color:"grey", fontSize:30}}>Rate: </span>
-              <span style={{color:"tomato", fontSize:30}}> {this.state.item.luotBC} <i className="fas fa-star"></i></span>
-              </p>
-              
-            </div>
+      
         </div>
 
         <div className="details-title">Product Description</div>
@@ -326,9 +293,9 @@ class ConnectedDetails extends Component {
         <p className="details-title">Product's  Review</p>
         <div className="detail-review" >
 
-          {this.props.listComment.length === 0 ? <div>No Review</div>
+          {!this.state.item.binhLuan|| this.state.item.binhLuan.length === 0  ? <div>No Review</div>
             :
-            this.props.listComment.map((item, index) => {
+            this.state.item.binhLuan.map((item, index) => {
               return (
                 <div style={{ marginBottom: 15 }} key={index}>
                   <p className="comment-account">#{item.binhLuan.taiKhoan}</p>
@@ -356,8 +323,7 @@ class ConnectedDetails extends Component {
         >
           Related Items
         </div>
-
-        {this.state.relatedItems.length === 0 ? (
+        {!this.state.item.spTuongTu? (
           <div
             style={{
               fontSize: 13,
@@ -373,8 +339,10 @@ class ConnectedDetails extends Component {
               style={{ maxWidth: 1105, height: 540, margin: "0 auto" }}
             >
               <Slider {...settingsRelatedItems}>
-                {this.state.relatedItems.map(x => {
-                  return <Item key={x.maSP} item={x} />;
+                {this.state.item.spTuongTu.map(x => {
+                  return <Item key={x.maSP} item={x} onClick={()=>{
+                    this.props.history.push("/detailas/" +x.maSP)
+                  }}/>;
                 })}
               </Slider>
             </div>
@@ -392,7 +360,7 @@ const mapStateToProps = (state) => {
     user: state.rootReducer.userInfor,
     item: state.rootReducer.productDetail,
     listComment: state.rootReducer.listComment,
-    result: state.rootReducer.result
+    // result: state.rootReducer.result
   };
 };
 
@@ -418,5 +386,5 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-let Details = withRouter(compose(connect(mapStateToProps, mapDispatchToProps)(Form.create()(ConnectedDetails))));
-export default Details;
+let DetailProduct = withRouter(compose(connect(mapStateToProps, mapDispatchToProps)(Form.create()(ConnectedDetailsLoc))));
+export default DetailProduct;

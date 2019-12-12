@@ -12,14 +12,23 @@ import {
 import DataSet from "@antv/data-set";
 import BackToTop from '../components/ProtectedRoute/BackToTop';
 import { CircularProgress } from '@material-ui/core';
+import ReviewList from '../components/List/ReviewList';
+import moment from 'moment';
 class Admin extends Component {
     state = {
         listOrderByYear: [],
+      //  listOrderByYear:[],
+    }
+    matchParams={
+        path: "/dashboard/admin/:status", 
+        url: "/dashboard/admin/0", 
+        isExact: true, 
+        params: {status:"0"}
     }
     componentDidMount() {
-        this.props.getListOrderAD("0");
+        this.props.getListOrderAD(0);
         this.props.getListReview();
-        this.props.getOrderYear();
+        this.props.getOrderYear(moment().year());
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -34,17 +43,25 @@ class Admin extends Component {
         }
         const { DataView } = DataSet;
         let data = [];
-        for (let i = 0; i < this.state.listOrderByYear.length; i++) {
+        for (let i = 0; i < 12; i++) {
             let col = {
-                State: this.state.listOrderByYear[i].thang.toString(),
-                "Order": this.state.listOrderByYear[i].tongDoanhThu,
+                State: i.toString(),
+                "Order": 0,
                 // "Invoice": this.props.listOrderByYear[i].tongDoanhThu,
             }
+            if(typeof(this.state.listOrderByYear[i])!=="undefined"){
+                col = {
+                    State: this.state.listOrderByYear[i].thang.toString(),
+                    "Order": this.state.listOrderByYear[i].tongTien,
+                    //"Invoice": this.props.listOrderByYear[i].tongDoanhThu,
+                }
+            }
+            
             data.push(col);
         }
         const types = [
             "Order",
-            // "Invoice",
+            //"Invoice",
         ];
         const dv = new DataView();
         dv.source(data)
@@ -77,7 +94,7 @@ class Admin extends Component {
         };
         const cols = {
             population: {
-                tickInterval: 10000
+                tickInterval: 5000
             }
         };
         const retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
@@ -86,25 +103,26 @@ class Admin extends Component {
                 <p style={{ fontSize: "32px", color: "#3D3D3D" }}>Hello there, {retrievedObject.taiKhoan}</p>
                 <p style={{ color: "#504F5A" }}>Here is some information we gathered about your store</p>
                 <div>
-                    {/* <div className=" d-flex justify-content-between" style={{ flexWrap: "wrap" }}>
-                        <div className="admin-box" >
-                            <span className="admin-box-title">Sales</span>
-                            <span className="admin-box-number">$62.57</span>
-                            <i className="fas fa-chart-line" className="admin-box-icon"/>
-                        </div>
-                        <div className="admin-box"  >
-                            <span className="admin-box-title">Order</span>
-                            <span className="admin-box-number">5</span>
-                            <i  className="fas fa-file-invoice-dollar"className="admin-box-icon" />
-                        </div>
-                        <div className="admin-box-right">
-                            <span><b>37 Order </b>ready to fullfill</span> <i className="fas fa-angle-right" ></i>
+                    <div className=" d-flex justify-content-between" style={{ flexWrap: "wrap" }}>
+                    <div className="admin-box-right">
+                            <span><b>{this.props.listDataAD.length} Order </b>ready to fullfill</span> <i className="fas fa-angle-right" ></i>
                             <hr />
                             <span><b>37 Payment</b> to capture </span> <i className="fas fa-angle-right" ></i>
                             <hr />
                             <span>Products out of stock </span><i className="fas fa-angle-right"></i>
                         </div>
-                    </div> */}
+                        <div className="admin-box" >
+                            <span className="admin-box-title">Sales</span>
+                            <span className="admin-box-number">$62.57</span>
+                            {/* <i className="fas fa-chart-line" className="admin-box-icon"/> */}
+                        </div>
+                        <div className="admin-box"  >
+                            <span className="admin-box-title">Order</span>
+        <span className="admin-box-number">{this.props.listDataAD.length}</span>
+                            {/* <i  className="fas fa-file-invoice-dollar"className="admin-box-icon" /> */}
+                        </div>
+                        
+                    </div>
 
                     <Chart
                         height={500}
@@ -154,35 +172,19 @@ class Admin extends Component {
                             ]}
                         />
                     </Chart>
-                    {/* <ListDataAdmin history={this.props.history}  listDataAD = {this.props.listDataAD} /> */}
-                    <ListOrderAD history={this.props.history} ></ListOrderAD>
+                    {console.log(this.props.match)
+                    }
+                    <ListOrderAD history={this.props.history}
+                     match={this.matchParams}
+                     />
+
+                     {/* </ListOrderAD> */}
                     <br />
                     <div className="admin-review">
-                        <p className="admin-box-title">New Review</p>
-                        <hr />
-                        {this.props.listReview.map((item, index) => {
-                            return (
-                                <div key={index} onClick={() => {
-                                    this.props.history.push(`reviews/${item.maBL}`)
-                                }}>
-                                    <span><i style={{ fontSize: 22, color: "#13BEC0" }}>#{item.taiKhoan}</i> rating <span>
-                                        {function () {
-                                            let row = [];
-                                            for (let i = 0; i < item.danhGia; i++) {
-                                                row.push(<i key={i} className="fas fa-star" style={{ color: "#F1C40F" }}></i>)
-                                            }
-                                            return row;
-                                        }()}
-                                    </span>  &nbsp;
-                        <span style={{ color: "orange", float: "right" }}>[{item.tenSP}]</span>
-                                    </span>
-                                    <p>Decription: {item.noiDung}</p>
-                                    <hr />
-                                </div>
-                            )
-                        })}
+                       
+                        <ReviewList history={this.props.history} />
 
-                        <div onClick={() => { this.props.history.push("/dashboard/listReview") }} style={{ fontSize: 22, color: "#EF5832" }}>See all Review</div>
+                       
                     </div>
                 </div>
 
@@ -193,7 +195,7 @@ class Admin extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        listDataAD: state.rootReducerAD.listDataAD,
+        listDataAD: state.rootReducerAD.listOrder,
         listReview: state.rootReducerAD.listReview,
         listOrderByYear: state.rootReducerAD.listOrderByYear
     }
@@ -201,14 +203,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getListOrderAD: () => {
-            dispatch(getListOrderAction())
+        getListOrderAD: (trangThai) => {
+            dispatch(getListOrderAction(trangThai))
         },
         getListReview: () => {
             dispatch(getListReviewAction())
         },
-        getOrderYear: () => {
-            dispatch(getOrderYearAction())
+        getOrderYear: (year) => {
+            dispatch(getOrderYearAction(year))
         }
     }
 }

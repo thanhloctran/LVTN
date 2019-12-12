@@ -51,7 +51,7 @@ class Footer extends Component {
             <li><a href="/twitter.com" data-original-title="Twitter">
               <i className="fab fa-twitter" />
             </a></li>
-            <li ><a href="/facebook.com" data-original-title="Facebook">
+            <li ><a href="https://www.facebook.com/analytics/739055393195866/overview?since=1575514800000&until=1575601200000&range_type=LAST_24_HOURS&__aref_src=new_entity_selector&force_desktop=1&user_id=100005701865130" data-original-title="Facebook">
               <i className="fab fa-facebook-f" />
             </a></li>
             <li><a href="/google.com" data-original-title="Google +">

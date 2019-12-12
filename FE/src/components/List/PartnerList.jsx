@@ -83,7 +83,8 @@ class PartnerList extends Component {
             <Popconfirm title="Sure to delete?" 
             // onConfirm={() => this.props.deleteUser(record.maND)}
             >
-              <span>Delete</span>
+              <div style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
+                            Delete </div>
             </Popconfirm>
             
           </span>

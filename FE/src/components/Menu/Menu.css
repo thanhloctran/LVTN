@@ -44,3 +44,7 @@ color: white;
 		/* padding-left: 10px; */
 		display: block
 }
+.ant-menu.ant-menu-dark .ant-menu-item-selected{
+	background-color: 
+	#001529 !important;
+}
