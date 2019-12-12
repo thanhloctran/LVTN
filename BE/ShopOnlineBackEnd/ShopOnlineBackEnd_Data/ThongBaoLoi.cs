@@ -8,7 +8,7 @@ namespace ShopOnlineBackEnd_Data
 {
     public class ThongBaoLoi : ControllerBase
     {
-        public static readonly int Loi200 = 200;
+        public static readonly int PhanHoi200 = 200;
         public static readonly int Loi404 = 404;
         public static readonly int Loi405 = 405;
         public static readonly int Loi403 = 403;

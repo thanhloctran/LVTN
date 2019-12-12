@@ -131,18 +131,6 @@ namespace ShopOnlineBackEnd_Data.Repositories
                             await connection.ExecuteAsync(insertCTPN, p3, transaction);
                             
                         }
-                        var p5 = new DynamicParameters();
-                        p5.Add("MaSP", item.MaSP);
-
-                        var querySoLuong = @"SELECT COUNT(MaSeri) FROM SANPHAM WHERE MaSP = @MaSP AND TrangThai=1";
-                        int? soLuongTon = await connection.ExecuteScalarAsync<int>(querySoLuong, p5, transaction);
-
-                        var p4 = new DynamicParameters();
-                        p4.Add("@SoluongTon", soLuongTon);
-                        p4.Add("MaSP", item.MaSP);
-                        var updateNumberProduct = @"UPDATE dbo.SANPHAM_LOAI
-                                        SET SoLuongTon= @SoluongTon, TrangThai = 1 WHERE MaSP = @MaSP";
-                        await connection.ExecuteAsync(updateNumberProduct, p4, transaction);
                     }
                     transaction.Commit();
                     return "success";

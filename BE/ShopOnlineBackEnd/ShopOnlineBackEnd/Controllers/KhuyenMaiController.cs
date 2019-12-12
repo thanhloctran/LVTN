@@ -34,10 +34,16 @@ namespace ShopOnlineBackEnd.Controllers
             List<SanPhamKM> result = await _khuyenMaiRepository.layDSSanPhamKMInsert();
             return Ok(result);
         }
-        [HttpGet("LayChiTietKhuyenMai")]
-        public async Task<IActionResult> ChiTietKhuyenMai(int MaKM)
+        //[HttpGet("LayChiTietKhuyenMai")]
+        //public async Task<IActionResult> ChiTietKhuyenMai(int MaKM)
+        //{
+        //    dynamic result = await _khuyenMaiRepository.chiTietKhuyenMai(MaKM);
+        //    return Ok(result);
+        //}
+        [HttpGet("LayThongTinChiTietKhuyenMai")]
+        public async Task<IActionResult> layThongTinKhuyenMai(int MaKM)
         {
-            dynamic result = await _khuyenMaiRepository.chiTietKhuyenMai(MaKM);
+            dynamic result = await _khuyenMaiRepository.layThongTinKhuyenMai(MaKM);
             return Ok(result);
         }
         [HttpPost("ThemKhuyenMai")]
@@ -63,11 +69,6 @@ namespace ShopOnlineBackEnd.Controllers
             return Ok(result);
         }
 
-        [HttpGet("LayThongTinChiTietKhuyenMai")]
-        public async Task<IActionResult> layThongTinKhuyenMai(int MaKM)
-        {
-            dynamic result = await _khuyenMaiRepository.layThongTinKhuyenMai(MaKM);
-            return Ok(result);
-        }
+      
     }
 }

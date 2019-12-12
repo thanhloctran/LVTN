@@ -24,9 +24,15 @@ namespace ShopOnlineBackEnd.Controllers
             return Ok(result);
         }
         [HttpGet("ThongKeBanHang")]
-        public async Task<ActionResult> thongKeBanHang()
+        public async Task<ActionResult> thongKeBanHang(string nam)
         {
-            dynamic result = await _thongKeBanHangRepository.thongKeDoanhThuTheoNam();
+            dynamic result = await _thongKeBanHangRepository.thongKeDoanhThuTheoNam(nam);
+            return Ok(result);
+        }
+        [HttpGet("ThongKeNhapHang")]
+        public async Task<ActionResult> ThongKeNhapHang(string nam)
+        {
+            dynamic result = await _thongKeBanHangRepository.thongKeNhapHangTheoNam(nam);
             return Ok(result);
         }
     }

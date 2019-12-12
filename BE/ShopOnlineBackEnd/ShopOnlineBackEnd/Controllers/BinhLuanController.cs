@@ -37,6 +37,12 @@ namespace ShopOnlineBackEnd.Controllers
             BinhLuan result = await _binhLuanRepository.chiTietBinhLuan(MaBL);
             return Ok(result);
         }
+        //[HttpGet("LayDanhSachBinhLuanTheoSanPham")]
+        //public async Task<ActionResult> LayDSBinhLuanSP(string maSP)
+        //{
+        //    List<DSBinhLuanMaSP> result = await _binhLuanRepository.layDSBinhLuanSP(maSP);
+        //    return Ok(result);
+        //}
         [HttpPost("ThemTraLoiBinhLuan")]
         public async Task<ActionResult> TraLoiBinhLuan(BinhLuanHoiDap binhLuan)
         {
@@ -63,12 +69,7 @@ namespace ShopOnlineBackEnd.Controllers
             dynamic result = await _binhLuanRepository.xoaBinhLuan(MaBL);
             return Ok(result);
         }
-        [HttpGet("LayDanhSachBinhLuanTheoSanPham")]
-        public async Task<ActionResult> LayDSBinhLuanSP(string maSP)
-        {
-            List<DSBinhLuanMaSP> result = await _binhLuanRepository.layDSBinhLuanSP(maSP);
-            return Ok(result);
-        }
+       
         [HttpDelete("XoaTraLoiBinhLuan")]
         public async Task<ActionResult> xoaTraLoiBinhLuan(string MaCauTraLoi)
         {

@@ -14,8 +14,11 @@ namespace ShopOnlineBackEnd_Data.Models.ViewModels
         public string MoTa { get; set; }
         public string MaNCC { get; set; }
         public string MaNSX { get; set; }
+        public int giamGia { get; set; }
+        public float luotBC { get; set; }
+        public float GiaGoc { get; set; }
 
-        public List<BinhLuanVM> binhLuan = new List<BinhLuanVM>();
+        public List<DSBinhLuanMaSP> binhLuan = new List<DSBinhLuanMaSP>();
         public List<SanPhamLoai> spTuongTu = new List<SanPhamLoai>();
     }
 

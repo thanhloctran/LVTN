@@ -13,7 +13,8 @@ namespace ShopOnlineBackEnd_Data.Repositories
     public interface IThongKeBanHangRepository
     {
         Task<dynamic> thongKeDoanhThu(string ngayBD, string ngayKT);
-        Task<dynamic> thongKeDoanhThuTheoNam();
+        Task<dynamic> thongKeDoanhThuTheoNam(string nam);
+        Task<dynamic> thongKeNhapHangTheoNam(string nam);
     }
     public class ThongKeBanHangRepository : IThongKeBanHangRepository
     {
@@ -25,17 +26,56 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 this.connectionstr = connectionstr;
             }
         }
-        public async Task<dynamic> thongKeDoanhThuTheoNam()
+        public async Task<dynamic> thongKeDoanhThuTheoNam(string nam)
         {
             //ThongKeDoanhThu thongKe = new ThongKeDoanhThu();
             using (var connection = new SqlConnection(connectionstr))
             {
-                string query = @"select DATEPART(Month, NgayDat) thang,  SUM(DonGia) tongDoanhThu from CHITIETDONDATHANG CT
-                                INNER JOIN DONDATHANG DDH ON CT.MaDDH = DDH.MaDDH  
+                IEnumerable<chiphiThang> dsDoanhThu = null;
+                string query = @"select DATEPART(Month, NgayDat) thang,  SUM(DonGia) tongTien from CHITIETDONDATHANG CT
+                                INNER JOIN DONDATHANG DDH ON CT.MaDDH = DDH.MaDDH   WHERE DATEPART(Year, NgayDat)='" + nam + @"' AND TinhTrang=1
                                 GROUP BY DATEPART(Year, NgayDat),DATEPART(Month, NgayDat)
                                 ORDER BY  Thang ";
-                var dsDoanhThu = await connection.QueryAsync(query, commandType: CommandType.Text);
-                return dsDoanhThu;
+                dsDoanhThu = await connection.QueryAsync<chiphiThang>(query, commandType: CommandType.Text);
+                chiphiThang[] ds = new chiphiThang[12];
+                for (int i = 0; i < 12; i++)
+                {
+                    ds[i] = new chiphiThang();
+                    ds[i].thang = (i + 1).ToString();
+                    ds[i].tongTien = 0;
+                }
+                foreach (var item in dsDoanhThu)
+                {
+                    ds[int.Parse(item.thang) - 1] = item;
+                }
+                return ds;
+            }
+
+        }
+        public async Task<dynamic> thongKeNhapHangTheoNam(string nam)
+        {
+            //ThongKeDoanhThu thongKe = new ThongKeDoanhThu();
+            IEnumerable<chiphiThang> dsNhapHang = null;
+            using (var connection = new SqlConnection(connectionstr))
+            {
+                string query = @"select DATEPART(Month, NgayTao) thang,  SUM(DonGia) tongTien from CHITIETPHIEUNHAP CT
+                                INNER JOIN PHIEUNHAP PN ON CT.MaPN = PN.MaPN  WHERE DATEPART(Year, NgayTao)='"+nam+ @"'
+                                GROUP BY DATEPART(Year, NgayTao),DATEPART(Month, NgayTao)
+                                ORDER BY  Thang ";
+                dsNhapHang = await connection.QueryAsync<chiphiThang>(query, commandType: CommandType.Text);
+                chiphiThang[] ds = new chiphiThang[12];
+                for(int i=0; i<12; i++)
+                {
+                    ds[i] = new chiphiThang();
+                    ds[i].thang = (i + 1).ToString();
+                    ds[i].tongTien = 0;
+                }
+                foreach(var item in dsNhapHang)
+                {
+                    ds[int.Parse(item.thang)-1] = item;
+                }
+
+                return ds;
             }
 
         }
@@ -52,7 +92,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 string queryListDDH = @"SELECT DDH.MaDDH, NgayDat,NgayXuLy, TrangThai, MaKH, MaNV, TinhTrang, DiaChiNhan, TenNguoiNhan, SoDT, Email,SUM(CT.DonGia) AS TongTien
 				                        FROM DONDATHANG DDH  FULL JOIN CHITIETDONDATHANG CT 
 				                        ON DDH.MaDDH = CT.MaDDH
-				                        WHERE TrangThai= 1 and NgayDat between '" + ngayBD + "' and '" + ngayKT + @"'
+				                        WHERE DDH.TinhTrang=1 and NgayDat between '" + ngayBD + "' and '" + ngayKT + @"'
 				                        GROUP BY 
 				                        DDH.MaDDH, DDH.NgayDat, DDH.NgayXuLy, DDH.TrangThai, DDH.MaKH, DDH.MaNV, DDH.TinhTrang, DDH.TinhTrang, DDH.DiaChiNhan,DDH.TenNguoiNhan, DDH.SoDT,DDH.Email
 			                            ORDER BY DDH.NgayDat DESC";
@@ -66,7 +106,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
 					                                ON DDH.MaDDH = CT.MaDDH
 					                                INNER JOIN SANPHAM SP 
 					                                ON  SP.MaSeri = CT.MaSeri
-	                                WHERE DDH.TrangThai = 1 and NgayDat between '" + ngayBD + "' and '" + ngayKT + @"'
+	                                WHERE DDH.TinhTrang=1 and NgayDat between '" + ngayBD + "' and '" + ngayKT + @"'
 	                                GROUP BY CT.MaSeri, DDH.NgayDat, DDH.MaDDH, CT.DonGia";
                     var lisDsDonDatHang = connection.Query<SanPhamSeriDDH>(query, commandType: CommandType.Text);
                     if (lisDsDonDatHang != null)

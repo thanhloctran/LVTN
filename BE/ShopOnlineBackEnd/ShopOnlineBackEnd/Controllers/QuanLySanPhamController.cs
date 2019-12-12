@@ -68,12 +68,12 @@ namespace ShopOnlineBackEnd.Controllers
             IEnumerable<SanPhamKhuyenMai> result = await _quanLySanPhamRepository.layDSSanPhamKM();
             return Ok(result);
         }
-        [HttpGet("LayDanhSachBinhLuan")]
-        public async Task<IActionResult> LayDSBinhLuan(string maSP)
-        {
-            dynamic result = await _quanLySanPhamRepository.layDSBinhLuan(maSP);
-            return Ok(result);
-        }
+        //[HttpGet("LayDanhSachBinhLuan")]
+        //public async Task<IActionResult> LayDSBinhLuan(string maSP)
+        //{
+        //    dynamic result = await _quanLySanPhamRepository.layDSBinhLuan(maSP);
+        //    return Ok(result);
+        //}
 
         [HttpGet("LayDanhSachLoaiSanPham")]
         public async Task<IActionResult> layDSLoaiSanPham()
@@ -88,21 +88,6 @@ namespace ShopOnlineBackEnd.Controllers
             dynamic result = await _quanLySanPhamRepository.themSanPhamLoai(sanPhamLoai);
             return Ok(result);
         }
-
-        [HttpPut("SuaThongTinSanPham")]
-        public async Task<ActionResult> SuaSanPhamLoai(SanPhamLoai sanPhamLoaiChinhSua)
-        {
-            dynamic result = await _quanLySanPhamRepository.suaSanPhamLoai(sanPhamLoaiChinhSua);
-            return Ok(result);
-        }
-        [HttpDelete("XoaSanPham")]
-        public async Task<IActionResult> xoaSanPhamLoai(string MaSP)
-        {
-            dynamic result = await _quanLySanPhamRepository.xoaSanPhamLoai(MaSP);
-            return Ok(result);
-        }
-        private const int TenMegaBytes = 1024 * 1024;
-
         [HttpPost("UploadHinhAnhSanPham")]
         public async Task<IActionResult> UploadHinhAnh()
         {
@@ -142,6 +127,22 @@ namespace ShopOnlineBackEnd.Controllers
 
 
         }
+
+        [HttpPut("SuaThongTinSanPham")]
+        public async Task<ActionResult> SuaSanPhamLoai(SanPhamLoai sanPhamLoaiChinhSua)
+        {
+            dynamic result = await _quanLySanPhamRepository.suaSanPhamLoai(sanPhamLoaiChinhSua);
+            return Ok(result);
+        }
+        [HttpDelete("XoaSanPham")]
+        public async Task<IActionResult> xoaSanPhamLoai(string MaSP)
+        {
+            dynamic result = await _quanLySanPhamRepository.xoaSanPhamLoai(MaSP);
+            return Ok(result);
+        }
+        private const int TenMegaBytes = 1024 * 1024;
+
+       
 
 
 

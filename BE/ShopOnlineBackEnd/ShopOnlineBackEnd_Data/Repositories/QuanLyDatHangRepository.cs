@@ -146,8 +146,8 @@ namespace ShopOnlineBackEnd_Data.Repositories
                         var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Can not Rollback!");
                         return response.Content;
                     }
-                    var response2 = await tbl.TBLoi(ThongBaoLoi.Loi500, "Value is wrong! Insert order fail");
-                    return ex;
+                    var response2 = await tbl.TBLoi(ThongBaoLoi.Loi500, "Sorry! Insert order fail");
+                    return response2.Content;
                 }
 
             }
@@ -175,20 +175,101 @@ namespace ShopOnlineBackEnd_Data.Repositories
         }
         public async Task<dynamic> capNhatTrangThaiDonDatHang(DonDatHangUpdateStatus item)
         {
+
             using (var connection = new SqlConnection(connectionstr))
             {
-                var p = new DynamicParameters();
-                p.Add("@ID", item.MaDDH);
-                p.Add("@TrangThai", item.TrangThai);
-                p.Add("@MaNV", item.MaNV);
-                p.Add("@NgayXuLy", item.NgayXuLy);
-                connection.Query<string>("SP_CAPNHATTRANGTHAIDDH", p, commandType: CommandType.StoredProcedure);
+                IEnumerable<SanPhamSeriDDH> listSeri = null;
+                string getDDH = "select * from CHITIETDONDATHANG WHERE MaDDH = " + item.MaDDH;
+                listSeri = await connection.QueryAsync<SanPhamSeriDDH>(getDDH, commandType: CommandType.Text);
+                if (item.TrangThai == -1)
+                {
+                    await connection.OpenAsync();
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    {
+                        //var transaction = connection.BeginTransaction();
+                        try
+                        {
+                            var p = new DynamicParameters();
+                            p.Add("@MaNV", item.MaNV);
+                            p.Add("@TrangThai", item.TrangThai);
+                            p.Add("@NgayXuLy", item.NgayXuLy);
+                            p.Add("@ID", item.MaDDH);
+                            var updateDDH = @"DECLARE @TinhTrang INT
+		                                SET @TinhTrang = (SELECT TinhTrang FROM DONDATHANG WHERE MaDDH=CONVERT(int, @ID))
+			                                IF @TinhTrang = 1
+				                                SET @TinhTrang = -1
+                                        UPDATE dbo.DONDATHANG
+                                            SET
+		                                        MaNV=@MaNV,
+		                                        TrangThai=@TrangThai, 
+		                                        TinhTrang=@TinhTrang,
+		                                        NgayXuLy = @NgayXuLy
+
+                         WHERE MaDDH = @ID"; //item 
+                            connection.Execute(updateDDH, p, transaction);
+
+                            //return listSeri
+                            foreach (var itemSeri in listSeri)
+                            {
+                                var p2 = new DynamicParameters();
+                                p2.Add("@MaSeri", itemSeri.MaSeri);
+                                var updateSeriSP = @"UPDATE dbo.SANPHAM
+                                    SET TrangThai= 1
+                                    WHERE MaSeri= @MaSeri "; //item 
+                                connection.ExecuteScalar(updateSeriSP, p2, transaction);
+
+                                //var updateNumberProduct = @"DECLARE @MaSP NVARCHAR(12)
+                                //            SET @MaSP =(SELECT MaSP FROM SANPHAM  WHERE MaSeri = @MaSeri )
+                                //            UPDATE SANPHAM_LOAI 
+                                //            SET SoLuongTon = SoLuongTon+1
+                                //            WHERE MaSP = @MaSP";
+                                //connection.ExecuteScalar(updateNumberProduct, p2, transaction);
+                            }
+                            transaction.Commit();
+
+                        }
+                        catch (Exception ex)
+                        {
+                            //Log the exception (ex)
+                            //System.Diagnostics.Debug.WriteLine(ex);
+                            try
+                            {
+                                transaction.Rollback();
+                            }
+                            catch (Exception ex2)
+                            {
+                                // Handle any errors that may have occurred
+                                // on the server that would cause the rollback to fail, such as
+                                // a closed connection.
+                                // Log the exception ex2
+                                var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Can not Rollback!");
+                                return response.Content;
+                            }
+                            var response2 = await tbl.TBLoi(ThongBaoLoi.Loi500, "Upadate status order fail");
+                            return response2.Content;
+                        }
+                    }
+                }
+                else
+                {
+                    var p = new DynamicParameters();
+                    p.Add("@ID", item.MaDDH);
+                    p.Add("@TrangThai", item.TrangThai);
+                    p.Add("@MaNV", item.MaNV);
+                    p.Add("@NgayXuLy", item.NgayXuLy);
+                    connection.Query<string>("SP_CAPNHATTRANGTHAIDDH", p, commandType: CommandType.StoredProcedure);
+                }
+                object result = await this.chiTietDonDatHangAD(item.MaDDH);
+                return result;
             }
-            return "success";
+
+
+
         }
 
         public async Task<dynamic> xoaDonDatHang(String MaDDH)
         {
+            
             using (var connection = new SqlConnection(connectionstr))
             {
                 var p = new DynamicParameters();
@@ -199,15 +280,18 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 int result = p.Get<int>("@resultSP");
                 if (result == -2)
                 {
-                    return "Order must be canceled before delete";
+                    var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Order must be canceled before delete!");
+                    return response.Content;
                 }
                 else if (result == -1)
                 {
-                    return "Order is not exist";
+                    var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Order is not exist");
+                    return response.Content;
                 }
                 else
                 {
-                    return "success";
+                    var response = await tbl.TBLoi(ThongBaoLoi.PhanHoi200, "success");
+                    return response.Content;
                 }
             }
         }
@@ -223,17 +307,22 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 "WHERE MaDDH=" + MaDDH + " GROUP BY MaSP, DonGia";
             var chiTiet = connection.Query<SanPhamDDH>(queryGroupByDDH, commandType: CommandType.Text);
 
-            
+
             var p = new DynamicParameters();
             p.Add("@ID", MaDDH);
             p.Add("@TABLE", "DONDATHANG");
             DonDatHang donDatHang = connection.QuerySingleOrDefault<DonDatHang>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
-
-            string queryND = "select TaiKhoan, HoTen, Email, SoDT, DiaChi  from NGUOIDUNG where MaND ="+donDatHang.MaKH;
+            if (donDatHang == null)
+            {
+                var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Order is not exist");
+                return response.Content;
+            }
+            string queryND = "select TaiKhoan, HoTen, Email, SoDT, DiaChi  from NGUOIDUNG where MaND =" + donDatHang.MaKH;
             NguoiDungInforVM khachHang = connection.QuerySingleOrDefault<NguoiDungInforVM>(queryND, commandType: CommandType.Text);
             ChiTietDonDatHangVM ct = new ChiTietDonDatHangVM();
 
             ct.MaDDH = MaDDH;
+            ct.NgayXuLy = donDatHang.NgayXuLy;
             ct.NgayDat = donDatHang.NgayDat;
             ct.TrangThai = donDatHang.TrangThai;
             ct.TinhTrang = donDatHang.TinhTrang;
@@ -243,7 +332,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
             ct.SoDT = donDatHang.SoDT;
             ct.TongTien = 0;
             ct.khachHang = khachHang;
-           
+
             //int idND = donDatHang.MaKH;
 
             foreach (var item in chiTiet)

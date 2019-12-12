@@ -23,7 +23,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
         Task<IEnumerable<NguoiDung>> timKiemNguoiDung(string MaLoaiND, string key);
         Task<dynamic> thongTinNguoiDung(string taiKhoan);
         Task<dynamic> capNhatThongTinNguoiDung(NguoiDung nguoiDung);
-        Task<dynamic> xoaNguoiDung(String taiKhoan);
+        Task<dynamic> xoaNguoiDung(String taiKhoan, string loaiND);
 
 
 
@@ -217,36 +217,24 @@ namespace ShopOnlineBackEnd_Data.Repositories
             return nguoiDung;
         }
 
-        public async Task<dynamic> xoaNguoiDung(String maND)
+        public async Task<dynamic> xoaNguoiDung(string maND, string loaiND)
         {
-            NguoiDung nguoiDungCapNhat;
-            using (var connection = new SqlConnection(connectionstr))
-            {
-                var p = new DynamicParameters();
-                p.Add("@ID", maND);
-                p.Add("TABLE", "NGUOIDUNG");
-                nguoiDungCapNhat = connection.QuerySingleOrDefault<NguoiDung>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
-            }
-            if (nguoiDungCapNhat == null)
-            {
-                var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Account is not exist!");
-                return response;
-            }
             try
             {
                 var p = new DynamicParameters();
                 using (var connection = new SqlConnection(connectionstr))
                 {
 
-                    p.Add("@ID", nguoiDungCapNhat.MaND);
+                    p.Add("@ID", maND);
                     p.Add("TABLE", "NGUOIDUNG");
                     p.Add("Result", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
                     connection.Query("SP_DELETE", p, commandType: CommandType.StoredProcedure);
 
                     int result = p.Get<int>("Result");
-                    if (result == 0)
+                    if (result == 0 || result==1)
                     {
-                        return "success";
+                        dynamic dsND = await this.layDanhSachNguoiDung(loaiND);
+                        return dsND;
                     }
                     if (result == -1)
                     {

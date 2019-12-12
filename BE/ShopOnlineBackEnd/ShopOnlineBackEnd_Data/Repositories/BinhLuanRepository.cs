@@ -107,11 +107,8 @@ namespace ShopOnlineBackEnd_Data.Repositories
 
         public async Task<dynamic> themBinhLuan(BinhLuan binhLuan)
         {
-            DateTime now = DateTime.Now;
-            string ngay = now.ToString();
-            int tongNgBL = 0;
-            float tongDanhGia = 0;
-            float binhChon = 0;
+            //DateTime now = DateTime.Now;
+            //string ngay = now.ToString();
             
             using (var connection = new SqlConnection(connectionstr))
             {
@@ -122,24 +119,14 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 p.Add("@NoiDung", binhLuan.NoiDung);
                 p.Add("@MaKH", binhLuan.MaKH);
                 p.Add("@MaSP", binhLuan.MaSP);
-                p.Add("@NgayTao", ngay);
+                p.Add("@NgayTao", binhLuan.NgayTao);
 
                 connection.Query("BINHLUAN_INSERT", p, commandType: CommandType.StoredProcedure);
-                string query = @"SELECT DanhGia FROM BINHLUAN WHERE MaSP= '"+ binhLuan.MaSP  + "'";
-
-                var listDanhGia = await connection.QueryAsync<int>(query, commandType: CommandType.Text);
-                foreach(int i in listDanhGia)
-                {
-                    tongDanhGia += i;
-                    tongNgBL += 1;
-                }
-                binhChon =(float)(tongDanhGia/tongNgBL);
-                binhChon = (float)Math.Round(binhChon,1);
-                string query2 = @"UPDATE SANPHAM_LOAI SET LuotBC = "+ binhChon + " WHERE MaSP= '" + binhLuan.MaSP + "'";
-                connection.QueryAsync(query2, commandType: CommandType.Text);
+                dynamic result = await this.chiTietSanPham(binhLuan.MaSP);
+                return result;
 
             }
-            return "success";
+            //return "success";
         }
 
         public async Task<dynamic> suaBinhLuan(BinhLuanUpdateVM binhLuan)
@@ -164,9 +151,17 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 var p = new DynamicParameters();
                 p.Add("@TABLE","BINHLUAN");
                 p.Add("@ID", MaBL);
+                p.Add("Result", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
                 connection.Query("SP_DELETE", p, commandType: CommandType.StoredProcedure);
+                int result = p.Get<int>("Result");
+                if (result == -1)
+                {
+                    return "Can't delete review was replied by another account!";
+                }
+                IEnumerable<BinhLuanDSVM> listReview = await this.layDSBinhLuan();
+                return listReview;
             }
-            return "success";
+         //   return "success";
         }
         public async Task<dynamic> traLoiBinhLuan(BinhLuanHoiDap binhLuan)
         {
@@ -188,20 +183,28 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 {
                     return ex;
                 }
-                
             }
-            return "success";
+            dynamic result = await this.chiTietBinhLuanAD(binhLuan.MaBL);
+            return result;
         }
         public async Task<dynamic> xoaTraLoiBinhLuan(String MaTL)
         {
+            int maBL = 0;
             using (var connection = new SqlConnection(connectionstr))
             {
                 var p = new DynamicParameters();
                 p.Add("@TABLE", "TRALOIBL");
                 p.Add("@ID", MaTL);
+                BinhLuanHoiDap binhLuan = connection.QuerySingleOrDefault<BinhLuanHoiDap>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
+                if(binhLuan== null)
+                {
+                    return "Review is not exit";
+                }
+                 maBL = binhLuan.MaBL;
                 connection.Query("SP_DELETE", p, commandType: CommandType.StoredProcedure);
             }
-            return "success";
+            dynamic result = await this.chiTietBinhLuanAD(maBL);
+            return result;
         }
         public async Task<dynamic> chiTietBinhLuanAD(int maBL)
         {
@@ -255,5 +258,95 @@ namespace ShopOnlineBackEnd_Data.Repositories
             }
             return chiTietBL; 
         }
+        public async Task<dynamic> chiTietSanPham(string maSP)
+        {
+            SanPhamLoai sanPhamLoai = null;
+            SanPhamDetailVM sanPham = new SanPhamDetailVM();
+            int giamGia;
+            using (var connection = new SqlConnection(connectionstr))
+            {
+                var p = new DynamicParameters();
+                var parameter = new DynamicParameters();
+                p.Add("@ID", maSP);
+                p.Add("@TABLE", "SANPHAMLOAI");
+                sanPhamLoai = connection.QuerySingleOrDefault<SanPhamLoai>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
+
+                //parameter.Add("@MaSP", maSP);
+                //var lstBL = connection.Query<BinhLuanVM>("SP_LAYBINHLUANSP", parameter, commandType: CommandType.StoredProcedure);
+                //if (lstBL != null)
+                //{
+                //    foreach (var bl in lstBL)
+                //    {
+                //        BinhLuanVM binhLuan = new BinhLuanVM();
+                //        binhLuan.MaBL = bl.MaBL;
+                //        binhLuan.TaiKhoan = bl.TaiKhoan;
+                //        binhLuan.NgayTao = bl.NgayTao;
+                //        binhLuan.DanhGia = bl.DanhGia;
+                //        binhLuan.NoiDung = bl.NoiDung;
+
+                //        sanPham.binhLuan.Add(binhLuan);
+                //    }
+                //}
+                var lstSP = connection.Query<SanPhamLoai>("SELECT * FROM SANPHAM_LOAI WHERE MaLoaiSP='" + sanPhamLoai.MaLoaiSP + "'", commandType: CommandType.Text);
+                if (lstSP != null)
+                {
+                    foreach (var sp in lstSP)
+                    {
+                        SanPhamLoai spTuongTu = new SanPhamLoai();
+                        spTuongTu.MaSP = sp.MaSP;
+                        spTuongTu.MaLoaiSP = sp.MaLoaiSP;
+                        spTuongTu.HinhAnh = sp.HinhAnh;
+                        spTuongTu.DonGia = sp.DonGia;
+                        spTuongTu.TenSP = sp.TenSP;
+                        spTuongTu.SoLuongTon = sp.SoLuongTon;
+                        spTuongTu.MoTa = sp.MoTa;
+                        spTuongTu.MaNCC = sp.MaNCC;
+                        spTuongTu.MaNSX = sp.MaNSX;
+                        spTuongTu.HinhAnh = sp.HinhAnh;
+                        spTuongTu.LuotBC = sp.LuotBC;
+                        spTuongTu.LuotXem = sp.LuotXem;
+                        spTuongTu.SPMoi = sp.SPMoi;
+                        spTuongTu.TrangThai = sp.TrangThai;
+
+
+                        sanPham.spTuongTu.Add(spTuongTu);
+                    }
+                }
+                DateTime now = DateTime.Now;
+                string ngay = now.ToString();
+                string query = @"select  CT.GiamGia 
+                    from CHITIETKHUYENMAI CT inner join KHUYENMAI KM
+                    ON  CT.MaKM = KM.MaKM 
+                    WHERE '" + ngay + "' BETWEEN KM.NgayBD AND KM.NgayKT AND CT.MaSP = '" + maSP + "' AND TrangThai = 1 ";
+
+                giamGia = connection.QuerySingleOrDefault<int>(query, commandType: CommandType.Text);
+                if (giamGia == null)
+                {
+                    giamGia = 0;
+                }
+
+            }
+            if (sanPhamLoai == null)
+            {
+                var response = "Product is not exist!";
+            }
+
+            sanPham.MaSP = sanPhamLoai.MaSP;
+            sanPham.luotBC = sanPhamLoai.LuotBC;
+            sanPham.TenSP = sanPhamLoai.TenSP;
+            sanPham.GiaGoc = sanPhamLoai.DonGia;
+            sanPham.DonGia = sanPhamLoai.DonGia - (sanPhamLoai.DonGia * giamGia / 100);
+            sanPham.SoLuongTon = sanPhamLoai.SoLuongTon;
+            sanPham.MoTa = sanPhamLoai.MoTa;
+            sanPham.MaNCC = sanPhamLoai.MaNCC;
+            sanPham.MaNSX = sanPhamLoai.MaNSX;
+            sanPham.HinhAnh = sanPhamLoai.HinhAnh;
+            sanPham.giamGia = giamGia;
+
+            //   List<DSBinhLuanMaSP> result = ;
+            sanPham.binhLuan = await this.layDSBinhLuanSP(maSP);
+            return sanPham;
+        }
+
     }
 }

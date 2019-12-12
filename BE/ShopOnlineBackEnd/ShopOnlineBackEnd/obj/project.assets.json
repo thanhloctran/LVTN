@@ -12307,11 +12307,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\LUANVANTN\\ShopOnline_BE\\ShopOnlineBackEnd\\ShopOnlineBackEnd\\ShopOnlineBackEnd.csproj",
+      "projectUniqueName": "E:\\LUANVANTN\\LVTN\\BE\\ShopOnlineBackEnd\\ShopOnlineBackEnd\\ShopOnlineBackEnd.csproj",
       "projectName": "ShopOnlineBackEnd",
-      "projectPath": "E:\\LUANVANTN\\ShopOnline_BE\\ShopOnlineBackEnd\\ShopOnlineBackEnd\\ShopOnlineBackEnd.csproj",
+      "projectPath": "E:\\LUANVANTN\\LVTN\\BE\\ShopOnlineBackEnd\\ShopOnlineBackEnd\\ShopOnlineBackEnd.csproj",
       "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "E:\\LUANVANTN\\ShopOnline_BE\\ShopOnlineBackEnd\\ShopOnlineBackEnd\\obj\\",
+      "outputPath": "E:\\LUANVANTN\\LVTN\\BE\\ShopOnlineBackEnd\\ShopOnlineBackEnd\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -12330,8 +12330,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "E:\\LUANVANTN\\ShopOnline_BE\\ShopOnlineBackEnd\\ShopOnlineBackEnd_Data\\ShopOnlineBackEnd_Data.csproj": {
-              "projectPath": "E:\\LUANVANTN\\ShopOnline_BE\\ShopOnlineBackEnd\\ShopOnlineBackEnd_Data\\ShopOnlineBackEnd_Data.csproj"
+            "E:\\LUANVANTN\\LVTN\\BE\\ShopOnlineBackEnd\\ShopOnlineBackEnd_Data\\ShopOnlineBackEnd_Data.csproj": {
+              "projectPath": "E:\\LUANVANTN\\LVTN\\BE\\ShopOnlineBackEnd\\ShopOnlineBackEnd_Data\\ShopOnlineBackEnd_Data.csproj"
             }
           }
         }

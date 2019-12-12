@@ -68,6 +68,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
             }
             return sanPham;
         }
+
         public async Task<IEnumerable<SanPhamLoai>> layDSSanPham(string key)
         {
             IEnumerable<SanPhamLoai> dsSanPham = null;
@@ -80,6 +81,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
             }
             return dsSanPham;
         }
+
         public async Task<List<SanPhamKhuyenMai>> layDSSanPhamCL(string key)
         {
             List<SanPhamKhuyenMai> dsSanPhamBig = new List<SanPhamKhuyenMai>();
@@ -130,12 +132,12 @@ namespace ShopOnlineBackEnd_Data.Repositories
             }
             return dsSanPhamBig;
         }
-        
 
         public async Task<dynamic> chiTietSanPham(string maSP)
         {
             SanPhamLoai sanPhamLoai = null;
             SanPhamDetailVM sanPham = new SanPhamDetailVM();
+            int giamGia;
             using (var connection = new SqlConnection(connectionstr))
             {
                 var p = new DynamicParameters();
@@ -144,22 +146,22 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 p.Add("@TABLE", "SANPHAMLOAI");
                 sanPhamLoai = connection.QuerySingleOrDefault<SanPhamLoai>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
 
-                parameter.Add("@MaSP", maSP);
-                var lstBL = connection.Query<BinhLuanVM>("SP_LAYBINHLUANSP", parameter, commandType: CommandType.StoredProcedure);
-                if (lstBL != null)
-                {
-                    foreach (var bl in lstBL)
-                    {
-                        BinhLuanVM binhLuan = new BinhLuanVM();
-                        binhLuan.MaBL = bl.MaBL;
-                        binhLuan.TaiKhoan = bl.TaiKhoan;
-                        binhLuan.NgayTao = bl.NgayTao;
-                        binhLuan.DanhGia = bl.DanhGia;
-                        binhLuan.NoiDung = bl.NoiDung;
+                //parameter.Add("@MaSP", maSP);
+                //var lstBL = connection.Query<BinhLuanVM>("SP_LAYBINHLUANSP", parameter, commandType: CommandType.StoredProcedure);
+                //if (lstBL != null)
+                //{
+                //    foreach (var bl in lstBL)
+                //    {
+                //        BinhLuanVM binhLuan = new BinhLuanVM();
+                //        binhLuan.MaBL = bl.MaBL;
+                //        binhLuan.TaiKhoan = bl.TaiKhoan;
+                //        binhLuan.NgayTao = bl.NgayTao;
+                //        binhLuan.DanhGia = bl.DanhGia;
+                //        binhLuan.NoiDung = bl.NoiDung;
 
-                        sanPham.binhLuan.Add(binhLuan);
-                    }
-                }
+                //        sanPham.binhLuan.Add(binhLuan);
+                //    }
+                //}
                 var lstSP = connection.Query<SanPhamLoai>("SELECT * FROM SANPHAM_LOAI WHERE MaLoaiSP='" + sanPhamLoai.MaLoaiSP + "'", commandType: CommandType.Text);
                 if (lstSP != null)
                 {
@@ -167,6 +169,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
                     {
                         SanPhamLoai spTuongTu = new SanPhamLoai();
                         spTuongTu.MaSP = sp.MaSP;
+                        spTuongTu.MaLoaiSP = sp.MaLoaiSP;
                         spTuongTu.HinhAnh = sp.HinhAnh;
                         spTuongTu.DonGia = sp.DonGia;
                         spTuongTu.TenSP = sp.TenSP;
@@ -179,10 +182,22 @@ namespace ShopOnlineBackEnd_Data.Repositories
                         spTuongTu.LuotXem = sp.LuotXem;
                         spTuongTu.SPMoi = sp.SPMoi;
                         spTuongTu.TrangThai = sp.TrangThai;
-
+                    
 
                         sanPham.spTuongTu.Add(spTuongTu);
                     }
+                }
+                DateTime now = DateTime.Now;
+                string ngay = now.ToString();
+                string query = @"select  CT.GiamGia 
+                    from CHITIETKHUYENMAI CT inner join KHUYENMAI KM
+                    ON  CT.MaKM = KM.MaKM 
+                    WHERE '" + ngay + "' BETWEEN KM.NgayBD AND KM.NgayKT AND CT.MaSP = '" + maSP + "' AND TrangThai = 1 ";
+
+                giamGia = connection.QuerySingleOrDefault<int>(query, commandType: CommandType.Text);
+                if (giamGia == null)
+                {
+                    giamGia = 0;
                 }
 
             }
@@ -191,15 +206,21 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Product is not exist!");
                 return response.Content;
             }
+
             sanPham.MaSP = sanPhamLoai.MaSP;
+            sanPham.luotBC = sanPhamLoai.LuotBC;
             sanPham.TenSP = sanPhamLoai.TenSP;
-            sanPham.DonGia = sanPhamLoai.DonGia;
+            sanPham.GiaGoc = sanPhamLoai.DonGia;
+            sanPham.DonGia = sanPhamLoai.DonGia - (sanPhamLoai.DonGia*giamGia/100);
             sanPham.SoLuongTon = sanPhamLoai.SoLuongTon;
             sanPham.MoTa = sanPhamLoai.MoTa;
             sanPham.MaNCC = sanPhamLoai.MaNCC;
             sanPham.MaNSX = sanPhamLoai.MaNSX;
             sanPham.HinhAnh = sanPhamLoai.HinhAnh;
+            sanPham.giamGia = giamGia;
 
+         //   List<DSBinhLuanMaSP> result = ;
+            sanPham.binhLuan = await this.layDSBinhLuanSP(maSP);
             return sanPham;
         }
 
@@ -247,6 +268,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
             return "success";
 
         }
+
         public async Task<IEnumerable<BinhLuanVM>> layDSBinhLuan(string maSP)
         {
             IEnumerable<BinhLuanVM> binhLuan = null;
@@ -307,7 +329,6 @@ namespace ShopOnlineBackEnd_Data.Repositories
             return sanPhamLoai;
         }
 
-
         public async Task<dynamic> xoaSanPhamLoai(String MaSP)
         {
             using (var connection = new SqlConnection(connectionstr))
@@ -362,7 +383,8 @@ namespace ShopOnlineBackEnd_Data.Repositories
             }
             return dsSP;
         }
-         public async Task<IEnumerable<SanPhamLoai>> layDSSanPhamTheoLoai(string maLoai)
+
+        public async Task<IEnumerable<SanPhamLoai>> layDSSanPhamTheoLoai(string maLoai)
         {
             IEnumerable<SanPhamLoai> dsSP = null;
             using (var connection = new SqlConnection(connectionstr))
@@ -372,7 +394,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
             return dsSP;
         }
 
-       
+   
         public async Task<IEnumerable<SanPhamKhuyenMai>> layDSSanPhamKM()
         {
             DateTime now = DateTime.Now;
@@ -395,6 +417,50 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 dsSP = connection.Query<SanPhamKhuyenMai>(query, commandType: CommandType.Text);
             }
             return dsSP;
+        }
+        //lay ds binh luan theo masp
+        private async Task<List<DSBinhLuanMaSP>> layDSBinhLuanSP(string maSP)
+        {
+            List<DSBinhLuanMaSP> dsbinhLuanMaSP = new List<DSBinhLuanMaSP>();
+            using (var connection = new SqlConnection(connectionstr))
+            {
+                var lstbinhLuan = connection.Query<BinhLuanDSVM>("select BL.MaBL, BL.DanhGia, BL.NoiDung, " +
+                    "BL.NgayTao, TaiKhoan = (select TaiKhoan from NGUOIDUNG ND WHERE ND.MaND = BL.MaKH),  " +
+                    "TenSP = (select SP.TenSP from SANPHAM_LOAI SP WHERE SP.MaSP = BL.MaSP)  from BINHLUAN BL WHERE BL.MaSP= '" + maSP + "' ORDER BY BL.MaBL DESC", commandType: CommandType.Text);
+                foreach (var result in lstbinhLuan)
+                {
+                    DSBinhLuanMaSP dsbinhLuan = new DSBinhLuanMaSP();
+
+                    BinhLuanDSVM chiTietBL = new BinhLuanDSVM();
+                    chiTietBL.MaBL = result.MaBL;
+                    chiTietBL.TenSP = result.TenSP;
+                    chiTietBL.TaiKhoan = result.TaiKhoan;
+                    chiTietBL.NoiDung = result.NoiDung;
+                    chiTietBL.DanhGia = result.DanhGia;
+                    chiTietBL.NgayTao = result.NgayTao;
+
+                    dsbinhLuan.binhLuan = chiTietBL;
+
+                    var lstBL = connection.Query<BinhLuanHoiDap>("SELECT * FROM TRALOIBL WHERE MaBL=" + result.MaBL, commandType: CommandType.Text);
+                    if (lstBL != null)
+                    {
+                        foreach (var bl in lstBL)
+                        {
+                            BinhLuanHoiDap binhLuan = new BinhLuanHoiDap();
+                            binhLuan.MaTL = bl.MaTL;
+                            binhLuan.MaBL = bl.MaBL;
+                            binhLuan.MaNV = bl.MaNV;
+                            binhLuan.NgayTao = bl.NgayTao;
+                            binhLuan.NoiDung = bl.NoiDung;
+
+                            dsbinhLuan.dsHoiDap.Add(binhLuan);
+                        }
+                    }
+                    dsbinhLuanMaSP.Add(dsbinhLuan);
+                }
+
+            }
+            return dsbinhLuanMaSP;
         }
 
         public class LoaiBoKyTu

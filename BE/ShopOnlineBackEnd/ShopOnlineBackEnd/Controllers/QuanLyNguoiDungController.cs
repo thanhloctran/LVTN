@@ -96,9 +96,9 @@ namespace ShopOnlineBackEnd.Controllers
         }
         [Authorize(Roles = "NV")]
         [HttpDelete("XoaNguoiDung")]
-        public async Task<ActionResult> XoaNguoiDung(string maND)
+        public async Task<ActionResult> XoaNguoiDung(string maND, string loaiND)
         {
-            dynamic result = await _quanLyNguoiDungRepository.xoaNguoiDung(maND);
+            dynamic result = await _quanLyNguoiDungRepository.xoaNguoiDung(maND, loaiND);
             return Ok(result);
 
 

@@ -155,7 +155,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
                         return response.Content;
                     }
                     var response2 = await tbl.TBLoi(ThongBaoLoi.Loi500, "Value is wrong! Insert discount fail");
-                    return response2.Content;
+                    return ex;
                 }
 
             }
@@ -201,7 +201,8 @@ namespace ShopOnlineBackEnd_Data.Repositories
 
                     }
                     transaction.Commit();
-                    return "success";
+                    dynamic chiTietKM = await this.layThongTinKhuyenMai(khuyenMai.MaKM);
+                    return chiTietKM;
                 }
                 catch (Exception ex)
                 {
@@ -241,13 +242,15 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 int result = p.Get<int>("Result");
                 if (result == 0)
                 {
+
                     return "Discount is opening! Close this before delete!";
                 }
                 else if (result == -1)
                 {
                     return "Discount is not exist";
                 }
-                return "success";
+                IEnumerable<KhuyenMai> DSKM = await this.layDSKhuyenMai();
+                return DSKM;
             }
             
         }

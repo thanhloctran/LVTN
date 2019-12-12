@@ -27,12 +27,12 @@ namespace ShopOnlineBackEnd.Controllers
             IEnumerable<PhieuNhap> result = await _phieuNhapRepository.layDSPhieuNhap(key);
             return Ok(result);
         }
-        [HttpGet("LayChiTietPhieuNhap")]
-        public async Task<IActionResult> ChiTietPhieuNhap(string maPN)
-        {
-            PhieuNhap result = await _phieuNhapRepository.chiTietPhieuNhap(maPN);
-            return Ok(result);
-        }
+        //[HttpGet("LayChiTietPhieuNhap")]
+        //public async Task<IActionResult> ChiTietPhieuNhap(string maPN)
+        //{
+        //    PhieuNhap result = await _phieuNhapRepository.chiTietPhieuNhap(maPN);
+        //    return Ok(result);
+        //}
         [HttpGet("LayChiTietPhieuNhapAD")]
         public async Task<IActionResult> ChiTietPhieuNhapAD(int maPN)
         {

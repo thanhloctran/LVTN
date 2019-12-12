@@ -27,7 +27,7 @@ namespace ShopOnlineBackEnd_Data.Models.ViewModels
         public string TaiKhoan { get; set; }
         public string NgayTao { get; set; }
 
-        //public List<BinhLuanHoiDap> dsHoiDap = new List<BinhLuanHoiDap>();
+        public List<BinhLuanHoiDap> dsHoiDap = new List<BinhLuanHoiDap>();
     }
     public class BinhLuanUpdateVM
     {
