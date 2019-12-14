@@ -95,6 +95,18 @@ namespace ShopOnlineBackEnd_Data.Models.ViewModels
         public bool SPMoi { get; set; }
         public int GiamGia { get; set; }
     }
-
+    public class SanPhamSeriWarranty
+    {
+        public string MaSeri { get; set; }
+        public string MaSP { get; set; }
+        public int MaDDH { get; set; }
+        public int MaPN { get; set; }
+    }
+    public class DetailSanPhamSeri
+    {
+        public SanPhamSeriWarranty sp = new SanPhamSeriWarranty();
+        public ChiTietDonDatHangVM ddh = new ChiTietDonDatHangVM();
+        public ChiTietPhieuNhapVM pn = new ChiTietPhieuNhapVM();
+    }
 
 }

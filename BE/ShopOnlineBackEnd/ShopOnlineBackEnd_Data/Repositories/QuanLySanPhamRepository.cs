@@ -19,19 +19,22 @@ namespace ShopOnlineBackEnd_Data.Repositories
         Task<dynamic> chiTietSanPham(string maSP);
         Task<dynamic> themSanPhamLoai(SanPhamLoai sanPhamLoai);
         Task<dynamic> suaSanPhamLoai(SanPhamLoai sanPhamLoai);
-        Task<dynamic> xoaSanPhamLoai(string MaSP);
+        Task<dynamic> xoaSanPhamLoai(string MaSP, string trangThai);
         Task<dynamic> chiTietSanPhamAD(string maSP);
         Task<IEnumerable<SanPhamLoai>> layDSSanPhamMoi();
         Task<IEnumerable<SanPhamLoai>> layDSSanPhamTheoLoai(string maLoai);
         Task<IEnumerable<SanPhamKhuyenMai>> layDSSanPhamKM();
         Task<IEnumerable<BinhLuanVM>> layDSBinhLuan(string maSP);
         Task<IEnumerable<LoaiSanPham>> layDSLoaiSanPham();
-       
+        Task<dynamic> chiTietSanPhamSeri(string maSeri);
+
+
 
 
     }
     public class QuanLySanPhamRepository : IQuanLySanPhamRepository
     {
+       
         private readonly string connectionstr;
         ThongBaoLoi tbl = new ThongBaoLoi();
         private readonly string hostImage =  "https://localhost:44302/images/";
@@ -329,16 +332,32 @@ namespace ShopOnlineBackEnd_Data.Repositories
             return sanPhamLoai;
         }
 
-        public async Task<dynamic> xoaSanPhamLoai(String MaSP)
+        public async Task<dynamic> xoaSanPhamLoai(String MaSP, string trangThai)
         {
             using (var connection = new SqlConnection(connectionstr))
             {
                 var p = new DynamicParameters();
                 p.Add("@ID", MaSP);
                 p.Add("@TABLE", "SANPHAMLOAI");
+                p.Add("Result", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
                 connection.Query("SP_DELETE", p, commandType: CommandType.StoredProcedure);
+                int result = p.Get<int>("Result");
+                if (result == 0)
+                {
+                    return "This item in stock! Can not delete!";
+                }
+                else if (result == -1)
+                {
+                    return "Product is not exist";
+                }
+                else if (result == 2)
+                {
+                    return "Product was deleted";
+                }
+                List<SanPhamVM> dsSanPham = await this.layDSSanPhamLoaiAD(trangThai);
+                return dsSanPham;
             }
-            return "success";
+            
         }
 
         public async Task<IEnumerable<LoaiSanPham>> layDSLoaiSanPham()
@@ -394,7 +413,6 @@ namespace ShopOnlineBackEnd_Data.Repositories
             return dsSP;
         }
 
-   
         public async Task<IEnumerable<SanPhamKhuyenMai>> layDSSanPhamKM()
         {
             DateTime now = DateTime.Now;
@@ -463,6 +481,144 @@ namespace ShopOnlineBackEnd_Data.Repositories
             return dsbinhLuanMaSP;
         }
 
+        public async Task<dynamic> chiTietSanPhamSeri(string maSeri)
+        {
+            
+            SanPhamSeriWarranty sp = null;
+            using (var connection = new SqlConnection(connectionstr))
+            {
+                DetailSanPhamSeri detailSeri = new DetailSanPhamSeri();
+                string query = @"SELECT SANPHAM.MaSeri , SANPHAM.MaSP,
+                                (SELECT CHITIETDONDATHANG.MaDDH FROM CHITIETDONDATHANG WHERE CHITIETDONDATHANG.MaSeri = SANPHAM.MaSeri) AS MaDDH ,
+                                (SELECT CHITIETPHIEUNHAP.MaPN FROM CHITIETPHIEUNHAP WHERE CHITIETPHIEUNHAP.MaSeri = SANPHAM.MaSeri) AS MaPN 
+
+                                FROM SANPHAM WHERE MaSeri='" + maSeri + "'";
+
+                sp = await connection.QueryFirstOrDefaultAsync<SanPhamSeriWarranty>(query, commandType: CommandType.Text);
+                detailSeri.sp = sp;
+
+                ChiTietDonDatHangVM  ctDDH = await this.chiTietDonDatHangAD(sp.MaDDH);
+                detailSeri.ddh = ctDDH;
+
+                ChiTietPhieuNhapVM ctPN = await this.chiTietPhieuNhapAD(sp.MaPN);
+                detailSeri.pn = ctPN;
+
+
+                return detailSeri;
+            }
+            
+        }
+        private async Task<ChiTietDonDatHangVM> chiTietDonDatHangAD(int MaDDH)
+        {
+
+            var connection = new SqlConnection(connectionstr);
+            string queryGroupByDDH = "SELECT  SP.MaSP, (SELECT SPL.TenSP From SANPHAM_LOAI SPL" +
+                " WHERE SPL.MaSP = SP.MaSP) as TenSP,COUNT(SP.MaSP)AS SoLuong, CTDDH.DonGia " +
+                "FROM CHITIETDONDATHANG CTDDH " +
+                "LEFT JOIN SANPHAM SP ON CTDDH.MaSeri = SP.MaSeri  " +
+                "WHERE MaDDH=" + MaDDH + " GROUP BY MaSP, DonGia";
+            var chiTiet = connection.Query<SanPhamDDH>(queryGroupByDDH, commandType: CommandType.Text);
+
+
+            var p = new DynamicParameters();
+            p.Add("@ID", MaDDH);
+            p.Add("@TABLE", "DONDATHANG");
+            DonDatHang donDatHang = connection.QuerySingleOrDefault<DonDatHang>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
+            if (donDatHang == null)
+            {
+              //  var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Order is not exist");
+                return null;
+            }
+            string queryND = "select TaiKhoan, HoTen, Email, SoDT, DiaChi  from NGUOIDUNG where MaND =" + donDatHang.MaKH;
+            NguoiDungInforVM khachHang = connection.QuerySingleOrDefault<NguoiDungInforVM>(queryND, commandType: CommandType.Text);
+            string queryNV = "select TaiKhoan, HoTen, Email, SoDT, DiaChi  from NGUOIDUNG where MaND =" + donDatHang.MaNV;
+            NguoiDungInforVM nhanVien = connection.QuerySingleOrDefault<NguoiDungInforVM>(queryNV, commandType: CommandType.Text);
+            ChiTietDonDatHangVM ct = new ChiTietDonDatHangVM();
+
+            ct.MaDDH = MaDDH;
+            ct.NgayXuLy = donDatHang.NgayXuLy;
+            ct.NgayDat = donDatHang.NgayDat;
+            ct.TrangThai = donDatHang.TrangThai;
+            ct.TinhTrang = donDatHang.TinhTrang;
+            ct.DiaChiNhan = donDatHang.DiaChiNhan;
+            ct.TenNguoiNhan = donDatHang.TenNguoiNhan;
+            ct.Email = donDatHang.Email;
+            ct.SoDT = donDatHang.SoDT;
+            ct.TongTien = 0;
+            ct.khachHang = khachHang;
+            ct.nhanVien = nhanVien;
+
+            //int idND = donDatHang.MaKH;
+
+            foreach (var item in chiTiet)
+            {
+
+                SanPhamDDH itemOrder = new SanPhamDDH();
+                itemOrder.MaSP = item.MaSP;
+                itemOrder.tenSP = item.tenSP;
+                itemOrder.SoLuong = item.SoLuong;
+                itemOrder.DonGia = item.DonGia;
+                ct.TongTien += (itemOrder.SoLuong * itemOrder.DonGia);
+
+                ct.DSSanPhamDDH.Add(itemOrder);
+
+            }
+            return ct;
+
+        }
+        private async Task<ChiTietPhieuNhapVM> chiTietPhieuNhapAD(int maPN)
+        {
+            var connection = new SqlConnection(connectionstr);
+            string queryGroupByDDH = @"SELECT  SP.MaSP, (SELECT SPL.TenSP From SANPHAM_LOAI SPL
+                WHERE SPL.MaSP = SP.MaSP) as TenSP,COUNT(SP.MaSP)AS SoLuong, CTDDH.DonGia 
+                FROM CHITIETPHIEUNHAP CTDDH 
+                LEFT JOIN SANPHAM SP ON CTDDH.MaSeri = SP.MaSeri  
+               WHERE MaPN=" + maPN + " GROUP BY MaSP, DonGia";
+            var chiTiet = connection.Query<SanPhamDDH>(queryGroupByDDH, commandType: CommandType.Text);
+
+
+            var p = new DynamicParameters();
+            p.Add("@ID", maPN);
+            p.Add("@TABLE", "PHIEUNHAP");
+            PhieuNhap phieuNhap = connection.QuerySingleOrDefault<PhieuNhap>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
+
+            string queryND = "select TaiKhoan, HoTen, Email, SoDT, DiaChi  from NGUOIDUNG where MaND =" + phieuNhap.MaNV;
+            NguoiDungInforVM nhanVien = connection.QuerySingleOrDefault<NguoiDungInforVM>(queryND, commandType: CommandType.Text);
+            ChiTietPhieuNhapVM ct = new ChiTietPhieuNhapVM();
+
+            ct.MaPN = maPN;
+            ct.MaCode = phieuNhap.MaCode;
+            ct.TrangThai = phieuNhap.TrangThai;
+            ct.MaNCC = phieuNhap.MaNCC;
+            ct.MaNV = phieuNhap.MaNV;
+            ct.NgayTao = phieuNhap.NgayTao;
+            ct.TongTien = phieuNhap.TongTien;
+            ct.nhanVien = nhanVien;
+
+            foreach (var item in chiTiet)
+            {
+
+                SanPhamLoaiPhieuNhap itemPN = new SanPhamLoaiPhieuNhap();
+                itemPN.MaSP = item.MaSP;
+                itemPN.tenSP = item.tenSP;
+                itemPN.SoLuong = item.SoLuong;
+                itemPN.DonGia = item.DonGia;
+                string querySeri = "select CT.MaSeri from CHITIETPHIEUNHAP CT " +
+                    "INNER JOIN SANPHAM SP ON CT.MaSeri = SP.MaSeri " +
+                    "where MaPN = " + maPN + " and SP.MaSP ='" + item.MaSP + "'";
+                var sp = await connection.QueryAsync<string>(querySeri, commandType: CommandType.Text);
+                foreach (var spnhap in sp)
+                {
+                    itemPN.dsSeriSanPham.Add(spnhap);
+                }
+
+                ct.TongTien += (itemPN.SoLuong * itemPN.DonGia);
+                ct.DSSanPhamNhap.Add(itemPN);
+
+            }
+            return ct;
+
+        }
         public class LoaiBoKyTu
         {
             public static string bestLower(string input)

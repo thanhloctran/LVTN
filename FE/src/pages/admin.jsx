@@ -46,13 +46,13 @@ class Admin extends Component {
         for (let i = 0; i < 12; i++) {
             let col = {
                 State: i.toString(),
-                "Order": 0,
+                "Revenue": 0,
                 // "Invoice": this.props.listOrderByYear[i].tongDoanhThu,
             }
             if(typeof(this.state.listOrderByYear[i])!=="undefined"){
                 col = {
                     State: this.state.listOrderByYear[i].thang.toString(),
-                    "Order": this.state.listOrderByYear[i].tongTien,
+                    "Revenue": this.state.listOrderByYear[i].tongTien,
                     //"Invoice": this.props.listOrderByYear[i].tongDoanhThu,
                 }
             }
@@ -60,7 +60,7 @@ class Admin extends Component {
             data.push(col);
         }
         const types = [
-            "Order",
+            "Revenue",
             //"Invoice",
         ];
         const dv = new DataView();
@@ -78,7 +78,7 @@ class Admin extends Component {
                     const key = obj.age;
                     let type;
 
-                    if (key === "Order") {
+                    if (key === "Revenue") {
                         type = "a";
                     } else {
                         type = "d";
@@ -89,7 +89,7 @@ class Admin extends Component {
                 }
             });
         const colorMap = {
-            "Order": "orange",
+            "Revenue": "orange",
             // "Invoice": "#1581E6",
         };
         const cols = {
@@ -172,8 +172,8 @@ class Admin extends Component {
                             ]}
                         />
                     </Chart>
-                    {console.log(this.props.match)
-                    }
+                    {/* {console.log(this.props.match)
+                    } */}
                     <ListOrderAD history={this.props.history}
                      match={this.matchParams}
                      />

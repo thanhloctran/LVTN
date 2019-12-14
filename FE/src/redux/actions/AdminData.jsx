@@ -396,6 +396,25 @@ export const getDetailInvoiceAction =(id)=>{
     })
   }
 }
+//GET PRODUCT SERI DETAIL 
+export const getDetailSeriAction =(id)=>{
+  return dispatch => {
+    axios({
+      url: `${domain}QuanLySanPham/LayChiTietSeri?maSeri=${id}`,
+      method: 'GET'
+    }).then(result => {
+     console.log(result.data);
+      
+      dispatch({
+        type: CONSTANTS.GET_DETAILSERI_AD,
+        result : result.data
+      })
+    }).catch(error => {
+      console.log(error.data);
+  
+    })
+  }
+}
 /***************************************************** ACTION*/
 
 //UPDATE PRODUCT 
@@ -475,11 +494,18 @@ export const updateOrderStatusAction = (orderInfor) => {
 
 
 //DELETE PRODUCT ACTION
-export const deleteProductAction = (maSP) => {
+export const deleteProductAction = (maSP, trangThai) => {
+  const  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
+  const token = retrievedObject.accessToken;
   return dispatch => {
   axios({
-    url: `${domain}QuanLySanPham/XoaSanPham?MaSP=${maSP}`,
-    method: 'DELETE'
+    url: `${domain}QuanLySanPham/XoaSanPham?MaSP=${maSP}&trangThai=${trangThai}`,
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
   }).then(result => {
     console.log(result.data);
     

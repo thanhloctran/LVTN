@@ -112,6 +112,11 @@ const rootReducerAD = (state = stateDefault, action) => {
                 state.detail = action.productDetail;
                 return { ...state }
             }
+        case types.GET_DETAILSERI_AD://get product SERI
+            {
+                state.detail = action.result;
+                return { ...state }
+            }
         case types.GET_DETAILORDER_AD://get order
             {
                 state.orderDetail = action.orderDetail;
@@ -172,9 +177,9 @@ const rootReducerAD = (state = stateDefault, action) => {
             }
         case types.DELETE_PRODUCT: //delete product
             {
-                if (action.result === "success") {
+                if (typeof(action.result) !== "string") {
                     showMassage("success", "Delete product Successfull")
-                    state.result = action.result;
+                    state.listDataAD = action.result;
                     return { ...state }
                 }
                 showMassage("error", action.result);
@@ -223,7 +228,7 @@ const rootReducerAD = (state = stateDefault, action) => {
                     break;
 
                 }
-                showMassage("success", "Update order Successfull")
+                showMassage("success", "Delete Review Successfull")
                 state.listReview = action.result;
                 return { ...state }
 

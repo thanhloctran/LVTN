@@ -13,7 +13,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
     public interface IQuanLyNhapHangRepository
     {
         Task<IEnumerable<PhieuNhap>> layDSPhieuNhap(string key);
-        Task<PhieuNhap> chiTietPhieuNhap(string MaPN);
+        //Task<PhieuNhap> chiTietPhieuNhap(string MaPN);
         Task<dynamic> suaPhieuNhap(PhieuNhap phieuNhap);
         Task<dynamic> xoaPhieuNhap(string MaPN);
         Task<ChiTietPhieuNhapVM> chiTietPhieuNhapAD(int maPN);
@@ -43,18 +43,18 @@ namespace ShopOnlineBackEnd_Data.Repositories
             return phieuNhap;
         }
 
-        public async Task<PhieuNhap> chiTietPhieuNhap(string MaPN)
-        {
-            PhieuNhap phieuNhap = null;
-            using (var connection = new SqlConnection(connectionstr))
-            {
-                var p = new DynamicParameters();
-                p.Add("@ID", MaPN);
-                p.Add("TABLE", "PHIEUNHAP");
-                phieuNhap = connection.QuerySingleOrDefault<PhieuNhap>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
-            }
-            return phieuNhap;
-        }
+        //public async Task<PhieuNhap> chiTietPhieuNhap(string MaPN)
+        //{
+        //    PhieuNhap phieuNhap = null;
+        //    using (var connection = new SqlConnection(connectionstr))
+        //    {
+        //        var p = new DynamicParameters();
+        //        p.Add("@ID", MaPN);
+        //        p.Add("TABLE", "PHIEUNHAP");
+        //        phieuNhap = connection.QuerySingleOrDefault<PhieuNhap>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
+        //    }
+        //    return phieuNhap;
+        //}
 
 
         public async Task<dynamic> suaPhieuNhap(PhieuNhap phieuNhap)

@@ -8,6 +8,7 @@ namespace ShopOnlineBackEnd_Data.Models.ViewModels
     {
         public List<SanPhamDDH> DSSanPhamDDH = new List<SanPhamDDH>();
         public NguoiDungInforVM khachHang = new NguoiDungInforVM();
+        public NguoiDungInforVM nhanVien = new NguoiDungInforVM();
         public int MaDDH { get; set; }
         public string NgayDat { get; set; }
         public string NgayXuLy { get; set; }

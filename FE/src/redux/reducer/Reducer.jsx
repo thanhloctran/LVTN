@@ -93,7 +93,7 @@ const rootReducer = (state = initialState, action) => {
 
 
                     if (cloneCartItems[index].soLuongTon <= 0) {
-                        console.log("ko đủ hàng");
+                        //console.log("ko đủ hàng");
                         Swal.fire({
                             type: 'error',
                             title: 'Oops...',
@@ -156,7 +156,7 @@ const rootReducer = (state = initialState, action) => {
 
 
                     if (cloneCartItems[index].soLuongTon <= 0) {
-                        console.log("ko đủ hàng");
+                      //  console.log("ko đủ hàng");
                         state.showCartDialog = false;
                         Swal.fire({
                             type: 'error',
@@ -206,7 +206,7 @@ const rootReducer = (state = initialState, action) => {
         case CONSTANTS.ADD_ORDER: {
             if (action.result === "success") {
                 swalMessage("success", "Thank !","Your order saved success! Check mail!");
-                return { ...state };
+                return { ...state ,  cartItems: [], checkedOutItems: [], totalPrice:0};
             }
             else{
                 swalMessage("error", "Oopp...!",action.result);

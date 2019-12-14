@@ -319,6 +319,9 @@ namespace ShopOnlineBackEnd_Data.Repositories
             }
             string queryND = "select TaiKhoan, HoTen, Email, SoDT, DiaChi  from NGUOIDUNG where MaND =" + donDatHang.MaKH;
             NguoiDungInforVM khachHang = connection.QuerySingleOrDefault<NguoiDungInforVM>(queryND, commandType: CommandType.Text);
+            string queryNV = "select TaiKhoan, HoTen, Email, SoDT, DiaChi  from NGUOIDUNG where MaND =" + donDatHang.MaNV;
+            NguoiDungInforVM nhanVien = connection.QuerySingleOrDefault<NguoiDungInforVM>(queryNV, commandType: CommandType.Text);
+
             ChiTietDonDatHangVM ct = new ChiTietDonDatHangVM();
 
             ct.MaDDH = MaDDH;
@@ -332,6 +335,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
             ct.SoDT = donDatHang.SoDT;
             ct.TongTien = 0;
             ct.khachHang = khachHang;
+            ct.nhanVien = nhanVien;
 
             //int idND = donDatHang.MaKH;
 
@@ -339,7 +343,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
             {
 
                 SanPhamDDH itemOrder = new SanPhamDDH();
-
+                itemOrder.MaSP = item.MaSP;
                 itemOrder.tenSP = item.tenSP;
                 itemOrder.SoLuong = item.SoLuong;
                 itemOrder.DonGia = item.DonGia;

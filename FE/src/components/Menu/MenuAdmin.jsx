@@ -252,7 +252,7 @@ class ConnectedMenu extends Component {
           >
             <div >
               <Icon
-              class="fas fa-exclamation-circle"
+              className="fas fa-exclamation-circle"
                 style={{ fontSize: 22, width: 30, marginRight: 5 }}
               />
               GUARANTEE

@@ -131,6 +131,7 @@ namespace ShopOnlineBackEnd
             app.UseAuthentication();
             //authen token
             app.UseStaticFiles();
+            //service dependency
 
             app.UseMvc(routes => {
                 routes.MapRoute(

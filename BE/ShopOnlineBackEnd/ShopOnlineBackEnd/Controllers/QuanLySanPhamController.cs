@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopOnlineBackEnd_Data;
@@ -44,18 +45,21 @@ namespace ShopOnlineBackEnd.Controllers
             dynamic result = await _quanLySanPhamRepository.chiTietSanPham(maSP);
             return Ok(result);
         }
+
         [HttpGet("LayChiTietSanPhamAdmin")]
         public async Task<IActionResult> ChiTietSanPhamAD(string maSP)
         {
             dynamic result = await _quanLySanPhamRepository.chiTietSanPhamAD(maSP);
             return Ok(result);
         }
+
         [HttpGet("LayDanhSachSanPhamMoi")]
         public async Task<IActionResult> layDSSanPhamMoi()
         {
             IEnumerable<SanPhamLoai>  result = await _quanLySanPhamRepository.layDSSanPhamMoi();
             return Ok(result);
         }
+
         [HttpGet("LayDanhSachSanPhamTheoLoai")]
         public async Task<IActionResult> layDSSanPhamTheoLoai(string maLoaiSP)
         {
@@ -79,6 +83,12 @@ namespace ShopOnlineBackEnd.Controllers
         public async Task<IActionResult> layDSLoaiSanPham()
         {
             IEnumerable<LoaiSanPham> result = await _quanLySanPhamRepository.layDSLoaiSanPham();
+            return Ok(result);
+        }
+        [HttpGet("LayChiTietSeri")]
+        public async Task<IActionResult> chiTietSeri(string maSeri)
+        {
+            dynamic result = await _quanLySanPhamRepository.chiTietSanPhamSeri(maSeri);
             return Ok(result);
         }
         [HttpPost("ThemSanPham")]
@@ -134,10 +144,11 @@ namespace ShopOnlineBackEnd.Controllers
             dynamic result = await _quanLySanPhamRepository.suaSanPhamLoai(sanPhamLoaiChinhSua);
             return Ok(result);
         }
+        [Authorize(Roles = "NV")]
         [HttpDelete("XoaSanPham")]
-        public async Task<IActionResult> xoaSanPhamLoai(string MaSP)
+        public async Task<IActionResult> xoaSanPhamLoai(string MaSP, string trangThai)
         {
-            dynamic result = await _quanLySanPhamRepository.xoaSanPhamLoai(MaSP);
+            dynamic result = await _quanLySanPhamRepository.xoaSanPhamLoai(MaSP, trangThai);
             return Ok(result);
         }
         private const int TenMegaBytes = 1024 * 1024;

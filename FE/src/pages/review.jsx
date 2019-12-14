@@ -249,7 +249,7 @@ class Review extends Component {
                     <p style={{ fontSize: "25px", color: "#504F5A" }}>Reply</p>
                                 <div >
                                     <TextArea rows={3}  style={{ backgroundColor: "#F1F5F5", marginBottom:10 , color:"black", fontSize:17}}
-                                        placeholder="..."
+                                        placeholder="Input reply"
                                         value={this.state.reply}
                                         onChange={(e) => {
                                             this.setState({

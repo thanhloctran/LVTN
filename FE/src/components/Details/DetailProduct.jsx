@@ -51,6 +51,9 @@ class ConnectedDetailsLoc extends Component {
     this.props.getDetailProduct(this.props.match.params.id);
     this.props.getListComment(this.props.match.params.id);
   }
+  componentDidUpdate(prevProps, prevState){
+    this.props.getDetailProduct(this.props.match.params.id);
+  }
 
   componentWillUnmount() {
     this.isCompMounted = false;

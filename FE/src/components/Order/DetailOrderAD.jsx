@@ -115,17 +115,17 @@ class DetailOrder extends Component {
                 <div className="d-flex">
                     <div className="col-md-8 " >
                         <div className=" d-flex justify-content-between detail-title-head">
-                            <p style={{ fontSize: 23 }}>Order #{this.props.item.maDDH + 4900} <br /> <span style={{ fontSize: 15, color: "gray" }}>Placed on {this.props.item.ngayDat}</span></p>
+                            <p style={{ fontSize: 23 }}>Order #{this.props.item.maDDH} <br /> <span style={{ fontSize: 15, color: "gray" }}>Placed on {this.props.item.ngayDat}</span></p>
                             <p style={{ fontSize: 15, color: "gray", paddingTop: 10, lineHeight: "31px" }}>FULFILLED  <br /> <span style={{ fontSize: 15, color: "gray" }}>Time checked:  {this.props.item.ngayXuLy}</span></p>
                         </div>
 
-                        <Paper style={{minHeight: 457}}>
+                        <Paper style={{minHeight: 438}}>
                             <Table className="mb-2 " style={{ height: "215px !important" }}>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Item</TableCell>
                                         <TableCell align="right">Price</TableCell>
-                                        <TableCell align="right">soLuong</TableCell>
+                                        <TableCell align="right">Quantity</TableCell>
                                         <TableCell align="right">Total</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -173,16 +173,7 @@ class DetailOrder extends Component {
                             {/* <hr/> */}
                             {!this.state.adminAccess ?
                                 (<button className=" w-100 btn" style={{ backgroundColor: "orange", color: "white" }} onClick={() => this.props.history.push('/dashboard/admin')}>Back Monitor Order Page</button>) : (<button className=" w-100 btn btn-dark" onClick={() => this.props.history.push('/admin')}>Back Admin Page</button>)}
-                            {/* <div className="pl-2">
-                                <p style={{ fontSize: "23px" }}>Order History</p>
-                                <Timeline>
-                                    <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
-                                    <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
-                                    <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-                                    <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
-                                </Timeline>
-                             
-                            </div> */}
+
                             {console.log(this.state.userInfor)
                             }
                             {!this.state.userInfor.maLoaiND === "KH"|| this.state.userInfor.maLoaiND === "NV"|| typeof(this.state.userInfor.maLoaiND) === "undefined" ? <div className="action-group" >

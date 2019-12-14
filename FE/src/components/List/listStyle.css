@@ -1,6 +1,6 @@
 .colImage{
     width: 180px;
-    background-color: white !important;
+    /* background-color: white !important; */
     padding: 8px 20px 8px 30px  !important;
 }
 .editable-cell {
@@ -34,4 +34,8 @@
     font-weight: bold !important;
     /* top: -4px !important; */
     right: 13px !important;
+  }
+  .ant-table-thead > tr > th{
+    background-color: #f39f10 !important;
+    color: white !important;
   }

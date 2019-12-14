@@ -33,9 +33,9 @@ class ProductListAdmin extends Component {
   }
   
 
-  deleteProduct=maSP=> {
-    this.props.deleteProductAD(maSP);
-  }
+  // deleteProduct=maSP=> {
+  //   this.props.deleteProductAD(maSP);
+  // }
   componentDidMount() {
     console.log(this.props.match.params);
     this.props.getListProductAD(this.props.match.params.status);
@@ -168,7 +168,7 @@ class ProductListAdmin extends Component {
         styte:"width=150",
         render:(text, record) =>
             <span key={record.maSP}>
-              <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteProductAD(record.maSP)}>
+              <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteProductAD(record.maSP, this.props.match.params.status)}>
               <div style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
                               Delete </div>
               </Popconfirm>
@@ -249,8 +249,8 @@ const mapDispatchToProps = (dispatch) => {
     getListProductAD: (trangThai) => {
       dispatch(getListProductAction(trangThai))
     },
-    deleteProductAD: (maSP) => {
-      dispatch(deleteProductAction(maSP))
+    deleteProductAD: (maSP, trangThai) => {
+      dispatch(deleteProductAction(maSP, trangThai))
     }
   }
 }
