@@ -60,11 +60,14 @@ class ProductAction extends React.Component {
     
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        if(!values.trangThai) values.trangThai =2;
-        values.trangThai = 1;
+        let trangThai =1
+        if(!values.trangThai){
+          trangThai =2;
+        }
         
         let valuePost = {
           ...values,
+          trangThai:trangThai,
            mota: this.decription, 
            hinhAnh: values.hinhAnh.file.originFileObj.name
         };

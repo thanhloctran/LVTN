@@ -37,6 +37,18 @@ export const swalMessage=(type, mesage, text)=> {
   )
   
 }
+export const swalError=(text)=> {
+  return(
+    Swal.fire({
+      type:'error',
+      icon: 'error',
+      title: 'Oops...',
+      text: text,
+      footer: '<span>Check it Again?<span>'
+    })
+  )
+  
+}
 
 export const swalCleartCart=()=>{
   return(

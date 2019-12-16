@@ -24,4 +24,13 @@ namespace ShopOnlineBackEnd_Data.Models
         public string thang { get; set; }
         public float tongTien { get; set; }
     }
+    public class BaoHanh
+    {
+        public int MaBH { get; set; }
+        public string MaSeri { get; set; }
+        public string NgayTao { get; set; }
+        public string NoiDung { get; set; }
+        public int MaNV { get; set; }
+        public int TrangThai { get; set; }
+    }
 }

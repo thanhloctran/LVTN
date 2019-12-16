@@ -35,7 +35,7 @@ namespace ShopOnlineBackEnd_Data.Models.ViewModels
         public string MaSP { get; set; }
         public float DonGia { get; set; }
 
-        public List<SanPhamNhap> dsSeriSanPham = new List<SanPhamNhap>();
+        public List<string> dsSeriSanPham = new List<string>();
     }
     public class SanPhamLoaiPhieuNhap
     {

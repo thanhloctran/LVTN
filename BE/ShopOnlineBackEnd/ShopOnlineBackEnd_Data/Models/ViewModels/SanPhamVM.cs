@@ -107,6 +107,8 @@ namespace ShopOnlineBackEnd_Data.Models.ViewModels
         public SanPhamSeriWarranty sp = new SanPhamSeriWarranty();
         public ChiTietDonDatHangVM ddh = new ChiTietDonDatHangVM();
         public ChiTietPhieuNhapVM pn = new ChiTietPhieuNhapVM();
+        public List<BaoHanh> dsBH = new List<BaoHanh>();
+
     }
 
 }

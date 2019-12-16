@@ -216,6 +216,24 @@ export const getListProviderAction = () => {
     })
   }
 }
+//GET WARRANTY
+export const getListWarrantyAction = (key) => {
+  return dispatch => {
+    axios({
+      url: `${domain}ThongKeBanHang/LayDanhSachBaoHanh?trangThai=${key}`,
+      method: 'GET'
+    }).then((result) => {
+      // console.log(result.data);
+      dispatch({
+        type: CONSTANTS.GET_LISTWARRANTY_AD,
+        result : result.data
+      })
+    }).catch(error => {
+      console.log(error.data);
+
+    })
+  }
+}
 
 
 
@@ -403,10 +421,29 @@ export const getDetailSeriAction =(id)=>{
       url: `${domain}QuanLySanPham/LayChiTietSeri?maSeri=${id}`,
       method: 'GET'
     }).then(result => {
-     console.log(result.data);
+      console.log(result.data);
       
       dispatch({
         type: CONSTANTS.GET_DETAILSERI_AD,
+        result : result.data
+      })
+    }).catch(error => {
+      console.log(error.data);
+  
+    })
+  }
+}
+
+//GET PRODUCT SERI DETAIL 
+export const getDetailWarantyAction =(id)=>{
+  return dispatch => {
+    axios({
+      url: `${domain}ThongKeBanHang/LayChiTietBaoHanh?maBH=${id}`,
+      method: 'GET'
+    }).then(result => {
+      console.log(result.data);
+      dispatch({
+        type: CONSTANTS.GET_DETAILWARRANTY_AD,
         result : result.data
       })
     }).catch(error => {
@@ -489,6 +526,25 @@ export const updateOrderStatusAction = (orderInfor) => {
 
     })
   }
+}
+//UPADTE WARRANTY
+export const updateWarrantyAction = (item) => {
+  return dispatch => {
+  axios({
+    url: `${domain}ThongKeBanHang/CapNhatThongTinBaoHanh`,
+    method: 'PUT',
+    data: item
+  }).then(result => {
+    
+    dispatch({
+      type: CONSTANTS.UPADTE_WARANTY,
+      result : result.data
+    })
+  }).catch(error => {
+    console.log(error);
+
+  })
+}
 }
 
 
@@ -641,6 +697,25 @@ export const addProviderAction = (item) => {
     })
   }).catch(error => {
     console.log(error);
+  })
+}
+}
+//ADD WARRANTY
+export const addWarrantyAction = (item) => {
+  return dispatch => {
+  axios({
+    url: `${domain}ThongKeBanHang/ThemBaoHanh`,
+    method: 'POST',
+    data: item
+  }).then(result => {
+    
+    dispatch({
+      type: CONSTANTS.ADD_WARANTY,
+      result : result.data
+    })
+  }).catch(error => {
+    console.log(error);
+
   })
 }
 }

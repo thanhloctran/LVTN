@@ -82,8 +82,8 @@ class DetailOrder extends Component {
         }
     }
     checkOrderOnclick = (trangThai) => {
-        if (trangThai === "1") {
-            this.handleSubmitMail();
+        if (trangThai === "1" || trangThai==="-1") {
+            //this.handleSubmitMail();
         }
         let retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
         this.setState({
@@ -95,6 +95,8 @@ class DetailOrder extends Component {
             }
         });
         setTimeout(() => {
+            console.log(this.state.itemCopy);
+            
             this.props.updateOrderAD(this.state.itemCopy);
             // this.props.getOrderDetailAD(this.props.match.params.id);
         }, 1000)

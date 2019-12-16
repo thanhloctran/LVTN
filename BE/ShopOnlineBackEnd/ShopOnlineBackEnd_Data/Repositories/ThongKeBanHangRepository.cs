@@ -15,11 +15,16 @@ namespace ShopOnlineBackEnd_Data.Repositories
         Task<dynamic> thongKeDoanhThu(string ngayBD, string ngayKT);
         Task<dynamic> thongKeDoanhThuTheoNam(string nam);
         Task<dynamic> thongKeNhapHangTheoNam(string nam);
+        Task<dynamic> layChiTietBaoHanh(int maBH);
+        Task<IEnumerable<BaoHanh>> layDanhSachBaoHanh(int trangThai);
+        Task<dynamic> themBaoHanh(BaoHanh baoHanh);
+        Task<dynamic> capNhatBaoHanh(BaoHanh baoHanh);
+        //Task<dynamic> xoaBaoHanh();
     }
     public class ThongKeBanHangRepository : IThongKeBanHangRepository
     {
         private readonly string connectionstr;
-
+        ThongBaoLoi tbl = new ThongBaoLoi();
         public ThongKeBanHangRepository(string connectionstr)
         {
             {
@@ -201,6 +206,88 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 thongKe.tongDoanhThu = tongBanHang - tongNhapHang;
             }
             return thongKe;
+        }
+
+        public async Task<dynamic> themBaoHanh(BaoHanh baoHanh)
+        {
+            using (var connection = new SqlConnection(connectionstr))
+            {
+                var p = new DynamicParameters();
+                p.Add("@NoiDung", baoHanh.NoiDung);
+                p.Add("@MaSeri", baoHanh.MaSeri);
+                p.Add("@NgayTao", baoHanh.NgayTao);
+                p.Add("Result", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+                connection.Query("BAOHANH_INSERT", p, commandType: CommandType.StoredProcedure);
+
+                int result = p.Get<int>("Result");
+                if (result == 0)
+                {
+                    return "Seri is not exist!";
+                }
+                 return "success";
+
+            }
+        }
+        public async Task<IEnumerable<BaoHanh>> layDanhSachBaoHanh(int trangThai)
+        {
+            IEnumerable<BaoHanh> dsBaoHanh = null;
+            using (var connection = new SqlConnection(connectionstr))
+            {
+                dsBaoHanh = connection.Query<BaoHanh>("select * from BAOHANH BH WHERE TrangThai="+trangThai+" ORDER BY BH.MaBH DESC", commandType: CommandType.Text);
+            }
+            return dsBaoHanh;
+        }
+
+        public async Task<dynamic> layChiTietBaoHanh(int maBH)
+        {
+            BaoHanh baoHanh = null;
+            using (var connection = new SqlConnection(connectionstr))
+            {
+                var p = new DynamicParameters();
+                p.Add("@ID", maBH);
+                p.Add("@TABLE", "BAOHANH");
+                baoHanh = connection.QuerySingleOrDefault<BaoHanh>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
+            }
+            return baoHanh;
+        }
+
+        public async Task<dynamic> capNhatBaoHanh(BaoHanh baoHanh)
+        {
+            BaoHanh baoHanhcopy;
+            using (var connection = new SqlConnection(connectionstr))
+            {
+                var p = new DynamicParameters();
+                p.Add("@ID", baoHanh.MaBH);
+                p.Add("TABLE", "BAOHANH");
+                baoHanhcopy = connection.QuerySingleOrDefault<BaoHanh>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
+            }
+            if (baoHanhcopy == null)
+            {
+                var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Account is not exist!");
+                return response.Content;
+            }
+            try
+            {
+                using (var connection = new SqlConnection(connectionstr))
+                {
+                    var p = new DynamicParameters();
+                    p.Add("@MaBH", baoHanh.MaBH);
+                    p.Add("@MaNV", baoHanh.MaNV);
+                    p.Add("@MaSeri", baoHanh.MaSeri);
+                    p.Add("@TrangThai", baoHanh.TrangThai);
+                    p.Add("@NoiDung", baoHanh.NoiDung);
+                    p.Add("@NgayTao", baoHanh.NgayTao);
+   
+                    connection.Execute("BAOHANH_UPDATE", p, commandType: CommandType.StoredProcedure);
+                    return baoHanh;
+                }
+            }
+            catch (Exception ex)
+            {
+                var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "UnSuitable Value!");
+                return response;
+            }
+            
         }
     }
 }

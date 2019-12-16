@@ -37,9 +37,12 @@ class ProductListAdmin extends Component {
   //   this.props.deleteProductAD(maSP);
   // }
   componentDidMount() {
-    console.log(this.props.match.params);
+    //console.log(this.props.match.params);
     this.props.getListProductAD(this.props.match.params.status);
   }
+  // componentDidUpdate(prevProps, prevState){
+  //   this.props.getListProductAD(this.props.match.params.status);
+  // }
   static getDerivedStateFromProps(nextProps, prevState) {
     return {
       ...prevState, resultDelete: nextProps.resultDelete, listItem: nextProps.listDataAD

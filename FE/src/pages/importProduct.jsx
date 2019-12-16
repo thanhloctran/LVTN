@@ -76,9 +76,7 @@ class ImportProduct extends React.Component {
         dsSeriSanPham:[],
       }];
       values.dsSeriSanPham.forEach(element => {
-        let item ={
-          maSeri: element
-        }
+        let item = element
         dsSanPham[0].dsSeriSanPham.push(item)
       });
       if (!err) {

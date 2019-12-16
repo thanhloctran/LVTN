@@ -186,11 +186,16 @@ namespace ShopOnlineBackEnd_Data.Repositories
                     await connection.OpenAsync();
                     using (SqlTransaction transaction = connection.BeginTransaction())
                     {
+                        string nhanVien = null;
+                        if (item.MaNV != null)
+                        {
+                            nhanVien = item.MaNV.ToString();
+                        }
                         //var transaction = connection.BeginTransaction();
                         try
                         {
                             var p = new DynamicParameters();
-                            p.Add("@MaNV", item.MaNV);
+                            p.Add("@MaNV", nhanVien);
                             p.Add("@TrangThai", item.TrangThai);
                             p.Add("@NgayXuLy", item.NgayXuLy);
                             p.Add("@ID", item.MaDDH);
@@ -217,13 +222,6 @@ namespace ShopOnlineBackEnd_Data.Repositories
                                     SET TrangThai= 1
                                     WHERE MaSeri= @MaSeri "; //item 
                                 connection.ExecuteScalar(updateSeriSP, p2, transaction);
-
-                                //var updateNumberProduct = @"DECLARE @MaSP NVARCHAR(12)
-                                //            SET @MaSP =(SELECT MaSP FROM SANPHAM  WHERE MaSeri = @MaSeri )
-                                //            UPDATE SANPHAM_LOAI 
-                                //            SET SoLuongTon = SoLuongTon+1
-                                //            WHERE MaSP = @MaSP";
-                                //connection.ExecuteScalar(updateNumberProduct, p2, transaction);
                             }
                             transaction.Commit();
 

@@ -116,14 +116,14 @@ namespace ShopOnlineBackEnd_Data.Repositories
                         foreach (var itemSP in item.dsSeriSanPham)
                         {
                             var p2 = new DynamicParameters();
-                            p2.Add("@MaSeRi", itemSP.MaSeri);
+                            p2.Add("@MaSeRi", itemSP);
                             p2.Add("MaSP", item.MaSP);
                             var insertSeriSP = @"INSERT INTO DBO.SANPHAM(MaSeri, MaSP, TrangThai)
 	                                                VALUES ( @MaSeRi, @MaSP, 1) ";
                             await connection.ExecuteScalarAsync<string>(insertSeriSP, p2, transaction);
 
                             var p3 = new DynamicParameters();
-                            p3.Add("@MaSeri", itemSP.MaSeri);
+                            p3.Add("@MaSeri", itemSP);
                             p3.Add("@MaPN", maPN);
                             p3.Add("@DonGia", item.DonGia);
                             var insertCTPN = @"INSERT INTO DBO.CHITIETPHIEUNHAP(MaPN, MaSeri, DonGia)

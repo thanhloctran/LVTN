@@ -48,7 +48,7 @@ namespace ShopOnlineBackEnd_Data.Models.ViewModels
     public class DonDatHangUpdateStatus
     {
         public int MaDDH { get; set; }
-        public int MaNV { get; set; }
+        public string MaNV { get; set; }
         public int TrangThai { get; set; }
         public string NgayXuLy { get; set; }
     }

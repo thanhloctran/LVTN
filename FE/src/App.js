@@ -43,6 +43,7 @@ import PartnerAction from "./pages/PartnerAction"
 import SendingMail from "./components/ProtectedRoute/SendingMail"
 import DetailProduct from "./components/Details/DetailProduct"
 import waranty from "./pages/waranty"
+import WarrantyList from "./components/List/WarrantyList"
 
 firebase.initializeApp(firebaseConfig);
 
@@ -60,6 +61,7 @@ function App(props) {
             <HomeTemplate path="/details/:id" Component={DetailProduct} />
             <HomeTemplate path="/SignUp" Component={SignUp}  />
             <HomeTemplate  path="/payment" Component={Payment} />
+            <HomeTemplate  path="/warranty" Component={waranty} />
             <HomeTemplate path="/order" Component={Order}  />
             <HomeTemplate  path="/account/:id" Component={AccountAction}/>
             {/* <HomeTemplate  path="/detailorder/:id" Component={DetailOrder}/> */}
@@ -94,9 +96,11 @@ function App(props) {
             <AdminTemplate exact path='/dashboard/accountCRUD' Component={AccountAction}/>
             <AdminTemplate exact path='/dashboard/discountCRUD' Component={DiscountAction}/>
             <AdminTemplate exact path='/dashboard/invoiceCRUD' Component={DiscountAction}/>
-            <AdminTemplate exact path='/dashboard/warranty' Component={waranty}/>
+            <AdminTemplate exact path='/dashboard/warranty/:key/:id' Component={waranty}/>
             <AdminTemplate path='/dashboard/partnerCRUD' Component={PartnerAction}/>
             <AdminTemplate path='/dashboard/sendingmail' Component={SendingMail}/>
+            <AdminTemplate path='/dashboard/warrantyList' Component={WarrantyList}/>
+            <AdminTemplate path='/dashboard/warranty' Component={waranty}/>
 
 
            <AdminTemplate path='/dashboard/productCRUD/:id' Component={ProductAction}/>

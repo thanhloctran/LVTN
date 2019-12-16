@@ -123,12 +123,21 @@ class ConnectedHeader extends Component {
 
           </div>
           <div className="right-part">
+            <Button
+              variant="contained" color="secondary"
+              style={{ position: "fixed", cursor:"pointer" , left:20, bottom:20,  }}
+              className="wow flash" data-wow-iteration="10"
+              onClick={() => {
+                this.props.history.push("/warranty");
+              }}
+            >
+              Guarantee
+            </Button>
             {!sessionStorage.getItem("custommer")&& !sessionStorage.getItem("employee")  ? (
               <Button
               
-                variant="outlined"
+                variant="contained" color="secondary"
                 style={{ marginRight: 20, cursor:"pointer" }}
-                color="primary"
                 onClick={() => {
                   this.props.history.push("/login");
                 }}

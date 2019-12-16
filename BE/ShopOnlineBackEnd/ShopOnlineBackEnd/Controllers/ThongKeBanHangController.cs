@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopOnlineBackEnd_Data.Models;
 using ShopOnlineBackEnd_Data.Repositories;
 
 namespace ShopOnlineBackEnd.Controllers
@@ -35,5 +36,30 @@ namespace ShopOnlineBackEnd.Controllers
             dynamic result = await _thongKeBanHangRepository.thongKeNhapHangTheoNam(nam);
             return Ok(result);
         }
+        [HttpGet("LayDanhSachBaoHanh")]
+        public async Task<ActionResult> layDSBaoHanh(int trangThai)
+        {
+            IEnumerable<BaoHanh> result = await _thongKeBanHangRepository.layDanhSachBaoHanh(trangThai);
+            return Ok(result);
+        }
+        [HttpGet("LayChiTietBaoHanh")]
+        public async Task<ActionResult> layChiTietBH(int maBH)
+        {
+            dynamic result = await _thongKeBanHangRepository.layChiTietBaoHanh(maBH);
+            return Ok(result);
+        }
+        [HttpPost("ThemBaoHanh")]
+        public async Task<IActionResult> themBaoHanh(BaoHanh baoHanh)
+        {
+            dynamic result = await _thongKeBanHangRepository.themBaoHanh(baoHanh);
+            return Ok(result);
+        }
+        [HttpPut("CapNhatThongTinBaoHanh")]
+        public async Task<IActionResult> capnhat(BaoHanh baoHanh)
+        {
+            dynamic result = await _thongKeBanHangRepository.capNhatBaoHanh(baoHanh);
+            return Ok(result);
+        }
+
     }
 }

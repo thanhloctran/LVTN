@@ -52,7 +52,18 @@ class Account extends React.Component {
     // console.log(this.props.userInfor);
     
   }
-
+  componentDidUpdate(prevProps, prevState) {
+    //console.log(this.props.match.params.id);
+    
+    if(typeof(this.props.match.params.id)==="undefined" && this.props.match.params.id!==""){
+      let  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
+      this.props.getDetailUser(retrievedObject.taiKhoan);
+    }
+    else{
+      this.props.getDetailUser(this.props.match.params.id);
+    }
+    
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return {

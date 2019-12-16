@@ -1,5 +1,6 @@
 import * as types from "../constants/Data";
 import Swal from 'sweetalert2'
+import { swalError } from "../../components/Dialog/Swal";
 // If multiple components need access to some data, in that case we store such data in redux.
 const stateDefault = {
     listDataAD: [],
@@ -16,6 +17,7 @@ const stateDefault = {
     statisticData: {},
     listOrderByYear: [],
     listInvoiceYear: [],
+    detailWarranty:{}
     // resultDelete: "",
 };
 
@@ -27,6 +29,7 @@ function showMassage(type, mesage) {
         showConfirmButton: false
     });
 }
+
 const rootReducerAD = (state = stateDefault, action) => {
     switch (action.type) {
         //get List data
@@ -84,7 +87,11 @@ const rootReducerAD = (state = stateDefault, action) => {
                 state.listDataAD = action.listProducer;
                 return { ...state }
             }
-
+        case types.GET_LISTWARRANTY_AD:  //producer
+            {
+                state.listDataAD = action.result;
+                return { ...state }
+            }
         case types.GET_LISTTYPEPRODUCT_AD: //type product
             {
                 state.listTypeProduct = action.listTypeProduct;
@@ -112,10 +119,22 @@ const rootReducerAD = (state = stateDefault, action) => {
                 state.detail = action.productDetail;
                 return { ...state }
             }
+        case types.GET_DETAILWARRANTY_AD://get product
+            {
+                state.detailWarranty = action.result;
+                return { ...state }
+            }
         case types.GET_DETAILSERI_AD://get product SERI
             {
-                state.detail = action.result;
-                return { ...state }
+                if (typeof action.result == "object") {
+                    state.detail = action.result;
+                    return { ...state }
+                }
+                else {
+                    swalError('Seri is incorrect!');
+                    break;
+                }
+                
             }
         case types.GET_DETAILORDER_AD://get order
             {
@@ -268,11 +287,23 @@ const rootReducerAD = (state = stateDefault, action) => {
                 return { ...state }
 
             }
+        //add waranty
+            case types.ADD_WARANTY:
+                {
+                    if (action.result !== "success") {
+                        showMassage("error", action.result);
+                        break;
+                    }
+                    showMassage("success", "Book warranty success!")
+                    state.detail = action.result;
+                    return { ...state }
+    
+                }
         //add product
         case types.ADD_PRODUCT:
             {
                 if (action.result === "success") {
-                    showMassage("success", "Add product Successfull")
+                    showMassage("success", "Add product Successfull");
                     state.result = action.result;
                     return { ...state }
                 }

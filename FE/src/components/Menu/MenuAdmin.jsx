@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import { loadCSS } from "fg-loadcss/src/loadCSS";
 import Icon from "@material-ui/core/Icon";
 import { getMenuDataAction } from './../../redux/actions/Data';
-import { getListOrderAction } from './../../redux/actions/AdminData';
+import { getListOrderAction, getListProductAction } from './../../redux/actions/AdminData';
 import { Menu } from 'antd';
 const { SubMenu } = Menu;
 
@@ -32,7 +32,17 @@ class ConnectedMenu extends Component {
     loadCSS("https://use.fontawesome.com/releases/v5.1.0/css/all.css");
   }
   handleClick = e => {
-    this.props.getListOrderAD(e.key)
+    // console.log(e);
+    
+    if(e.keyPath[1]==="sub1"){
+      this.props.getListOrderAD(e.key);
+      // console.log("sub1");
+      
+    }
+    if(e.keyPath[1]==="sub2"){
+      this.props.getListProductAD(e.key);
+      // console.log("sub2");
+    }
   };
   render() {
     if (!this.props.showMenu) return null;
@@ -246,7 +256,7 @@ class ConnectedMenu extends Component {
             <hr/>
             <Menu.Item key="32">
             <NavLink
-            to={"/dashboard/warranty"}
+            to={"/dashboard/warrantyList"}
             exact
             activeStyle={styleActive}
           >
@@ -316,6 +326,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getListOrderAD: (trangThai) => {
       dispatch(getListOrderAction(trangThai))
+  },
+  getListProductAD: (trangThai) => {
+    dispatch(getListProductAction(trangThai))
   },
   }
 }

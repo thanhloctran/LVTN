@@ -177,19 +177,19 @@ namespace ShopOnlineBackEnd_Data.Repositories
 
         public async Task<dynamic> capNhatThongTinNguoiDung(NguoiDung nguoiDung)
         {
-            //NguoiDung nguoiDungCapNhat;
-            //using (var connection = new SqlConnection(connectionstr))
-            //{
-            //    var p = new DynamicParameters();
-            //    p.Add("@ID", nguoiDung.TaiKhoan);
-            //    p.Add("TABLE", "NGUOIDUNG");
-            //    nguoiDungCapNhat = connection.QuerySingleOrDefault<NguoiDung>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
-            //}
-            //if (nguoiDungCapNhat == null)
-            //{
-            //    var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Account is not exist!");
-            //    return response;
-            //}
+            NguoiDung nguoiDungCapNhat;
+            using (var connection = new SqlConnection(connectionstr))
+            {
+                var p = new DynamicParameters();
+                p.Add("@ID", nguoiDung.TaiKhoan);
+                p.Add("TABLE", "NGUOIDUNG");
+                nguoiDungCapNhat = connection.QuerySingleOrDefault<NguoiDung>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
+            }
+            if (nguoiDungCapNhat == null)
+            {
+                var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "Account is not exist!");
+                return response.Content;
+            }
             try
             {
                 using (var connection = new SqlConnection(connectionstr))
@@ -208,7 +208,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
 
                     connection.Query("NGUOIDUNG_UPDATE", p, commandType: CommandType.StoredProcedure);
                 }
-        }
+            }
             catch (Exception ex)
             {
                 var response = await tbl.TBLoi(ThongBaoLoi.Loi500, "UnSuitable Value!");

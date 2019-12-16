@@ -165,7 +165,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 //        sanPham.binhLuan.Add(binhLuan);
                 //    }
                 //}
-                var lstSP = connection.Query<SanPhamLoai>("SELECT * FROM SANPHAM_LOAI WHERE MaLoaiSP='" + sanPhamLoai.MaLoaiSP + "'", commandType: CommandType.Text);
+                var lstSP = connection.Query<SanPhamLoai>("SELECT * FROM SANPHAM_LOAI WHERE MaLoaiSP='" + sanPhamLoai.MaLoaiSP + "' AND TrangThai=1", commandType: CommandType.Text);
                 if (lstSP != null)
                 {
                     foreach (var sp in lstSP)
@@ -492,9 +492,13 @@ namespace ShopOnlineBackEnd_Data.Repositories
                                 (SELECT CHITIETDONDATHANG.MaDDH FROM CHITIETDONDATHANG WHERE CHITIETDONDATHANG.MaSeri = SANPHAM.MaSeri) AS MaDDH ,
                                 (SELECT CHITIETPHIEUNHAP.MaPN FROM CHITIETPHIEUNHAP WHERE CHITIETPHIEUNHAP.MaSeri = SANPHAM.MaSeri) AS MaPN 
 
-                                FROM SANPHAM WHERE MaSeri='" + maSeri + "'";
+                                FROM SANPHAM WHERE MaSeri='" + maSeri + "' AND TrangThai=0";
 
                 sp = await connection.QueryFirstOrDefaultAsync<SanPhamSeriWarranty>(query, commandType: CommandType.Text);
+                if (sp == null)
+                {
+                    return "This seri is uncorrect! Please check again!";
+                }
                 detailSeri.sp = sp;
 
                 ChiTietDonDatHangVM  ctDDH = await this.chiTietDonDatHangAD(sp.MaDDH);
@@ -503,6 +507,24 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 ChiTietPhieuNhapVM ctPN = await this.chiTietPhieuNhapAD(sp.MaPN);
                 detailSeri.pn = ctPN;
 
+                IEnumerable<BaoHanh> dsbh = null;
+                string query2 = @"SELECT * FROM BAOHANH BH WHERE TrangThai !=-1 AND MaSeri='" + maSeri + "' ORDER BY NgayTao ";
+                dsbh = await connection.QueryAsync<BaoHanh>(query2, commandType: CommandType.Text);
+                if (dsbh != null)
+                {
+                    foreach(var item in dsbh)
+                    {
+                        BaoHanh bh = new BaoHanh();
+                        bh.MaBH = item.MaBH;
+                        bh.MaNV = item.MaNV;
+                        bh.MaSeri = item.MaSeri;
+                        bh.NgayTao = item.NgayTao;
+                        bh.TrangThai = item.TrangThai;
+                        bh.NoiDung = item.NoiDung;
+
+                        detailSeri.dsBH.Add(bh);
+                    }
+                }
 
                 return detailSeri;
             }
