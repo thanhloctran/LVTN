@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import {
-  Divider,
+  // Divider,
   Table,
   Button,
   Popconfirm
@@ -63,8 +63,8 @@ class InvoiceListAdmin extends Component {
       key: "action",
       render: (text, record) =>
           <span key={record.maPN}>
-             <span onClick={()=> this.props.history.push("/dashboard/invoice/"+record.maPN)} >Edit </span>
-            <Divider type="vertical" />
+             {/* <span onClick={()=> this.props.history.push("/dashboard/invoice/"+record.maPN)} >Edit </span>
+            <Divider type="vertical" /> */}
             <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteInvoiceAD(record.maPN)}>
             <div style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
                             Delete </div>

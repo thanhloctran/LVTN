@@ -3,12 +3,13 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { 
   Table,
-  // Button 
+  Button 
   } from 'antd';
 import {
   getListReviewAction,
   deleteReviewAction
 } from './../../redux/actions/AdminData';
+// import { Button } from "@material-ui/core";
 
 
 class ReviewListAdmin extends Component {
@@ -81,8 +82,11 @@ class ReviewListAdmin extends Component {
       <div style={{ padding: 10 }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div className="online-shop-title"> REVIEWS </div>
+          <Button size="large" type="primary" onClick={()=>{
+            this.componentDidMount()
+          }}>Reload</Button>
         </div>
-
+        
         <div>
           <Table
             onRow={(record, rowIndex) => {

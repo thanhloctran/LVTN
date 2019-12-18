@@ -87,7 +87,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
             {
                 binhLuan = connection.Query<BinhLuanDSVM>("select BL.MaBL, BL.DanhGia, BL.NoiDung, " +
                     "BL.NgayTao, TaiKhoan = (select TaiKhoan from NGUOIDUNG ND WHERE ND.MaND = BL.MaKH),  " +
-                    "TenSP = (select SP.TenSP from SANPHAM_LOAI SP WHERE SP.MaSP = BL.MaSP)  from BINHLUAN BL ORDER BY BL.NgayTao DESC" , commandType: CommandType.Text);
+                    "TenSP = (select SP.TenSP from SANPHAM_LOAI SP WHERE SP.MaSP = BL.MaSP)  from BINHLUAN BL ORDER BY BL.MaBL DESC" , commandType: CommandType.Text);
             }
             return binhLuan;
         }
@@ -270,23 +270,6 @@ namespace ShopOnlineBackEnd_Data.Repositories
                 p.Add("@ID", maSP);
                 p.Add("@TABLE", "SANPHAMLOAI");
                 sanPhamLoai = connection.QuerySingleOrDefault<SanPhamLoai>("SP_GETDETAILBYID", p, commandType: CommandType.StoredProcedure);
-
-                //parameter.Add("@MaSP", maSP);
-                //var lstBL = connection.Query<BinhLuanVM>("SP_LAYBINHLUANSP", parameter, commandType: CommandType.StoredProcedure);
-                //if (lstBL != null)
-                //{
-                //    foreach (var bl in lstBL)
-                //    {
-                //        BinhLuanVM binhLuan = new BinhLuanVM();
-                //        binhLuan.MaBL = bl.MaBL;
-                //        binhLuan.TaiKhoan = bl.TaiKhoan;
-                //        binhLuan.NgayTao = bl.NgayTao;
-                //        binhLuan.DanhGia = bl.DanhGia;
-                //        binhLuan.NoiDung = bl.NoiDung;
-
-                //        sanPham.binhLuan.Add(binhLuan);
-                //    }
-                //}
                 var lstSP = connection.Query<SanPhamLoai>("SELECT * FROM SANPHAM_LOAI WHERE MaLoaiSP='" + sanPhamLoai.MaLoaiSP + "'", commandType: CommandType.Text);
                 if (lstSP != null)
                 {

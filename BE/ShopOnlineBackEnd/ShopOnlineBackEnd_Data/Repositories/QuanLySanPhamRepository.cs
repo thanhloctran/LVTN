@@ -398,7 +398,7 @@ namespace ShopOnlineBackEnd_Data.Repositories
             IEnumerable<SanPhamLoai> dsSP = null;
             using (var connection = new SqlConnection(connectionstr))
             {
-                dsSP = connection.Query<SanPhamLoai>("SELECT * FROM SANPHAM_LOAI WHERE SPMoi= 1 and TrangThai=1", commandType: CommandType.Text);
+                dsSP = connection.Query<SanPhamLoai>("SELECT * FROM SANPHAM_LOAI WHERE SPMoi= 1 and TrangThai=1 ORDER BY MaSP DESC", commandType: CommandType.Text);
             }
             return dsSP;
         }
@@ -489,7 +489,9 @@ namespace ShopOnlineBackEnd_Data.Repositories
             {
                 DetailSanPhamSeri detailSeri = new DetailSanPhamSeri();
                 string query = @"SELECT SANPHAM.MaSeri , SANPHAM.MaSP,
-                                (SELECT CHITIETDONDATHANG.MaDDH FROM CHITIETDONDATHANG WHERE CHITIETDONDATHANG.MaSeri = SANPHAM.MaSeri) AS MaDDH ,
+                                (SELECT CHITIETDONDATHANG.MaDDH FROM CHITIETDONDATHANG INNER JOIN DONDATHANG 
+                                 ON DONDATHANG.MaDDH = CHITIETDONDATHANG.MaDDH 
+                                 WHERE CHITIETDONDATHANG.MaSeri = SANPHAM.MaSeri AND TrangThai=1) AS MaDDH ,
                                 (SELECT CHITIETPHIEUNHAP.MaPN FROM CHITIETPHIEUNHAP WHERE CHITIETPHIEUNHAP.MaSeri = SANPHAM.MaSeri) AS MaPN 
 
                                 FROM SANPHAM WHERE MaSeri='" + maSeri + "' AND TrangThai=0";

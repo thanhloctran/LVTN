@@ -1,6 +1,24 @@
 import * as CONSTANTS from "../constants/Data";
 import axios from 'axios';
-import { domain } from './../../config/setting'
+import { domain } from './../../config/setting';
+export const handleSubmitMailUpdate=(email)=> {
+  const templateId = 'deliveryTempale';
+  const serviceId = 'ShopO_gmail_com';
+  const userId = 'user_QjJ2xI8tto5p7sBwmt4Jg';
+  const receiveMail = email;
+  var templateParams = {
+    to_name: receiveMail,
+    to_mail: 'n15dccn118@student.ptithcm.edu.vn',
+    content: "<div style='width: max-content; margin: 0 auto;''><img src='https://lh5.googleusercontent.com/ijnBHpDpbDzh8WnmaZ6m2Jk6gcJS3dV29Zo9IFoMMdZdYhvJ4JPQjSBzWE10s4dpvfoIiUwdI94EEdTChi9Cu9pj0J7lgWpL-3yEtVTMO83wHxAfiCBx3PjGdxcNkKEXOirLxS35' alt='' /></div>"
+  };
+  //console.log(templateParams);
+  window.emailjs.send(serviceId, templateId, templateParams, userId).then(function (response) {
+    console.log('SUCCESS!', response.status, response.text);
+  }, function (error) {
+    console.log('FAILED...', error);
+  });
+  return;
+}
 
 
 //GET LIST ORDER ADMIN
@@ -509,14 +527,15 @@ export const updateDiscountAction = (discount) => {
     })
   }
 }
-export const updateOrderStatusAction = (orderInfor) => {
+export const updateOrderStatusAction = (order) => {
   return dispatch => {
     axios({
       url: `${domain}/QuanLyDatHang/CapNhatTrangThaiDonHang`,
       method: 'PUT',
-      data: orderInfor
+      data: order
     }).then((result) => {
-     console.log("infor", result.data);
+    //  console.log("infor", result.data);
+      handleSubmitMailUpdate(result.email);
       dispatch({
         type: CONSTANTS.UPDATEORDERSTATUS_AD,
         result: result.data

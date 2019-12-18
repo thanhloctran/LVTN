@@ -83,9 +83,9 @@
         font-weight: lighter;
 }
 .details .detail-review{
-    margin-left: 25px;
+    /* margin-left: 25px; */
     max-height: 380px;
-    overflow: hidden;
+    overflow: auto;
 }
 .MuiInputBase-input-104 {
 
@@ -95,10 +95,10 @@
     color: gray;
     margin-left: 5px;
     font-size: 17px;
-    /* height: 575px; */
+    height: 575px;
     font-size: 15px;
-    /* overflow: hidden; */
-    width: 73%;
+    overflow: scroll;
+    /* width: 73%; */
 
 }.details .description img{
     display: block;

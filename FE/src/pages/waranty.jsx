@@ -29,7 +29,8 @@ class waranty extends Component {
         detailWarranty:{},
         seri: "",
         visible: (this.props.match.params.id) !== "undefined" ? false : true,
-        detailSeri: {}
+        detailSeri: {},
+        userInfor: this.props.userInfor
     }
 
     showModal = () => {
@@ -86,8 +87,9 @@ class waranty extends Component {
                 this.setState({
                     contentWarany: this.props.detailWarranty.noiDung
                 })
-            },500)
+            },500); 
         }
+        //console.log(this.state.userInfor)
     }
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
@@ -163,7 +165,6 @@ class waranty extends Component {
 
                                             </TableRow>
                                         }
-
                                     })}
 
                                 </TableBody>
@@ -266,6 +267,7 @@ class waranty extends Component {
                         <TextArea rows={4} placeholder="Inout note " value={this.state.contentWarany} onChange={(e) => {
                             this.setState({ contentWarany: e.target.value })
                         }} />
+                        
                         <div className="d-flex">
                             <Button title="You only can wanrranty 3 time" disabled={this.props.detailSeri.dsBH.length===3? true: false} style={{ backgroundColor: "#009aff", marginTop: 7, color: "white" }}
                                 onClick={() => {
@@ -273,7 +275,7 @@ class waranty extends Component {
                                 }}          >
                                 Create Waranty Sheducle
                                 </Button>
-                            <Button style={{ backgroundColor: "red", marginTop: 7, color: "white" }}
+                            <Button hidden={typeof(this.props.userInfor.taiKhoan)==="undefined"?false : true} style={{ backgroundColor: "red", marginTop: 7, color: "white" }}
                                 onClick={() => {
                                     this.updateWarranty(1);
                                 }}          >

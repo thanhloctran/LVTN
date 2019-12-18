@@ -26,7 +26,7 @@ class ConnectedDetailsLoc extends Component {
     relatedItems: [],
     soLuong: "1",
     item: {},
-    itemCopy:{},
+    itemCopy: {},
     unfinishedTasks: 0,
     comment: { //comment
       maSP: this.props.match.params.id,
@@ -40,7 +40,7 @@ class ConnectedDetailsLoc extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     console.log(nextProps.item);
-    
+
     return {
       ...prevState, item: nextProps.item
     }
@@ -51,9 +51,14 @@ class ConnectedDetailsLoc extends Component {
     this.props.getDetailProduct(this.props.match.params.id);
     this.props.getListComment(this.props.match.params.id);
   }
-  // componentDidUpdate(prevProps, prevState){
-  //   this.props.getDetailProduct(this.props.match.params.id);
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    console.log("prevProps", prevProps);
+    if (prevProps.item.maSP !== prevState.item.maSP) {
+      this.props.getDetailProduct(this.props.match.params.id);
+
+    }
+    return;
+  }
 
   componentWillUnmount() {
     this.isCompMounted = false;
@@ -108,7 +113,7 @@ class ConnectedDetailsLoc extends Component {
       autoplay: true,
       focusOnSelect: false,
       slidesToShow:
-        5 < 4 ? 5: 4,
+        5 < 4 ? 5 : 4,
       slidesToScroll:
         5 < 4 ? 5 : 3
     };
@@ -162,12 +167,12 @@ class ConnectedDetailsLoc extends Component {
               </span>
               )}
             </div>
-            <div style={{width: "28%",}}>
+            <div style={{ width: "28%", }}>
               <p >
-              <span  style={{color:"grey", fontSize:30}}>Rate: </span>
-              <span style={{color:"tomato", fontSize:30}}> {this.state.item.luotBC} <i className="fas fa-star"></i></span>
+                <span style={{ color: "grey", fontSize: 30 }}>Rate: </span>
+                <span style={{ color: "tomato", fontSize: 30 }}> {this.state.item.luotBC} <i className="fas fa-star"></i></span>
               </p>
-              
+
             </div>
             {this.state.item.giamGia ? (
 
@@ -219,7 +224,7 @@ class ConnectedDetailsLoc extends Component {
                 setTimeout(() => {
                   this.props.addItemInCart(this.state.itemCopy);
                   console.log(this.state.item);
-                  
+
                 }, 500)
 
               }}
@@ -228,23 +233,23 @@ class ConnectedDetailsLoc extends Component {
             </Button>
 
           </div>
-      
+
         </div>
 
-        <div className="details-title">Product Description</div>
+
 
         {this.state.item.moTa ? (
           <div >
-
+            <div className="details-title">Product Description</div>
             <div className=" description" id="collapseExample"
               dangerouslySetInnerHTML={this.getRawMarkup(
                 this.state.item.moTa
               )
               }
             />
-            <div className="btn-container " >
+            {/* <div className="btn-container " >
               <button id="toggle" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Read More</button>
-            </div>
+            </div> */}
           </div>
         ) : (
             <div
@@ -261,7 +266,7 @@ class ConnectedDetailsLoc extends Component {
           <p></p>
         ) : (
             <div>
-              <div className="details-title">Rating &nbsp; <Rate value={this.state.comment.danhGia}  name="rating" onChange={(value) => {
+              <div className="details-title">Rating &nbsp; <Rate value={this.state.comment.danhGia} name="rating" onChange={(value) => {
                 this.setState({
                   comment: {
                     ...this.state.comment,
@@ -293,40 +298,42 @@ class ConnectedDetailsLoc extends Component {
             </div>
           )}
 
-        <p className="details-title">Product's  Review</p>
+       
         <div className="detail-review" >
-
-          {!this.state.item.binhLuan|| this.state.item.binhLuan.length === 0  ? <div>No Review</div>
-            :
-            this.state.item.binhLuan.map((item, index) => {
-              return (
-                <div style={{ marginBottom: 15 }} key={index}>
-                  <p className="comment-account">#{item.binhLuan.taiKhoan}</p>
-                  <p className="comment-date">{item.binhLuan.ngayTao}</p>
-                  <div><Rate allowHalf disabled defaultValue={item.binhLuan.danhGia} />
-                    &nbsp;  <span className="comment-text">{item.binhLuan.noiDung}</span>
-                  </div>
-                  {item.dsHoiDap.map((item2, index) => {
-                    return (
-                      <div key={index} style={{ marginLeft: 33, fontSize: 20 }}>
-                        <span>@{item.binhLuan.taiKhoan}_</span>
-                        <span>{item2.noiDung}</span>  &nbsp;
-                    <i style={{ fontSize: 15, color: "gray" }}>{item2.ngayTao}</i>
+          {!this.props.item.binhLuan || this.props.item.binhLuan.length === 0 ? <div>No Review</div>
+            :<div>
+               <p className="details-title">Product's  Review</p>
+              {
+                this.props.item.binhLuan.map((item, index) => {
+                  return (
+                    <div style={{ marginBottom: 15 }} key={index}>
+                      <p className="comment-account">#{item.binhLuan.taiKhoan}</p>
+                      <p className="comment-date">{item.binhLuan.ngayTao}</p>
+                      <div><Rate allowHalf disabled defaultValue={item.binhLuan.danhGia} />
+                        &nbsp;  <span className="comment-text">{item.binhLuan.noiDung}</span>
                       </div>
-                    )
-                  })}
-
-                </div>)
-            })}
+                      {item.dsHoiDap.map((item2, index) => {
+                        return (
+                          <div key={index} style={{ marginLeft: 33, fontSize: 20 }}>
+                            <span>@{item.binhLuan.taiKhoan}_</span>
+                            <span>{item2.noiDung}</span>  &nbsp;
+                        <i style={{ fontSize: 15, color: "gray" }}>{item2.ngayTao}</i>
+                          </div>
+                        )
+                      })}
+                    </div>)
+                })
+              }
+            </div>
+            
+            
+            
+            }
 
 
         </div>
-        <div
-          className="details-title"
-        >
-          Related Items
-        </div>
-        {!this.state.item.spTuongTu? (
+       
+        {!this.state.item.spTuongTu ? (
           <div
             style={{
               fontSize: 13,
@@ -341,11 +348,12 @@ class ConnectedDetailsLoc extends Component {
             <div
               style={{ maxWidth: 1105, height: 540, margin: "0 auto" }}
             >
+               <div className="details-title"> Related Items </div>
               <Slider {...settingsRelatedItems}>
                 {this.state.item.spTuongTu.map(x => {
-                  return <Item key={x.maSP} item={x} onClick={()=>{
-                    this.props.history.push("/detailas/" +x.maSP)
-                  }}/>;
+                  return <Item key={x.maSP} item={x} onClick={() => {
+                    this.props.history.push("/detailas/" + x.maSP)
+                  }} />;
                 })}
               </Slider>
             </div>

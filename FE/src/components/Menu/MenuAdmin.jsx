@@ -77,30 +77,6 @@ class ConnectedMenu extends Component {
                     </div>
               </NavLink>
             </Menu.Item>
-            <Menu.Item key="20">
-              <NavLink to={"/dashboard/listDiscount"} exact
-              activeStyle={styleActive} >
-                <div>
-                  <Icon
-                    className="fas fa-tags"
-                    style={{ fontSize: 22, width: 30, marginRight: 5 }}
-                  />
-                  DISCOUNT
-                    </div>
-              </NavLink>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <NavLink to={"/dashboard/listCustomers"} exact
-              activeStyle={styleActive}>
-                <div>
-                  <Icon
-                    className="fas fa-user-shield"
-                    style={{ fontSize: 22, width: 30, marginRight: 5 }}
-                  />
-                  CUSTOMMER
-                    </div>
-              </NavLink>
-            </Menu.Item>
             <SubMenu
               onClick={this.handleClick}
               key="sub1"
@@ -193,6 +169,31 @@ class ConnectedMenu extends Component {
                   </NavLink>
                </Menu.Item>
             </SubMenu>
+            <Menu.Item key="20">
+              <NavLink to={"/dashboard/listDiscount"} exact
+              activeStyle={styleActive} >
+                <div>
+                  <Icon
+                    className="fas fa-tags"
+                    style={{ fontSize: 22, width: 30, marginRight: 5 }}
+                  />
+                  DISCOUNT
+                    </div>
+              </NavLink>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <NavLink to={"/dashboard/listCustomers"} exact
+              activeStyle={styleActive}>
+                <div>
+                  <Icon
+                    className="fas fa-user-shield"
+                    style={{ fontSize: 22, width: 30, marginRight: 5 }}
+                  />
+                  CUSTOMMER
+                    </div>
+              </NavLink>
+            </Menu.Item>
+            
             <Menu.Item key="8">
             <NavLink
             to={"/dashboard/listReview"}

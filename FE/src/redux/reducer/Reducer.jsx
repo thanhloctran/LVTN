@@ -266,7 +266,13 @@ const rootReducer = (state = initialState, action) => {
                     title: 'Update infor success',
                     showConfirmButton: false,
                     timer: 1000
-                })
+                });
+                if (action.result.maLoaiND === "KH") {
+                    sessionStorage.setItem("custommer", JSON.stringify(action.result))
+                }
+                else {
+                    sessionStorage.setItem("employee", JSON.stringify(action.result))
+                }
                 return { ...state };
             }
             else {

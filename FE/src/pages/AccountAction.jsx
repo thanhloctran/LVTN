@@ -1,24 +1,13 @@
 import React from "react";
-// import { 
-//   // withRouter,
-//   Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from 'redux';
 import { Paper } from '@material-ui/core';
 
 import { addUserAction, updateAccountAction, getDetailUserAction } from "./../redux/actions/Data";
 
-// import Button from "@material-ui/core/Button";
-// import TextField from "@material-ui/core/TextField";
-// import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-// import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-// import Swal from 'sweetalert2'
-
 import {
   Form,
   Input,
-  // Row,
-  // Col,
   Select,
   Checkbox,
   Button,

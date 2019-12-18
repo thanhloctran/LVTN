@@ -1,22 +1,13 @@
 import React from "react";
-// import { 
-//   withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from 'redux';
 import { Paper } from '@material-ui/core';
-
-// import firebase from 'firebase';
 import { addUserAction } from "./../../redux/actions/Data";
 
-// import Button from "@material-ui/core/Button";
-// import TextField from "@material-ui/core/TextField";
-// import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-// import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-// import Swal from 'sweetalert2'
 
 
 import "./Login.css";
-
+import moment from 'moment';
 import {
   Form,
   Input,
@@ -31,7 +22,7 @@ import {
 class RegistrationForm extends React.Component {
   state = {
     confirmDirty: false,
-    // autoCompleteResult: [],
+    idRandom:"",
   };
 
   handleSubmit = e => {
@@ -56,20 +47,27 @@ class RegistrationForm extends React.Component {
       
     });
   };
-
+  
+  makeid=()=> {
+    let text = "";
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (let i = 0; i < 5; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+  }
   handleConfirmBlur = e => {
     const { value } = e.target;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
 
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
-  };
+  // compareToFirstPassword = (rule, value, callback) => {
+  //   const { form } = this.props;
+  //   if (value && value !== form.getFieldValue('password')) {
+  //     callback('Two passwords that you enter is inconsistent!');
+  //   } else {
+  //     callback();
+  //   }
+  // };
 
   validateToNextPassword = (rule, value, callback) => {
     const { form } = this.props;
@@ -101,7 +99,26 @@ class RegistrationForm extends React.Component {
         },
       },
     };
-
+    function range(start, end) {
+      const result = [];
+      for (let i = start; i < end; i++) {
+        result.push(i);
+      }
+      return result;
+    }
+    
+    function disabledDate(current) {
+      // Can not select days before today and today
+      return current && current > moment().endOf('day');
+    }
+    
+    function disabledDateTime() {
+      return {
+        disabledHours: () => range(0, 24).splice(4, 20),
+        disabledMinutes: () => range(30, 60),
+        disabledSeconds: () => [55, 56],
+      };
+    }
     return (
       <Paper className="col-md-10 m-auto pb-5">
       <p className="cover-title">Account Infor</p>
@@ -157,7 +174,8 @@ class RegistrationForm extends React.Component {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="BirthDay">
-          {getFieldDecorator('ngaySinh', {rules: [{ type: 'object', required: true, message: 'Please select time!' }]})(<DatePicker />)}
+          {getFieldDecorator('ngaySinh', {rules: [{ type: 'object', required: true, message: 'Please select time!' }]})(<DatePicker disabledDate={disabledDate}
+          disabledTime={disabledDateTime} />)}
         </Form.Item>
 
         <Form.Item label="Address">
@@ -185,7 +203,6 @@ class RegistrationForm extends React.Component {
             rules: [{ required: true, message: 'Please input your phone number!' }],
           })(<Input  style={{ width: '100%' }} />)}
         </Form.Item>
-
         <Form.Item label="Captcha" extra="We must make sure that your are a human.">
           <Row gutter={8}>
             <Col span={12}>
@@ -196,7 +213,11 @@ class RegistrationForm extends React.Component {
                {/* )} */}
             </Col>
             <Col span={12}>
-              <Button>Get captcha</Button>
+              <Button onClick={()=>{
+                this.setState({
+                  idRandom: this.makeid()
+                })
+              }}>Get captcha</Button>
             </Col>
           </Row>
         </Form.Item>

@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 
 using ShopOnlineBackEnd_Data.Repositories;
@@ -17,6 +11,7 @@ using ShopOnlineBackEnd.Controllers;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using SignalRChat.Hubs;
 //using ShopOnlineBackEnd_Services;
 
 namespace ShopOnlineBackEnd
@@ -88,6 +83,7 @@ namespace ShopOnlineBackEnd
                 });
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,10 +101,6 @@ namespace ShopOnlineBackEnd
             app.UseHttpsRedirection();
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
-           // app.UseSwaggerUI(); 
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
-            // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopOnline API V1");
@@ -132,7 +124,10 @@ namespace ShopOnlineBackEnd
             //authen token
             app.UseStaticFiles();
             //service dependency
-
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<Hubs>("/Hubs");
+            });
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",

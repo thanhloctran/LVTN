@@ -200,7 +200,9 @@ class ProductAction extends React.Component {
             {getFieldDecorator('soLanMua',{ initialValue: !this.state.productInfor.soLanMua? 0:  this.state.productInfor.soLanMua })(<InputNumber min={0} className="input-label" />)}
           </Form.Item>
 
-
+          <Form.Item label="warranty period:   ">
+            {<InputNumber min={0} className="input-label" />}
+          </Form.Item>
           {/* </div> */}
 
           <Form.Item label="Published">

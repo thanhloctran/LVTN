@@ -63,7 +63,7 @@ class ConnectedCartDialog extends Component {
             style={{
               minWidth: 600,
               maxHeight: 300,
-              padding: 10,
+              // padding: 10,
               overflow: "auto"
             }}
           >
