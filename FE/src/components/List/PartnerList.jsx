@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { 
-    Divider, 
+    // Divider, 
     Table, 
     Popconfirm, 
     Tabs ,
@@ -38,8 +38,8 @@ class PartnerList extends Component {
       key: "action",
       render:(text, record) =>
           <span>
-            <span >Edit</span>
-            <Divider type="vertical" />
+            {/* <span >Edit</span>
+            <Divider type="vertical" /> */}
             <Popconfirm title="Sure to delete?" 
             // onConfirm={() => this.props.deleteUser(record.maND)}
             >
@@ -78,8 +78,8 @@ class PartnerList extends Component {
       key: "action",
       render:(text, record) =>
           <span>
-            <span >Edit</span>
-            <Divider type="vertical" />
+            {/* <span >Edit</span>
+            <Divider type="vertical" /> */}
             <Popconfirm title="Sure to delete?" 
             // onConfirm={() => this.props.deleteUser(record.maND)}
             >

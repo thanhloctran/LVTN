@@ -318,6 +318,10 @@ const rootReducerAD = (state = stateDefault, action) => {
                     state.result = action.result;
                     return { ...state }
                 }
+                else if(typeof(action.result.Message)!=="undefined"){
+                    showMassage("error", "The duplicate seri value");
+                    break;
+                }
                 showMassage("error", action.result);
                 break;
             }

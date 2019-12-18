@@ -176,8 +176,8 @@ class DetailOrder extends Component {
                             {!this.state.adminAccess ?
                                 (<button className=" w-100 btn" style={{ backgroundColor: "orange", color: "white" }} onClick={() => this.props.history.push('/dashboard/admin')}>Back Monitor Order Page</button>) : (<button className=" w-100 btn btn-dark" onClick={() => this.props.history.push('/admin')}>Back Admin Page</button>)}
 
-                            {console.log(this.state.userInfor)
-                            }
+                            {/* {console.log(this.state.userInfor)
+                            } */}
                             {!this.state.userInfor.maLoaiND === "KH"|| this.state.userInfor.maLoaiND === "NV"|| typeof(this.state.userInfor.maLoaiND) === "undefined" ? <div className="action-group" >
                                 <Button
                                     className="buton-orderAction"

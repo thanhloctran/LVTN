@@ -201,43 +201,7 @@ class Review extends Component {
                                     </TableBody>
                                 </TableA>
                             </Paper>
-                            {/* <Paper style={{ padding: 15 }}>
-                                <div style={{ margin: "10px 0px", display: "flex", justifyContent: "space-between" }} >
-                                    <Button
-                                        style={{ width: '45%' }}
-                                        variant="outlined"
-                                        color="secondary">
-                                        Delete
-                                     </Button>
-                                    <Button style={{ width: '45%' }} type="primary" onClick={this.showModal}>
-                                        Reply
-                                    </Button>
-                                    <Modal
-                                        title="Title"
-                                        visible={this.state.visible}
-                                        onOk={this.handleOk}
-                                        confirmLoading={this.state.confirmLoading}
-                                        onCancel={this.handleCancel}
-                                    >
-                                        <TextArea rows={4} placeholder="Please input comment" onChange={(e) => {
-                                            this.setState({
-                                                comment: {
-                                                    ...this.state.comment,
-                                                    noiDung: e.target.value
-                                                }
-                                            })
-                                            // console.log(value);
-
-                                        }} />
-                                    </Modal> */}
-                                    {/* <Button
-                                        style={{ width: '45%' }}
-                                        variant="outlined"
-                                        color="primary">
-                                        Reply
-                                     </Button> */}
-                                {/* </div>
-                            </Paper> */}
+                           
 
 
                         </div>

@@ -76,6 +76,16 @@ class ConnectedDetailsLoc extends Component {
 
   handleSubmit(values) {
     this.props.addComment(values);
+    this.setState({
+      comment: { //comment
+        maSP: this.props.match.params.id,
+        noiDung: "",
+        ngayTao: moment().format('MM/DD/YYYY HH:mm:ss'),
+        danhGia: 3,
+        maKH: this.props.user.maND
+      }
+  
+    })
   };
   onChangeNumber = (value) => {
     this.setState({
@@ -266,7 +276,7 @@ class ConnectedDetailsLoc extends Component {
           <p></p>
         ) : (
             <div>
-              <div className="details-title">Rating &nbsp; <Rate value={this.state.comment.danhGia} name="rating" onChange={(value) => {
+              <div className="details-title">Rating  &nbsp; <Rate  value={this.state.comment.danhGia} name="rating" onChange={(value) => {
                 this.setState({
                   comment: {
                     ...this.state.comment,
@@ -277,7 +287,7 @@ class ConnectedDetailsLoc extends Component {
                 // console.log(value);
 
               }} /> </div>
-              <TextArea style={{ width: "48%", fontSize: 17 }} rows={3} placeholder="Please input comment" onChange={(e) => {
+              <TextArea style={{ width: "48%", fontSize: 17 }} rows={3} placeholder="Please input comment" value={this.state.comment.noiDung} onChange={(e) => {
                 this.setState({
                   comment: {
                     ...this.state.comment,
@@ -300,7 +310,7 @@ class ConnectedDetailsLoc extends Component {
 
        
         <div className="detail-review" >
-          {!this.props.item.binhLuan || this.props.item.binhLuan.length === 0 ? <div>No Review</div>
+          {!this.props.item.binhLuan || this.props.item.binhLuan.length === 0 ? <div className="details-title">No Review</div>
             :<div>
                <p className="details-title">Product's  Review</p>
               {

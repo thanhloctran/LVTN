@@ -11,7 +11,7 @@ import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import "./Style.css";
 import moment from "moment";
 import {
-    Modal, Button, Input,  Timeline
+    Modal, Button, Input, Timeline
 } from 'antd';
 import {
     getDetailWarantyAction,
@@ -26,7 +26,7 @@ const { TextArea } = Input;
 class waranty extends Component {
     state = {
         contentWarany: "",
-        detailWarranty:{},
+        detailWarranty: {},
         seri: "",
         visible: (this.props.match.params.id) !== "undefined" ? false : true,
         detailSeri: {},
@@ -69,11 +69,11 @@ class waranty extends Component {
             maSeri: this.props.detailWarranty.maSeri,
             ngayTao: this.props.detailWarranty.ngayTao,
             noiDung: this.state.contentWarany,
-            trangThai:trangThai,
-            maNV:1,
+            trangThai: trangThai,
+            maNV: 1,
         }
         console.log(item);
-        
+
         this.props.updateWarranty(item);
     }
     componentDidMount() {
@@ -83,11 +83,11 @@ class waranty extends Component {
             })
             this.props.getDetailSeri(this.props.match.params.id);
             this.props.getDetailWaranty(this.props.match.params.key);
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.setState({
                     contentWarany: this.props.detailWarranty.noiDung
                 })
-            },500); 
+            }, 500);
         }
         //console.log(this.state.userInfor)
     }
@@ -187,51 +187,57 @@ class waranty extends Component {
                                 </TableBody>
                             </Table>
                         </Paper>
-                        <div className=" d-flex justify-content-between detail-title-head">
-                            <p style={{ fontSize: 23 }}>Inoivce #{this.props.detailSeri.pn.maPN} <br /> <span style={{ fontSize: 15, color: "gray" }}>Created on {this.props.detailSeri.pn.ngayTao}</span></p>
-                            <p style={{ fontSize: 15, color: "gray", paddingTop: 10, lineHeight: "31px" }}>FULFILLED  <br /> </p>
-                        </div>
-                        <Paper style={{ minHeight: 190 }}>
 
-                            <Table className="mb-2 ">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell >Seri</TableCell>
-                                        <TableCell >Provider</TableCell>
-                                        <TableCell align="right">Price</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {/* MAP O DAY NE MOI NGUOI */}
-                                    <TableRow >
-                                        <TableCell style={{ color: "#2EA5D4" }}>SRSP0201</TableCell>
-                                        <TableCell >NCC02</TableCell>
-                                        <TableCell align="right">$800.00</TableCell>
+                        {!this.props.userInfor.maLoaiND === "KH" || this.props.userInfor.maLoaiND === "NV" || typeof (this.props.userInfor.maLoaiND) === "undefined" ?
+                            <div>
+                                <div className=" d-flex justify-content-between detail-title-head">
+                                    <p style={{ fontSize: 23 }}>Inoivce #{this.props.detailSeri.pn.maPN} <br /> <span style={{ fontSize: 15, color: "gray" }}>Created on {this.props.detailSeri.pn.ngayTao}</span></p>
+                                    <p style={{ fontSize: 15, color: "gray", paddingTop: 10, lineHeight: "31px" }}>FULFILLED  <br /> </p>
+                                </div>
+                                <Paper style={{ minHeight: 190 }}>
 
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                            <p style={{ fontSize: 19, marginLeft: 15 }}>Employee Create Invoice </p>
-                            <Table className="mb-2">
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell>Account</TableCell>
-                                        <TableCell align="right">{this.props.detailSeri.pn.nhanVien.taiKhoan}</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell align="right">{this.props.detailSeri.pn.nhanVien.hoTen}</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>Email</TableCell>
-                                        <TableCell align="right">{this.props.detailSeri.pn.nhanVien.email}</TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
+                                    <Table className="mb-2 ">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell >Seri</TableCell>
+                                                <TableCell >Provider</TableCell>
+                                                <TableCell align="right">Price</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {/* MAP O DAY NE MOI NGUOI */}
+                                            <TableRow >
+                                                <TableCell style={{ color: "#2EA5D4" }}>SRSP0201</TableCell>
+                                                <TableCell >NCC02</TableCell>
+                                                <TableCell align="right">$800.00</TableCell>
+
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+                                    <p style={{ fontSize: 19, marginLeft: 15 }}>Employee Create Invoice </p>
+                                    <Table className="mb-2">
+                                        <TableBody>
+                                            <TableRow>
+                                                <TableCell>Account</TableCell>
+                                                <TableCell align="right">{this.props.detailSeri.pn.nhanVien.taiKhoan}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>Name</TableCell>
+                                                <TableCell align="right">{this.props.detailSeri.pn.nhanVien.hoTen}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>Email</TableCell>
+                                                <TableCell align="right">{this.props.detailSeri.pn.nhanVien.email}</TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
 
 
 
-                        </Paper>
+                                </Paper>
+                            </div>
+                            : <span></span>
+                        }
                     </div> {/* end div left  */}
                     {/* div right  */}
                     <div className="col-md-6">
@@ -257,25 +263,25 @@ class waranty extends Component {
                                     </TableRow>
                                 </TableBody>
                             </Table>
-                            
+
                         </Paper>
                         <Timeline>
-                            {this.props.detailSeri.dsBH.map((item, index)=>{
-                            return<Timeline.Item key={index}>Waranty time:  {item.ngayTao}</Timeline.Item>
+                            {this.props.detailSeri.dsBH.map((item, index) => {
+                                return <Timeline.Item key={index}>Waranty time:  {item.ngayTao}</Timeline.Item>
                             })}
                         </Timeline>
                         <TextArea rows={4} placeholder="Inout note " value={this.state.contentWarany} onChange={(e) => {
                             this.setState({ contentWarany: e.target.value })
                         }} />
-                        
+
                         <div className="d-flex">
-                            <Button title="You only can wanrranty 3 time" disabled={this.props.detailSeri.dsBH.length===3? true: false} style={{ backgroundColor: "#009aff", marginTop: 7, color: "white" }}
+                            <Button title="You only can wanrranty 3 time" disabled={this.props.detailSeri.dsBH.length === 3 ? true : false} style={{ backgroundColor: "#009aff", marginTop: 7, color: "white" }}
                                 onClick={() => {
                                     this.addWarranty();
                                 }}          >
                                 Create Waranty Sheducle
                                 </Button>
-                            <Button hidden={typeof(this.props.userInfor.taiKhoan)==="undefined"?false : true} style={{ backgroundColor: "red", marginTop: 7, color: "white" }}
+                            <Button hidden={typeof (this.props.userInfor.taiKhoan) === "undefined" ? false : true} style={{ backgroundColor: "red", marginTop: 7, color: "white" }}
                                 onClick={() => {
                                     this.updateWarranty(1);
                                 }}          >
@@ -306,7 +312,7 @@ const mapDispatchToProps = (dispatch) => {
         addWarranty: (item) => {
             dispatch(addWarrantyAction(item))
         },
-        getDetailWaranty:(id)=>{
+        getDetailWaranty: (id) => {
             dispatch(getDetailWarantyAction(id))
         },
         updateWarranty: (item) => {

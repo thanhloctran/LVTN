@@ -128,13 +128,18 @@ class ImportProduct extends React.Component {
         },
       };
 
-    getFieldDecorator('keys', { initialValue: [] });
+    getFieldDecorator('keys', {rules: [
+      {
+        required: true,
+        message: 'Please input Seri Number!',
+      },
+    ], initialValue: [] });
     const keys = getFieldValue('keys');
     const formItems = keys.map((k, index) => (
       <Form.Item
         {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
         label={index === 0 ? 'Seri Number' : ''}
-        required={false}
+        required={true}
         key={k}
       >
         

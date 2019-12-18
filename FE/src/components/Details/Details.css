@@ -95,9 +95,9 @@
     color: gray;
     margin-left: 5px;
     font-size: 17px;
-    height: 575px;
+    max-height: 575px;
     font-size: 15px;
-    overflow: scroll;
+    overflow: auto;
     /* width: 73%; */
 
 }.details .description img{

@@ -25,7 +25,7 @@ import {
     componentDidMount() {   
         this.props.getDetailDiscountAD(this.props.match.params.id);
         setTimeout(()=>{
-            console.log(this.state.disscountInfor.dsSanPhamKM);
+            console.log(this.state.disscountInfor);
         },2000)
         
         
@@ -38,38 +38,6 @@ import {
     cancelDiscount = () => {
         let  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
         let maNV = retrievedObject.maND;
-        // this.props.form.validateFields((err, values) => {
-        //   if (!err) {
-        //     let dsSanPhamKM = [];
-        //     values.dsSanPham.forEach(element => {
-        //       let item = {
-        //         maSP: element,
-        //         giamGia: values.giamGia,
-        //       }
-        //       dsSanPhamKM.push(item);
-        //     });
-        //     const fieldsValue = {
-        //       'maKM': this.props.match.params.id,
-        //       'code': values.code,
-        //       'dsSanPhamKM': dsSanPhamKM,
-        //       'trangThai': 1,
-        //       'maNV': maNV,
-        //       'ngayBD': this.state.date[0],
-        //       'ngayKT': this.state.date[1],
-        //       'moTa': values.moTa,
-        //       'maKM': maKM
-        //     }
-        //     console.log("fieldsValue",fieldsValue);
-        //     if (this.props.match.params.id) {
-        //       this.props.updateDiscount(fieldsValue);
-        //     }
-        //     else {
-        //       this.props.addDiscount(fieldsValue);
-        //     }
-            
-    
-        //   }
-        // });
         let discount={
             ...this.state.disscountInfor,
             maNV: maNV,
@@ -127,7 +95,7 @@ import {
                                             <TableRow onClick={() => {
                                                 this.props.history.push("/details/" + item.maSP);
                                             }}>
-                                                <TableCell ><img style={{ width: "50px" }} alt="Product" src={item.hinhAnh} /></TableCell>
+                                                <TableCell style={{width:115}}><img style={{ width: "100%" }} alt="Product" src={item.hinhAnh} /></TableCell>
                                                 <TableCell  >{item.tenSP}</TableCell>
                                                 <TableCell style={{textAlign:"right"}}>{item.maSP}</TableCell>
                                             </TableRow>
@@ -154,7 +122,14 @@ import {
                                     margin="normal"
                                     variant="outlined"
                                 />
-                                {/* <hr/> */}
+                                <hr/>
+                                <p style={{ fontSize: "22px", color: "#504F5A" }}>Status :   {!this.state.disscountInfor.trangThai ? <span>
+                                    Openning
+                                </span>: <span>
+                                    Finished
+                                </span>}</p>
+                                  
+
                                 <p style={{ fontSize: "22px", color: "#504F5A" }}>Active Day</p>
                                 <RangePicker
                                     defaultValue={[moment(this.state.disscountInfor.ngayBD, dateFormat), moment(this.state.disscountInfor.ngayKT, dateFormat)]}
@@ -162,6 +137,7 @@ import {
                                     showTime
                                     disabled={true}
                                 />
+                                 
                                 <div style={{
                                     display: 'flex',
                                     justifyContent: 'space-between',

@@ -139,12 +139,13 @@ class ListOrderAD extends Component {
             title: "Action",
             render:(text, record) =>
                 <span key={record.maDDH}>
+                    {!this.props.userInfor.maLoaiND === "KH"|| this.props.userInfor.maLoaiND === "NV"|| typeof(this.props.userInfor.maLoaiND) === "undefined" ?
                   <Popconfirm title="Sure to delete?" 
                   onConfirm={() => this.props.deleteOrder(record.maDDH)}
                   >
                     <div style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
                             Delete </div>
-                  </Popconfirm>
+                  </Popconfirm>:<span>View</span>}
              </span>
           }
     ];
@@ -211,7 +212,8 @@ class ListOrderAD extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        listDataAD: state.rootReducerAD.listOrder
+        listDataAD: state.rootReducerAD.listOrder,
+        userInfor: state.rootReducer.userInfor
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -223,7 +225,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(deleteOrderAction(maDDH))
         },
         getListOrderCL: (maND,trangThai) => {
-            dispatch(getListOrderClientAction(maND,trangThai))
+            dispatch(getListOrderClientAction(maND,trangThai));
         },
     }
 }

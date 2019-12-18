@@ -84,16 +84,7 @@ const rootReducer = (state = initialState, action) => {
                         soLuongTon: state.cartItems[index].soLuongTon - 1
                     };
 
-
-                    // let clonepayloadSub = [...state.payloadSub];
-                    // clonepayloadSub[index] = {
-                    //     ...clonepayloadSub[index],
-                    //     soLuong: state.payloadSub[index].soLuong + action.payload.soLuong,
-                    // };
-
-
                     if (cloneCartItems[index].soLuongTon <= 0) {
-                        //console.log("ko đủ hàng");
                         Swal.fire({
                             type: 'error',
                             title: 'Oops...',
@@ -135,7 +126,7 @@ const rootReducer = (state = initialState, action) => {
                     // let number=0;
                     let cloneCartItems = [...state.cartItems];
 
-                    console.log(action.payload.soLuong, cloneCartItems[index].soLuong);
+                  //  console.log(action.payload.soLuong, cloneCartItems[index].soLuong);
 
                     if (action.payload.soLuong > cloneCartItems[index].soLuong) {
                         cloneCartItems[index] = {
@@ -155,7 +146,7 @@ const rootReducer = (state = initialState, action) => {
 
 
 
-                    if (cloneCartItems[index].soLuongTon <= 0) {
+                    if (cloneCartItems[index].soLuongTon < 0) {
                       //  console.log("ko đủ hàng");
                         state.showCartDialog = false;
                         Swal.fire({
