@@ -83,7 +83,7 @@ class ImportProduct extends React.Component {
         
         const fieldsValue = {
           'dsSanPham': dsSanPham,
-          'maCode': values.maCode,
+          // 'maCode': values.maCode,
           'ngayTao': values['ngayTao'].format('MM/DD/YYYY HH:mm:ss'),
           'trangThai': 1,
           'maNV': maNV,
@@ -169,7 +169,7 @@ class ImportProduct extends React.Component {
      
       <Form style={{marginTop:20}} {...formItemLayout} onSubmit={this.handleSubmit}>
 
-      <Form.Item label="Invoice'S ID">
+      {/* <Form.Item label="Invoice'S ID">
           {getFieldDecorator('maCode', {
             rules: [
               {
@@ -178,7 +178,7 @@ class ImportProduct extends React.Component {
               },
             ],
           })(<Input />)}
-        </Form.Item>
+        </Form.Item> */}
 
       <Form.Item label="Product's ID" hasFeedback>
             {getFieldDecorator('maSP', {
@@ -238,7 +238,7 @@ class ImportProduct extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-      userInfor: state.rootReducer.userInfor,
+      userInfor: state.rootReducerAD.userInfor,
       result: state.rootReducerAD.result,
       listProduct: state.rootReducerAD.listDataAD,
     //   listProducer: state.rootReducerAD.listProducer,

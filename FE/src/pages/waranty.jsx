@@ -19,6 +19,7 @@ import {
     addWarrantyAction,
     updateWarrantyAction
 } from './../redux/actions/AdminData';
+import Swal from 'sweetalert2';
 
 const { TextArea } = Input;
 
@@ -30,9 +31,9 @@ class waranty extends Component {
         seri: "",
         visible: (this.props.match.params.id) !== "undefined" ? false : true,
         detailSeri: {},
-        userInfor: this.props.userInfor
+        userInfor: this.props.userInfor,
     }
-
+    warantyTime="";
     showModal = () => {
         this.setState({
             visible: true,
@@ -54,29 +55,48 @@ class waranty extends Component {
             seri: value
         });
     }
-
+    
     addWarranty() {
         let item = {
             maSeri: this.state.seri,
             ngayTao: moment().format('MM/DD/YYYY HH:mm:ss'),
             noiDung: this.state.contentWarany,
         }
-        this.props.addWarranty(item);
+        const a = moment().format('MM/DD/YYYY')
+        const b = moment(this.warantyTime, 'MM/DD/YYYY')
+// Tính khoảng cách giữa hai ngày theo phút
+        if(b.diff(a, 'days')>=0){
+            this.props.addWarranty(item);
+            // console.log(b.diff(a, 'days'));
+            
+        }
+        else{
+            Swal.fire({
+                type: 'error',
+                title: 'Warranty expires',
+                text: "Oops...",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+        })
     }
-    updateWarranty(trangThai) {
+        
+    }
+    updateWarranty(trangThai, maNV) {
         let item = {
             maBH: parseInt(this.props.match.params.key),
             maSeri: this.props.detailWarranty.maSeri,
             ngayTao: this.props.detailWarranty.ngayTao,
             noiDung: this.state.contentWarany,
             trangThai: trangThai,
-            maNV: 1,
+            maNV: maNV,
         }
         console.log(item);
 
         this.props.updateWarranty(item);
     }
     componentDidMount() {
+        // this.getPeriodWarranrty(12);
         if (typeof (this.props.match.params.id) !== "undefined") {
             this.setState({
                 maSeri: this.props.match.params.id,
@@ -99,8 +119,15 @@ class waranty extends Component {
 
 
     render() {
+      const  getPeriodWarranrty=(date, month)=>{
+            var currentDate = moment(date);
+            var futureMonth = moment(currentDate).add(month, 'M');
+            this.warantyTime= futureMonth.format('MM/DD/YYYY');
+            return futureMonth.format('MM/DD/YYYY')
+        }
+        
         if (this.state.visible || typeof (this.state.detailSeri.sp) === "undefined" || typeof (this.state.detailSeri.pn) === "undefined") {
-            return <div style={{ margin: "8px" }}><Button type="primary" onClick={this.showModal}>
+            return <div style={{ margin: "8px" }}><Button  type="primary" onClick={this.showModal}>
                 Input Product Seri
         </Button>
                 <Modal
@@ -117,13 +144,17 @@ class waranty extends Component {
             </div>;
         }
         // console.log(this.state.item);
-
+        // this.getPeriodWarranrty(this.props.detailSeri.sp.thoiGianBH);
         return (
             <div className="m-2 ">
-                <Button type="primary" onClick={this.showModal}>
+                <Button  hidden={typeof(this.props.match.params.key)!=="undefined"} type="primary" onClick={this.showModal}>
                     Input Product Seri
             </Button>
-                <p className="detail-title">Product Seri #{this.props.detailSeri.sp.maSeri}</p>
+            <div className="d-flex justify-content-between mr-3 ml-3">
+            <p className="detail-title">Product Seri #{this.props.detailSeri.sp.maSeri}</p>
+    <p> EXP Waranty: {getPeriodWarranrty(this.props.detailSeri.ddh.ngayXuLy, this.props.detailSeri.sp.thoiGianBH)}</p>
+            </div>
+               
                 <div>
                     <Modal
                         title="Basic Modal"
@@ -275,15 +306,17 @@ class waranty extends Component {
                         }} />
 
                         <div className="d-flex">
-                            <Button title="You only can wanrranty 3 time" disabled={this.props.detailSeri.dsBH.length === 3 ? true : false} style={{ backgroundColor: "#009aff", marginTop: 7, color: "white" }}
+                            <Button hidden={typeof(this.props.match.params.key)!=="undefined"} title="You only can wanrranty 3 time" disabled={this.props.detailSeri.dsBH.length === 3 ? true : false} style={{ backgroundColor: "#009aff", marginTop: 7, color: "white" }}
                                 onClick={() => {
+                                    console.log(this.props.userInfor);
+                                    
                                     this.addWarranty();
                                 }}          >
                                 Create Waranty Sheducle
                                 </Button>
-                            <Button hidden={typeof (this.props.userInfor.taiKhoan) === "undefined" ? false : true} style={{ backgroundColor: "red", marginTop: 7, color: "white" }}
+                            <Button hidden={typeof(this.props.match.params.key)!=="undefined" && this.props.userInfor.maLoaiND==="NV" ? false : true} style={{ backgroundColor: "red", marginTop: 7, color: "white" }}
                                 onClick={() => {
-                                    this.updateWarranty(1);
+                                    this.updateWarranty(1, this.props.userInfor.maND);
                                 }}          >
                                 Check
                                 </Button>
@@ -300,7 +333,7 @@ const mapStateToProps = (state) => {
     return {
         detailWarranty: state.rootReducerAD.detailWarranty,
         detailSeri: state.rootReducerAD.detail,
-        userInfor: state.rootReducer.userInfor
+        userInfor: state.rootReducerAD.userInfor
     }
 }
 

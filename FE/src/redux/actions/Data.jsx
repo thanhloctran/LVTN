@@ -167,7 +167,7 @@ export const addOrderAction = (order) => {
       data: order
     }).then(result => {
       if(result.data==="success"){
-        handleSubmitMail(order.tenNguoiNhan, order.email, order.soDT, order.diaChiNhan,order.dsInMail, order.ngayTao, order.tongTien, order.tinhTrang);
+        // handleSubmitMail(order.tenNguoiNhan, order.email, order.soDT, order.diaChiNhan,order.dsInMail, order.ngayTao, order.tongTien, order.tinhTrang);
         clearCartAction();
       }
       dispatch({

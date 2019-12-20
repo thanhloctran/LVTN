@@ -116,7 +116,7 @@ class ConnectedHeader extends Component {
 const mapStateToProps = (state) => {
   return {
     // nrOfItemsInCard: state.rootReducer.cartItems.length,
-    userInfor: state.rootReducer.userInfor,
+    userInfor: state.rootReducerAD.userInfor,
     categories: state.rootReducer.categoryData,
   };
 };

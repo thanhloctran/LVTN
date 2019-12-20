@@ -361,7 +361,7 @@ const mapStateToProps = (state) => {
     paymentInfor: state.rootReducer.paymentInfor,
     checkedOutItems: state.rootReducer.checkedOutItems,
     totalPrice: state.rootReducer.totalPrice,
-    userInfor: state.rootReducer.userInfor,
+    userInfor: state.rootReducerAD.userInfor,
 
 
   }

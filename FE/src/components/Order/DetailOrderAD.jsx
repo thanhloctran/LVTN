@@ -320,7 +320,7 @@ const mapStateToProps = (state) => {
     return {
         item: state.rootReducerAD.orderDetail,
         result: state.rootReducerAD.result,
-        userInfor: state.rootReducer.userInfor
+        userInfor: state.rootReducerAD.userInfor
     }
 }
 

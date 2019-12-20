@@ -21,10 +21,10 @@ class InvoiceListAdmin extends Component {
       title: 'ID',
       dataIndex: 'maPN',
     },
-    {
-      title: 'Code Text',
-      dataIndex: 'maCode',
-    },
+    // {
+    //   title: 'Code Text',
+    //   dataIndex: 'maCode',
+    // },
     {
       title: 'Created Date',
       dataIndex: 'ngayTao',

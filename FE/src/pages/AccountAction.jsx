@@ -242,7 +242,6 @@ class Account extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    userInfor: state.rootReducer.userInfor,
     typeUser: state.rootReducer.listTypeUser,
     result: state.rootReducerAD.result
   }

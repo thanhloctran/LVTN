@@ -535,7 +535,7 @@ export const updateOrderStatusAction = (order) => {
       data: order
     }).then((result) => {
     //  console.log("infor", result.data);
-      handleSubmitMailUpdate(result.email);
+    //  handleSubmitMailUpdate(result.email);
       dispatch({
         type: CONSTANTS.UPDATEORDERSTATUS_AD,
         result: result.data

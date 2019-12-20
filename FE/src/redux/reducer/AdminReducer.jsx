@@ -12,6 +12,7 @@ const stateDefault = {
     listProvider: [],
     listProducer: [],
     listTypeProduct: [],
+    userInfor: sessionStorage.getItem("employee")?JSON.parse(sessionStorage.getItem('employee')) :{},
     result: "",
     deleteResult: "",
     statisticData: {},
@@ -33,7 +34,7 @@ function showMassage(type, mesage) {
 const rootReducerAD = (state = stateDefault, action) => {
     switch (action.type) {
         //get List data
-
+            
         case types.GET_LISTORDER_AD:  //order 
             {
                 state.listOrder = action.listOrderAD;

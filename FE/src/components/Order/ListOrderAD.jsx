@@ -213,7 +213,7 @@ class ListOrderAD extends Component {
 const mapStateToProps = (state) => {
     return {
         listDataAD: state.rootReducerAD.listOrder,
-        userInfor: state.rootReducer.userInfor
+        userInfor: state.rootReducerAD.userInfor
     }
 }
 const mapDispatchToProps = (dispatch) => {
