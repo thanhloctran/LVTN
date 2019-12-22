@@ -166,7 +166,7 @@ class ListOrderAD extends Component {
                                             onDoubleClick: event => {!this.props.match.params.id? this.props.history.push('/dashboard/detailorderAD/' + record.maDDH) : this.props.history.push('/detailorderUser/' + record.maDDH)}, // click row
                                         };
                                     }}
-                                    columns={this.columns} dataSource={this.props.listDataAD.reverse()} rowKey='maDDH' style={{ backgroundColor: "white" }} />
+                                    columns={this.columns} dataSource={this.props.listDataAD} rowKey='maDDH' style={{ backgroundColor: "white" }} />
                             </div>
                         </TabPane>
                         <TabPane tab="Checked Order" key="2">

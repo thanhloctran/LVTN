@@ -110,18 +110,14 @@ class payment extends Component {
   //submit form when click check out
   handleSubmit = e => {
     e.preventDefault();
-    if(!this.checkEmty()){
-      return ;
-    }
-    this.props.form.validateFields((err, values) => {
+    if(!this.checkEmty()){ return }
+      this.props.form.validateFields((err, values) => {
       if (!err) {
         let idKH = 0;
         if (typeof (this.props.userInfor.maND) !== "undefined") {
           idKH = this.props.userInfor.maND
         }
-        const fieldsValue = {
-          ...values,
-        }
+        const fieldsValue = {...values}
         this.cartInfor = {
           dsSanPham: this.props.checkedOutItems,
           tenNguoiNhan: fieldsValue.tenNguoiNhan,
@@ -136,15 +132,13 @@ class payment extends Component {
           email: fieldsValue.email,
           dsInMail:"",
           tongTien: (this.props.totalPrice).toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-            // maximumFractionDigits: 4
+          style: "currency",
+          currency: "USD",
           })
 
         }
         let dsach= "";
         this.props.checkedOutItems.map((item)=>{
-        
         dsach = dsach + `<div style=" width: 100%;display:flex ;margin: 0">
           <p style="width: 45%; text-align: left; border-bottom: 1px solid lightgray; padding: 9px 0px; font-size:14px" >${item.tenSP}</p> 
           <p style="text-align: left ; border-bottom: 1px solid lightgray; width: 18%;  padding: 9px 0px;  font-size:14px">
@@ -167,9 +161,6 @@ class payment extends Component {
         setTimeout(() => {
           this.props.addOrder(this.cartInfor);
         }, 1000)
-       
-
-
       }
     });
   }
@@ -190,7 +181,6 @@ class payment extends Component {
       }
       listProduct.push(productItem);
     });
-
     return actions.order.create({
       purchase_units: [{
         amount: {

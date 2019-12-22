@@ -10,7 +10,7 @@ export const handleSubmitMail=(tenNguoiNhan, email, soDT, diaChi, dsSanPham, nga
   const userId = 'user_QjJ2xI8tto5p7sBwmt4Jg';
   const receiveMail = email;
   let tinhTrangThanhToan= "Paid by PayPal"
-if(tinhTrang.toString()==='1'){
+if(tinhTrang.toString()!=='1'){
   tinhTrangThanhToan= "Pay in Delivery"
 }
   var templateParams = {
@@ -37,16 +37,6 @@ if(tinhTrang.toString()==='1'){
   });
   return;
 }
-
-
-
-// add cart into database
-// export const addShoppingCartAction = (cart) => {
-//   return {
-//     type: CONSTANTS.ADD_SHOPPING_CART,
-//     cart
-//   }
-// }
 
 //dang kí thành vien khách hàng. 
 export const addUserAction = (user) => {
@@ -153,7 +143,7 @@ export const addOrderAction = (order) => {
       data: order
     }).then(result => {
       if(result.data==="success"){
-        // handleSubmitMail(order.tenNguoiNhan, order.email, order.soDT, order.diaChiNhan,order.dsInMail, order.ngayTao, order.tongTien, order.tinhTrang);
+        handleSubmitMail(order.tenNguoiNhan, order.email, order.soDT, order.diaChiNhan,order.dsInMail, order.ngayTao, order.tongTien, order.tinhTrang);
         clearCartAction();
       }
       dispatch({

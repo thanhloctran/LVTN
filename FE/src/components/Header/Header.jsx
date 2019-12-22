@@ -52,7 +52,6 @@ class ConnectedHeader extends Component {
     //   this.props.dispatch(setLoggedInUser(retrievedObject));
     // }
     // console.log(this.props.userInfor);
-
   }
 
   render() {

@@ -252,9 +252,12 @@ class waranty extends Component {
                                         <TableBody>
                                             {/* MAP O DAY NE MOI NGUOI */}
                                             <TableRow >
-                                                <TableCell style={{ color: "#2EA5D4" }}>SRSP0201</TableCell>
-                                                <TableCell >NCC02</TableCell>
-                                                <TableCell align="right">$800.00</TableCell>
+                                <TableCell style={{ color: "#2EA5D4" }}>{this.props.detailSeri.sp.maSeri}</TableCell>
+                                <TableCell >{this.props.detailSeri.pn.maNCC}</TableCell>
+                                <TableCell align="right">{(this.props.detailSeri.pn.dsSanPhamNhap[0].donGia).toLocaleString("en-US", {
+                                                    style: "currency",
+                                                    currency: "USD"
+                                                })}</TableCell>
 
                                             </TableRow>
                                         </TableBody>
@@ -328,7 +331,7 @@ class waranty extends Component {
                                 }}          >
                                 Create Waranty Sheducle
                                 </Button>
-                            <Button  hidden={typeof(this.props.match.params.key)!=="undefined" && this.props.userInfor.maLoaiND==="NV" ? false : true} style={{ backgroundColor: "red", marginTop: 7, color: "white" }}
+                            <Button  hidden={this.props.userInfor.maLoaiND==="NV" && this.props.detailWarranty.trangThai!==1 ? false : true} style={{ backgroundColor: "red", marginTop: 7, color: "white" }}
                                 onClick={() => {
                                     this.updateWarranty(1, this.props.userInfor.maND);
                                 }}          >
