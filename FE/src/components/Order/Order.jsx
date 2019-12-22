@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Button from "@material-ui/core/Button";
@@ -38,19 +38,15 @@ class ConnectedOrder extends Component {
     donGia: 0
 
   }
-  // componentDidMount(){
-  //   console.log("check out", this.props.checkedOutItems);
 
-  // }
-  // constructor(props) {
-  //   super(props);
-  // }
   render() {
     let totalPrice = this.props.checkedOutItems.reduce((accumulator, item) => {
       // console.log(item);  
       return accumulator + item.donGia * item.soLuong;
     }, 0);
-
+    if(this.props.checkedOutItems.length===0){
+      return <Redirect to="/"/>
+    }
     return (
       <div style={{ padding: 10 }}>
         <div className="online-shop-title">

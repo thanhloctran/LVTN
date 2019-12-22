@@ -184,10 +184,10 @@ class Home extends Component {
                         <img style={{width:"100%"}} src="https://didongmoi.com.vn/site/pictures/categories/1543636654_banner-gif-1.gif" alt=""/>
                     </div>
                 </div>
-                {/* list product discount */}
+                {this.props.listDiscountProduct.length!==0?
                 <div className="home-container list-discount">
                     <p className="listHome-title">Product in Discount</p>
-                    <div className="listhome-content" style={{ height: 830 }}>
+                    <div className="listhome-content" style={{ maxHeight: 830 }}>
                         <div className="list-head">
                             <img className="wow flash" data-wow-iteration="3" alt="#" src="./img/background.jpg" style={{ width: "100%", height: "50%" }} />
                             <img className="wow fadeInDown" alt="#" src="./img/1.png" style={{ width: "100%", height: "50%", marginTop: 10 }} />
@@ -199,7 +199,7 @@ class Home extends Component {
                     </div>
                     <p className="text-view wow flash" data-wow-duration="2s" data-wow-iteration="infinite" onClick={() => { this.props.history.push("/search/?category=Discount") }}>View All</p>
 
-                </div>
+                </div>:<div></div>}
                 {/* list image icon phone brand */}
                 <div className="list-icon mt-3">
                     <span className="icon-laptop wow bounceInRight" data-wow-delay="0.1s" onClick={() => {
@@ -245,7 +245,7 @@ class Home extends Component {
                 {/* list product high rate */}
                 <div className="home-container list-discount">
                     <p className="listHome-title wow bounceIn">Product High Rate</p>
-                    <div className="listhome-content" style={{ height: 830 }}>
+                    <div className="listhome-content" style={{ maxHeight: 830 }}>
                         <div className="list-head">
                             <img className="wow flash" data-wow-iteration="3" alt="#" src="./img/background.jpg" style={{ width: "100%", height: "50%", }} />
                             <img className="wow fadeInDown" alt="#" src="./img/1.png" style={{ width: "100%", height: "50%", marginTop: 10 }} />

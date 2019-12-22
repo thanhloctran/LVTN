@@ -20,6 +20,7 @@ import {
     updateWarrantyAction
 } from './../redux/actions/AdminData';
 import Swal from 'sweetalert2';
+// import { swalError } from '../components/Dialog/Swal';
 
 const { TextArea } = Input;
 
@@ -89,6 +90,7 @@ class waranty extends Component {
             ngayTao: this.props.detailWarranty.ngayTao,
             noiDung: this.state.contentWarany,
             trangThai: trangThai,
+            ngayXuLy: moment().format("MM/DD/YYYY HH:mm:ss"),
             maNV: maNV,
         }
         console.log(item);
@@ -126,7 +128,7 @@ class waranty extends Component {
             return futureMonth.format('MM/DD/YYYY')
         }
         
-        if (this.state.visible || typeof (this.state.detailSeri.sp) === "undefined" || typeof (this.state.detailSeri.pn) === "undefined") {
+        if (this.state.visible || typeof (this.state.detailSeri.sp) === "undefined" || typeof (this.state.detailSeri.pn) === "undefined" ) {
             return <div style={{ margin: "8px" }}><Button  type="primary" onClick={this.showModal}>
                 Input Product Seri
         </Button>
@@ -143,6 +145,18 @@ class waranty extends Component {
 
             </div>;
         }
+        
+        // if(!this.props.detailSeri.dhh !== null){
+        //     return  Swal.fire({
+        //         type: 'error',
+        //         title: 'Warranty expires',
+        //         text: "Oops...",
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#3085d6',
+        //         cancelButtonColor: '#d33',
+        // })
+    
+        // }
         // console.log(this.state.item);
         // this.getPeriodWarranrty(this.props.detailSeri.sp.thoiGianBH);
         return (
@@ -150,7 +164,7 @@ class waranty extends Component {
                 <Button  hidden={typeof(this.props.match.params.key)!=="undefined"} type="primary" onClick={this.showModal}>
                     Input Product Seri
             </Button>
-            <div className="d-flex justify-content-between mr-3 ml-3">
+            <div className="d-flex justify-content-between mr-3 ">
             <p className="detail-title">Product Seri #{this.props.detailSeri.sp.maSeri}</p>
     <p> EXP Waranty: {getPeriodWarranrty(this.props.detailSeri.ddh.ngayXuLy, this.props.detailSeri.sp.thoiGianBH)}</p>
             </div>
@@ -219,7 +233,7 @@ class waranty extends Component {
                             </Table>
                         </Paper>
 
-                        {!this.props.userInfor.maLoaiND === "KH" || this.props.userInfor.maLoaiND === "NV" || typeof (this.props.userInfor.maLoaiND) === "undefined" ?
+                        {this.props.userInfor.maLoaiND==="NV"?
                             <div>
                                 <div className=" d-flex justify-content-between detail-title-head">
                                     <p style={{ fontSize: 23 }}>Inoivce #{this.props.detailSeri.pn.maPN} <br /> <span style={{ fontSize: 15, color: "gray" }}>Created on {this.props.detailSeri.pn.ngayTao}</span></p>
@@ -298,7 +312,7 @@ class waranty extends Component {
                         </Paper>
                         <Timeline>
                             {this.props.detailSeri.dsBH.map((item, index) => {
-                                return <Timeline.Item key={index}>Waranty time:  {item.ngayTao}</Timeline.Item>
+                                return <Timeline.Item key={index}>Waranty time:  {item.ngayTao} <span style={{float:"right"}}>FullFill Time: {!item.ngayXuLy?"Not Handel" :item.ngayXuLy } &nbsp; </span> </Timeline.Item>
                             })}
                         </Timeline>
                         <TextArea rows={4} placeholder="Inout note " value={this.state.contentWarany} onChange={(e) => {
@@ -314,7 +328,7 @@ class waranty extends Component {
                                 }}          >
                                 Create Waranty Sheducle
                                 </Button>
-                            <Button hidden={typeof(this.props.match.params.key)!=="undefined" && this.props.userInfor.maLoaiND==="NV" ? false : true} style={{ backgroundColor: "red", marginTop: 7, color: "white" }}
+                            <Button  hidden={typeof(this.props.match.params.key)!=="undefined" && this.props.userInfor.maLoaiND==="NV" ? false : true} style={{ backgroundColor: "red", marginTop: 7, color: "white" }}
                                 onClick={() => {
                                     this.updateWarranty(1, this.props.userInfor.maND);
                                 }}          >

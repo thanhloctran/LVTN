@@ -1,17 +1,17 @@
 import React, { Component } from "react";
+import {
+  getListCategoryAction,
+} from './../../redux/actions/AdminData';
 import "./Menu.css";
 import { NavLink } from "react-router-dom";
-import queryString from "query-string";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 import { loadCSS } from "fg-loadcss/src/loadCSS";
 import Icon from "@material-ui/core/Icon";
-import { getMenuDataAction } from './../../redux/actions/Data'
-// import { Menu } from 'antd';
+import { Menu } from 'antd';
+// import { CircularProgress } from "@material-ui/core";
+const { SubMenu } = Menu;
 
-// const { SubMenu } = Menu;
 
 
 class ConnectedMenu extends Component {
@@ -19,102 +19,119 @@ class ConnectedMenu extends Component {
     super(props);
 
     this.state = {
-      // Keep track of expanded title items in menu
-      expandedItems: this.props.categoryData.reduce((accum, current) => {
-        if (current.type === "title") {
-          accum[current.id] = true;
-        }
-        return accum;
-      }, {})
+      collapsed: false,
+      listCategory:[]
     };
 
   }
-  componentWillMount() {
-    this.props.getMenuData();
-  }
+  toggleCollapsed = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  };
+
   componentDidMount() {
     loadCSS("https://use.fontawesome.com/releases/v5.1.0/css/all.css");
-
-
+    this.props.getListCategoryAD();
+    
   }
 
+  static getDerivedStateFromProps(nextProps, prevState){
+    return{
+        ...prevState, listCategory: nextProps.listCategory
+    }
+}
   render() {
-    const styleActive={
-      color: "white" ,
-      transition: "0.5s",
-      backgroundColor: "orange",
-      textDecoration: "none"
+
+    const styleActive = {
+      color: "orange",
+      fontWeight: "bold"
+    }
+    if(typeof(this.state.listCategory)==="undefined"){
+      return <span></span>
     }
     if (!this.props.showMenu) return null;
     return (
-      <div className="menu" >
-        {
-          this.props.categoryData
-            .filter(y => {
-              // If needed, filter some menu items first.
-              if (y.parentID && !this.state.expandedItems[y.parentID]) return false;
-              if (y.protected && !this.props.loggedInUser) return false;
-              return true;
-            })
-            .map((x, i) => {
-              if (x.type === "item") {
-                return (
-                  <NavLink 
-                    style={{display:"block"}}
-                    to={x.url}
-                    exact
-                    isActive={(_, location) => {
+      <div className="userMenu">
+        <div style={{ width: "100%", height: "100%", backgroundColor: "#001529" }}>
+          <Menu
+            defaultOpenKeys={['sub1','sub2']}
+            mode="inline"
+            theme="dark"
+            inlineCollapsed={this.state.collapsed}
 
-                      // If there is a query string, we have some manual way to decide which menu item is active.
-                      if (location.search) {
-                        let categoryFromQS = queryString.parse(location.search)
-                          .category;
-                        let isDirectClick =
-                          queryString.parse(location.search).term === undefined;
-                        return isDirectClick && x.name === categoryFromQS;
-                      }
-
-                      return x.url === location.pathname;
-                    }}
-                    className="item-menuad"
-                    key={i}
-                    activeStyle={styleActive}
-                  >
-                    <div className="menuItem">
-                      <Icon
-                        className={x.icon}
-                        style={{ fontSize: 22, width: 30, marginRight: 10 }}
-                      />
-                      {x.name}
+          >
+            <SubMenu
+              key="sub1"
+              title={
+                <div>
+               PRODUCT CATEGORY
                     </div>
-                  </NavLink>
-                );
-              } else if (x.type === "title") {
-                return (
-                  <div
-                    key={i}
-                    className="menuTitle"
-                    onClick={() => {
-                      this.setState(ps => {
-                        return {
-                          expandedItems: {
-                            ...ps.expandedItems,
-                            [x.id]: !ps.expandedItems[x.id]
-                          }
-                        };
-                      });
-                    }}
-                  >
-                    <span style={{ flex: 1 }}>{x.name}</span>
-                    {this.state.expandedItems[x.id] ? <ExpandLess /> :   <ExpandMore />}
-                  </div>
-                );
+                // </NavLink>
               }
-              return null;
-
-
+            >
+              <Menu.Item key="1">
+              <NavLink
+                to={"/search/?category=All%20categories"}
+                exact
+                activeStyle={styleActive}
+              >
+                <div>
+                  <Icon
+                    className="fas fa-chart-pie"
+                    style={{ fontSize: 22, width: 30, marginRight: 5 }}
+                  />
+                  All Category</div>
+              </NavLink>
+            </Menu.Item>
+            {this.state.listCategory.map((item, index)=>{
+              return <Menu.Item key={item.maLoaiSP}>
+              <NavLink
+                to={`/search/?category=${item.maLoaiSP}`}
+                exact
+                activeStyle={styleActive}
+              >
+                <div>
+                  <Icon
+                    className={item.icon}
+                    style={{ fontSize: 22, width: 30, marginRight: 5 }}
+                  />
+                  {item.tenLoai}</div>
+              </NavLink>
+            </Menu.Item>
             })}
-            <div></div>
+            </SubMenu>
+            <SubMenu
+              key="sub2"
+              title={
+                <div> FILTER PRODUCT </div>
+              }
+            >
+              <Menu.Item key="2">
+                <NavLink
+                  to={"/search/?category=Discount"}
+                  exact
+                  activeStyle={styleActive}
+                >ON SALE
+                  </NavLink></Menu.Item>
+              <Menu.Item key="3">
+                <NavLink
+                  to={"/search/?category=Bestseller"}
+                  exact
+                  activeStyle={styleActive}
+                >BEST SELLER
+                  </NavLink></Menu.Item>
+              <Menu.Item key="4">
+                <NavLink
+                  to={"/search/?category=HighRate"}
+                  exact
+                  activeStyle={styleActive}
+                >HIGH RATE
+                  </NavLink></Menu.Item>
+            </SubMenu>
+          </Menu>
+        </div>
+
       </div>
     );
   }
@@ -124,20 +141,17 @@ class ConnectedMenu extends Component {
 const mapStateToProps = (state) => {
   return {
     showMenu: state.rootReducer.showMenu,
-    checkedOutItems: state.rootReducer.checkedOutItems,
-    loggedInUser: state.rootReducer.loggedInUser,
-    categoryData: state.rootReducer.categoryData,
-    expandedItems: state.rootReducer.expandedItems,
-
+    listCategory: state.rootReducerAD.listCategory,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getMenuData: () => {
-      dispatch(getMenuDataAction())
-    }
+    getListCategoryAD: () => {
+      dispatch(getListCategoryAction())
+    },
+
   }
-}
+};
 
 const MenuClient = withRouter(connect(mapStateToProps, mapDispatchToProps)(ConnectedMenu));
 export default MenuClient;

@@ -27,7 +27,7 @@ class ConnectedDetailsLoc extends Component {
     soLuong: "1",
     item: {},
     itemCopy: {},
-    unfinishedTasks: 0,
+    // unfinishedTasks: 0,
     comment: { //comment
       maSP: this.props.match.params.id,
       noiDung: "",
@@ -39,8 +39,6 @@ class ConnectedDetailsLoc extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps.item);
-
     return {
       ...prevState, item: nextProps.item
     }
@@ -49,16 +47,15 @@ class ConnectedDetailsLoc extends Component {
   componentDidMount() {
     this.isCompMounted = true;
     this.props.getDetailProduct(this.props.match.params.id);
-    this.props.getListComment(this.props.match.params.id);
+    // this.props.getListComment(this.props.match.params.id);
   }
-  componentDidUpdate(prevProps, prevState) {
-    console.log("prevProps", prevProps);
-    if (prevProps.item.maSP !== prevState.item.maSP) {
-      this.props.getDetailProduct(this.props.match.params.id);
-
-    }
-    return;
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   console.log("prevProps", prevProps);
+  //   if (prevProps.item.maSP !== prevState.item.maSP) {
+  //     this.props.getDetailProduct(this.props.match.params.id);
+  //   }
+  //   return;
+  // }
 
   componentWillUnmount() {
     this.isCompMounted = false;
@@ -92,17 +89,31 @@ class ConnectedDetailsLoc extends Component {
       ...this.state,
       soLuong: value,
     })
-    let soLuong = parseInt(value, 10);
-    let soLuongTon = this.state.item.soLuongTon;
-    this.props.updateCartItemQnt({
-      maSP: this.state.item.maSP,
-      soLuong,
-      soLuongTon
-    }
-    )
+    // let soLuong = parseInt(value, 10);
+    // let soLuongTon = this.state.item.soLuongTon;
+    // this.props.updateCartItemQnt({
+    //   maSP: this.state.item.maSP,
+    //   soLuong,
+    //   soLuongTon
+    // }
+    // )
+  }
+  handleAddCart=()=>{
+    let invertoryReduce = this.state.item.soLuongTon - this.state.soLuong;
+    this.setState({
+      itemCopy: {
+        ...this.state.item,
+        soLuong: parseInt(this.state.soLuong),
+        soLuongTon: invertoryReduce
+      }
+    })
+    setTimeout(() => {
+      this.props.addItemInCart(this.state.itemCopy);
+      // console.log(this.state.item)
+    }, 500)
   }
   render() {
-    if (this.state.unfinishedTasks !== 0 || !this.state.item || !this.state.item.binhLuan) {
+    if ( !this.state.item || !this.state.item.binhLuan) {
       return <CircularProgress className="circular" />;
     }
 
@@ -135,10 +146,11 @@ class ConnectedDetailsLoc extends Component {
       return true;
     }
 
-
+    
+    
     return (
       <div className="details">
-        {/* {console.log(this.state.item)} */}
+       {/* {console.log("cloneCartItems",this.props.cloneCartItems)} */}
         <div style={{ display: "flex" }}>
           <div className="details-image">
             {/* <Slider {...settings}>
@@ -216,27 +228,15 @@ class ConnectedDetailsLoc extends Component {
                 </div>
               )}
 
-            <InputNumber min={1} defaultValue={this.state.soLuong} onChange={this.onChangeNumber} />
+            <InputNumber min={1} 
+            // max={this.state.item.soLuongTon} 
+            defaultValue={this.state.soLuong} onChange={this.onChangeNumber} />
 
             <Button
               className="button-add"
               type="primary"
               onClick={() => {
-                let invertoryReduce = this.state.item.soLuongTon - 1;
-                // console.log(this.state.item);
-                this.setState({
-                  itemCopy: {
-                    ...this.state.item,
-                    soLuong: parseInt(this.state.soLuong),
-                    soLuongTon: invertoryReduce
-                  }
-                })
-                setTimeout(() => {
-                  this.props.addItemInCart(this.state.itemCopy);
-                  console.log(this.state.item);
-
-                }, 500)
-
+                this.handleAddCart();
               }}
             >
               Add to Cart &nbsp; <AddShoppingCartIcon style={{ marginLeft: 5 }} />
@@ -267,7 +267,7 @@ class ConnectedDetailsLoc extends Component {
                 marginTop: 20,
                 marginBottom: 20,
               }}
-              dangerouslySetInnerHTML={{ __html: "Not available" }}
+              dangerouslySetInnerHTML={{ __html: "Decription is not available" }}
             />
           )}
 
@@ -319,7 +319,8 @@ class ConnectedDetailsLoc extends Component {
                     <div style={{ marginBottom: 15 }} key={index}>
                       <p className="comment-account">#{item.binhLuan.taiKhoan}</p>
                       <p className="comment-date">{item.binhLuan.ngayTao}</p>
-                      <div><Rate allowHalf disabled defaultValue={item.binhLuan.danhGia} />
+                      <div>
+                        <Rate allowHalf disabled value={item.binhLuan.danhGia} />
                         &nbsp;  <span className="comment-text">{item.binhLuan.noiDung}</span>
                       </div>
                       {item.dsHoiDap.map((item2, index) => {
@@ -381,6 +382,7 @@ const mapStateToProps = (state) => {
     user: state.rootReducer.userInfor,
     item: state.rootReducer.productDetail,
     listComment: state.rootReducer.listComment,
+    cloneCartItems: state.rootReducer.cartItems
     // result: state.rootReducer.result
   };
 };

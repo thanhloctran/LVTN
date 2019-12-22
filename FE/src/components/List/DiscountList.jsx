@@ -32,10 +32,6 @@ class DiscountListAdmin extends Component {
 
   columns = [
     {
-      title: 'Code Text',
-      dataIndex: 'code',
-    },
-    {
       title: 'Started Date',
       dataIndex: 'ngayBD',
     },
@@ -54,9 +50,9 @@ class DiscountListAdmin extends Component {
       render(dataIndex) {
         return (!dataIndex ?
           <div style={{ color: "#375975" }}> <i className="fas fa-circle" style={{ color: "#lightgray", fontSize: 10 }}></i> &nbsp;
-                Close   </div> :
+                Closed   </div> :
           <div><i className="fas fa-circle" style={{ color: "#13BEBB", fontSize: 10 }}></i> &nbsp;
-                 Open   </div>)
+                 Opening   </div>)
       }
     },
     {
@@ -67,8 +63,7 @@ class DiscountListAdmin extends Component {
            {/* <span onClick={()=> this.props.history.push("/dashboard/discountCRUD/" + record.maKM)} >Edit </span>
           <Divider type="vertical" /> */}
           <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteDiscountAD(record.maKM)}>
-          <span style={{ backgroundColor: "rgb(234, 66, 66)" }} className="statusInList"> 
-                            Delete </span>
+          <div className="btn-action">  Delete</div>
           </Popconfirm>
         </span>
 

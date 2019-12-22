@@ -1,5 +1,5 @@
 import * as CONSTANTS from "../constants/Data";
-import firebase from 'firebase';
+// import firebase from 'firebase';
 import axios from 'axios';
 import { domain } from './../../config/setting'
 
@@ -38,20 +38,6 @@ if(tinhTrang.toString()==='1'){
   return;
 }
 
-
-export const getMenuDataAction = () => {
-  return dispatch => {
-    firebase.database().ref().child("Categories").once("value").then((snapshot) => {
-      dispatch({
-        type: CONSTANTS.GET_MENU_DATA,
-        categoryData: snapshot.val()
-      })
-    }).catch((error) => {
-      console.log(error.massage);
-
-    })
-  }
-}
 
 
 // add cart into database

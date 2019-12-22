@@ -157,26 +157,7 @@ class ProductAction extends React.Component {
           </Form.Item>
 
 
-          <div className="editor" >
-            <p className="editor-title">Decription</p>
-            <CKEditor
-              editor={ClassicEditor}
-              data={
-                typeof(this.state.productInfor.moTa) === "undefined" ?
-                " " : this.state.productInfor.moTa
-                 
-                // this.state.productInfor.moTa
-              }
-
-              onChange={(event, editor) => {
-                const data = editor.getData();
-                this.decription = data;
-                console.log({ event, editor, data });
-              }}
-
-            />
-
-          </div>
+        
           {/* <br style={{ clear: "both", display: "block", margin:"40px 0"  }} /> */}
 
          
@@ -226,6 +207,26 @@ class ProductAction extends React.Component {
               </Upload>,
             )}
           </Form.Item>
+          <div className="editor" >
+            <p className="editor-title">Decription</p>
+            <CKEditor
+              editor={ClassicEditor}
+              data={
+                typeof(this.state.productInfor.moTa) === "undefined" ?
+                " " : this.state.productInfor.moTa
+                 
+                // this.state.productInfor.moTa
+              }
+
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                this.decription = data;
+                console.log({ event, editor, data });
+              }}
+
+            />
+
+          </div>
           <div className="d-flex" style={{ marginLeft: 25 }}>
             <Form.Item>
               <Button type="primary" htmlType="submit">

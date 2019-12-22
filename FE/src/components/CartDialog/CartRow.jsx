@@ -18,8 +18,8 @@ const CartRow = props => {
   let { item } = props;
 
   function onChange(value) {
-    console.log("item", item); 
-    console.log("soluong", value);
+    // console.log("item", item); 
+    // console.log("soluong", value);
     
     let soLuong = parseInt(value, 10);
     let soLuongTon = item.soLuongTon;

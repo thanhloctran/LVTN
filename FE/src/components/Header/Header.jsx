@@ -46,21 +46,21 @@ class ConnectedHeader extends Component {
     anchorEl: null,
     categoryFilter: categories[0].name
   };
-  componentDidMount(){
+  componentDidMount() {
     // if(sessionStorage.getItem("custommer")){
     //   let  retrievedObject = JSON.parse(sessionStorage.getItem('custommer'));
     //   this.props.dispatch(setLoggedInUser(retrievedObject));
     // }
     // console.log(this.props.userInfor);
-    
+
   }
-  
+
   render() {
-    if(this.props.categories.length!==0){
+    if (this.props.categories.length !== 0) {
       // console.log(this.props.categories);
-      
+
     }
-    
+
     let { anchorEl } = this.state;
     return (
       <AppBar className="bg-light d-flex justify-content-between Appbar">
@@ -103,7 +103,7 @@ class ConnectedHeader extends Component {
               </Select>
 
               <Button
-                style={{ marginLeft: 20, color:"tomato" }}
+                style={{ marginLeft: 20, color: "tomato" }}
                 variant="outlined"
                 // color="primary"
                 onClick={() => {
@@ -117,7 +117,7 @@ class ConnectedHeader extends Component {
                 }}
               >
                 {" "}
-                <SearchIcon    style={{color:"tomato" }} size="small" />Search
+                <SearchIcon style={{ color: "tomato" }} size="small" />Search
             </Button>
             </div>
 
@@ -125,7 +125,7 @@ class ConnectedHeader extends Component {
           <div className="right-part">
             <Button
               variant="contained" color="secondary"
-              style={{ position: "fixed", cursor:"pointer" , left:20, bottom:20,  }}
+              style={{ position: "fixed", cursor: "pointer", left: 20, bottom: 20, }}
               className="wow flash" data-wow-iteration="10"
               onClick={() => {
                 this.props.history.push("/warranty");
@@ -133,11 +133,11 @@ class ConnectedHeader extends Component {
             >
               Guarantee
             </Button>
-            {!sessionStorage.getItem("custommer")&& !sessionStorage.getItem("employee")  ? (
+            {!this.props.userInfor.taiKhoan? (
               <Button
-              
+
                 variant="contained" color="secondary"
-                style={{ marginRight: 20, cursor:"pointer" }}
+                style={{ marginRight: 20, cursor: "pointer" }}
                 onClick={() => {
                   this.props.history.push("/login");
                 }}
@@ -149,7 +149,7 @@ class ConnectedHeader extends Component {
                   onClick={event => {
                     this.setState({ anchorEl: event.currentTarget });
                   }}
-                  style={{ backgroundColor: "#3f51b5", marginLeft: 50  , cursor:"pointer"}}
+                  style={{ backgroundColor: "#3f51b5", marginLeft: 50, cursor: "pointer" }}
                 >
                   <Person />
                 </Avatar>
@@ -180,16 +180,35 @@ class ConnectedHeader extends Component {
               >
                 Pending Order
               </MenuItem>
-              <MenuItem
-              onClick={() => {
-                this.setState({ anchorEl: null });
-                this.props.history.push("/account/"+this.props.userInfor.taiKhoan);
-              }}
-            >
-              Setting Account
+              {this.props.userInfor.maLoaiND === "NV" ? (
+                <MenuItem
+                  onClick={() => {
+                    this.setState({ anchorEl: null });
+                    this.props.history.push("/dashboard/admin");
+                  }}
+                >
+                  Dashboard
             </MenuItem>
-              
-              
+              ) : (
+                  <MenuItem
+                    onClick={() => {
+                      this.setState({ anchorEl: null });
+                      this.props.history.push("/userOrder/" + this.props.userInfor.taiKhoan + "/0");
+                    }}
+                  >
+                    Monitor Order
+            </MenuItem>
+                )}
+              <MenuItem
+                onClick={() => {
+                  this.setState({ anchorEl: null });
+                  this.props.history.push("/account/" + this.props.userInfor.taiKhoan);
+                }}
+              >
+                Setting Account
+            </MenuItem>
+
+
               <MenuItem
                 onClick={() => {
                   this.setState({ anchorEl: null });
@@ -215,25 +234,7 @@ class ConnectedHeader extends Component {
               >
                 Log out
               </MenuItem>
-              {this.props.userInfor.maLoaiND ==="NV" ? (
-              <MenuItem
-              onClick={() => {
-                this.setState({ anchorEl: null });
-                this.props.history.push("/dashboard/admin");
-              }}
-              >
-              Dashboard
-            </MenuItem>
-            ) : (
-              <MenuItem
-              onClick={() => {
-                this.setState({ anchorEl: null });
-                this.props.history.push("/userOrder/"+this.props.userInfor.taiKhoan+"/0");
-              }}
-            >
-              Monitor Order
-            </MenuItem>
-              )}
+
 
             </Menu>
           </div>

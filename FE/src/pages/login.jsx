@@ -11,8 +11,6 @@ import {
   Button,
 } from 'antd';
 
-// var provider = new firebase.auth.FacebookAuthProvider();
-
 
 class ConnectedLogin extends Component {
   handleSubmit = e => {
@@ -36,8 +34,11 @@ class ConnectedLogin extends Component {
     const { from } = this.props.location.state || { from: { pathname: "/" } };
     
     // If user was authenticated, redirect her to where she came from.
-    if (this.props.loginStatus) {
+    if (this.props.loginStatus==="NV") {
       return <Redirect to={from} />;
+    }
+    if (this.props.loginStatus || this.props.loginStatus==="KH") {
+      return <Redirect to="/" />
     }
 
     return (

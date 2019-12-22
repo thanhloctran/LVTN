@@ -1,7 +1,7 @@
 import React, { Fragment  } from "react"
 import "./App.css"
-import firebase from 'firebase'
-import firebaseConfig from './firebaseConfig'
+// import firebase from 'firebase'
+// import firebaseConfig from './firebaseConfig'
 import { Switch} from "react-router-dom"
 import {BrowserRouter} from "react-router-dom"
 
@@ -45,7 +45,7 @@ import DetailProduct from "./components/Details/DetailProduct"
 import waranty from "./pages/waranty"
 import WarrantyList from "./components/List/WarrantyList"
 
-firebase.initializeApp(firebaseConfig);
+// firebase.initializeApp(firebaseConfig);
 
 function App(props) {
 
@@ -64,7 +64,6 @@ function App(props) {
             <HomeTemplate  path="/warranty" Component={waranty} />
             <HomeTemplate path="/order" Component={Order}  />
             <HomeTemplate  path="/account/:id" Component={AccountAction}/>
-            {/* <HomeTemplate  path="/detailorder/:id" Component={DetailOrder}/> */}
             <HomeTemplate  path="/userOrder/:id/:status" Component={ListOrderAD} />
             
             <AdminTemplate path='/dashboard/admin' Component={Admin}/>

@@ -39,3 +39,13 @@
     background-color: #f39f10 !important;
     color: white !important;
   }
+  .btn-action{
+    background-color: rgb(234, 66, 66);
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+}
+.btn-action:hover{
+  cursor: pointer;
+}
+  

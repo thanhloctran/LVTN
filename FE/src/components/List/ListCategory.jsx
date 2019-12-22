@@ -217,7 +217,7 @@ class EditableTable extends React.Component {
     return (
         <div style={{ padding: 10 }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div className="online-shop-title"> CATEGOIES </div>
+          <div className="online-shop-title"> CATEGORIES </div>
         </div>
 
       <div>
@@ -239,7 +239,7 @@ class EditableTable extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-      listDataAD: state.rootReducerAD.listDataAD,
+      listDataAD: state.rootReducerAD.listCategory,
     }
   };
   const mapDispatchToProps = (dispatch) => {

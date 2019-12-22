@@ -19,44 +19,34 @@ const { Option } = Select;
 class Account extends React.Component {
   state = {
     confirmDirty: false,
-    userInfor: {},
+    detailUser: {},
     employeeAccount:""
   };
 
   componentDidMount() {
     console.log(this.props.match.params.id);
     
-    if(typeof(this.props.match.params.id)==="undefined" && this.props.match.params.id!==""){
-      let  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
-      this.setState({
-        ...this.state,
-        employeeAccount: retrievedObject.taiKhoan,
-      });
-      this.props.getDetailUser(retrievedObject.taiKhoan);
+    if(typeof(this.props.match.params.id)==="undefined"){
+      this.props.getDetailUser(this.props.userInfor.taiKhoan);
     }
     else{
       this.props.getDetailUser(this.props.match.params.id);
     }
-    
-    // console.log(this.props.userInfor);
     
   }
   componentDidUpdate(prevProps, prevState) {
-    //console.log(this.props.match.params.id);
-    
-    if(typeof(this.props.match.params.id)==="undefined" && this.props.match.params.id!==""){
-      let  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
-      this.props.getDetailUser(retrievedObject.taiKhoan);
-    }
-    else{
-      this.props.getDetailUser(this.props.match.params.id);
-    }
+    // if(typeof(this.props.match.params.id)==="undefined" && this.props.match.params.id!==""){
+    //   this.props.getDetailUser(this.props.userInfor.taiKhoan);
+    // }
+    // else{
+    //   this.props.getDetailUser(this.props.match.params.id);
+    // }
     
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return {
-      ...prevState, userInfor: nextProps.userInfor
+      ...prevState, detailUser: nextProps.detailUser
     }
   }
 
@@ -68,7 +58,7 @@ class Account extends React.Component {
           ...values,
           'ngaySinh': values['ngaySinh'].format('MM-DD-YYYY'),
           'trangThai': 1,
-          'maND': this.state.userInfor.maND
+          'maND': this.state.detailUser.maND
         }
         // console.log('Received values of form: ', fieldsValue);
         if (this.props.match.params.id!=="null") {
@@ -127,11 +117,11 @@ class Account extends React.Component {
                   required: true,
                   message: 'Please input Account Name!',
                 },
-              ], initialValue: this.state.userInfor.taiKhoan
+              ], initialValue: this.state.detailUser.taiKhoan
             })(<Input />)}
           </Form.Item>
 
-            {/* {this.state.userInfor.taiKhoan === this.state.employeeAccount ? */}
+            {typeof(this.props.match.params.id)=== "undefined" || this.props.match.params.id === this.state.detailUser.taiKhoan ?
                 <Form.Item label="Password" hasFeedback>
                 {getFieldDecorator('matKhau', {
                   rules: [
@@ -142,18 +132,18 @@ class Account extends React.Component {
                     {
                       validator: this.validateToNextPassword,
                     },
-                  ], initialValue: this.state.userInfor.matKhau
+                  ], initialValue: this.state.detailUser.matKhau
                 })(<Input.Password />)}
               </Form.Item>
-              {/* :
+               :
               <div></div>
                 
-          } */}
+          } 
             
          
 
           <Form.Item label="Full Name">
-            {getFieldDecorator('hoTen', {rules: [{required: true,message: 'Please input Full Name!'}], initialValue: this.state.userInfor.hoTen})(<Input />)}
+            {getFieldDecorator('hoTen', {rules: [{required: true,message: 'Please input Full Name!'}], initialValue: this.state.detailUser.hoTen})(<Input />)}
           </Form.Item>
 
           <Form.Item label="E-mail">
@@ -167,11 +157,11 @@ class Account extends React.Component {
                   required: true,
                   message: 'Please input your E-mail!',
                 },
-              ], initialValue: this.state.userInfor.email
+              ], initialValue: this.state.detailUser.email
             })(<Input />)}
           </Form.Item>
           <Form.Item label="BirthDay">
-            {getFieldDecorator('ngaySinh', { rules: [{ type: 'object', required: true, message: 'Please select time!' }], initialValue: moment(this.state.userInfor.ngaySinh, "MM/DD/YYYY") })(<DatePicker format={"DD/MM/YYYY"} />)}
+            {getFieldDecorator('ngaySinh', { rules: [{ type: 'object', required: true, message: 'Please select time!' }], initialValue: moment(this.state.detailUser.ngaySinh, "MM/DD/YYYY") })(<DatePicker format={"DD/MM/YYYY"} />)}
           </Form.Item>
 
           <Form.Item label="Address">
@@ -181,7 +171,7 @@ class Account extends React.Component {
                   required: true,
                   message: 'Please input Address!',
                 },
-              ], initialValue: this.state.userInfor.diaChi
+              ], initialValue: this.state.detailUser.diaChi
             })(<Input />)}
           </Form.Item>
 
@@ -191,13 +181,13 @@ class Account extends React.Component {
                 {
                   required: true,
                   message: 'Please input your IdentiCard!'
-                }], initialValue: this.state.userInfor.cmnd
+                }], initialValue: this.state.detailUser.cmnd
             })(<Input style={{ width: '50%' }} />)}
           </Form.Item>
 
           <Form.Item label="Phone Number">
             {getFieldDecorator('soDT', {
-              rules: [{ required: true, message: 'Please input your phone number!' }], initialValue: this.state.userInfor.soDT
+              rules: [{ required: true, message: 'Please input your phone number!' }], initialValue: this.state.detailUser.soDT
             })(<Input style={{ width: '50%' }} />)}
           </Form.Item>
 
@@ -215,9 +205,10 @@ class Account extends React.Component {
               </Col>
             </Row>
           </Form.Item> */}
-          <Form.Item label="Type User" hasFeedback>
+           {typeof(this.props.userInfor)!== "undefined" && this.state.detailUser.loaiND === "NV" ?
+          <Form.Item hiđen label="Type User" hasFeedback>
           {getFieldDecorator('loaiND', {
-            rules: [{ required: true}], initialValue: this.state.userInfor.loaiND
+            rules: [{ required: true}], initialValue: this.state.detailUser.loaiND
           })(
             <Select>
               <Option value="KH">Custommer</Option>
@@ -225,6 +216,7 @@ class Account extends React.Component {
             </Select>,
           )}
         </Form.Item>
+        : <span></span>}
           <Form.Item {...tailFormItemLayout}>
             <Checkbox>
               I have read the <span>agreement</span>
@@ -243,7 +235,9 @@ class Account extends React.Component {
 const mapStateToProps = (state) => {
   return {
     typeUser: state.rootReducer.listTypeUser,
-    result: state.rootReducerAD.result
+    result: state.rootReducerAD.result,
+    detailUser: state.rootReducer.userInfor,
+    userInfor: state.rootReducerAD.userInfor
   }
 }
 const mapDispatchToProps = (dispatch) => {

@@ -112,7 +112,7 @@ class Review extends Component {
         return (
             <div className="review">
                 <div className="" style={{ paddingLeft: 15, backgroundColor: "#F1F5F5", height: "100%" }}>
-                    <p style={{ paddingLeft: 20, paddingTop: 50, fontSize: "30px", color: "#504F5A" }}>Custommer Review</p>
+                    <p className="detail-title">Custommer Review</p>
 
                     <div className="d-flex mt-4 justify-content-between">
                         {/* div left  */}

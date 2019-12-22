@@ -57,37 +57,12 @@ import {
         return (
             <div>
                 <div className="discount" style={{ paddingLeft: 15, backgroundColor: "#F1F5F5", height: "100%" }}>
-                    <p style={{ paddingLeft: 20, paddingTop: 50, fontSize: "30px", color: "#504F5A" }}>Discount</p>
-
+                    <p style={{ paddingLeft: 10, paddingTop: 20, fontSize: "35px", color: "#504F5A" }}>Discount Information</p>
                     <div className="d-flex mt-4 justify-content-between">
                         {/* div left  */}
-                        <Paper className="pb-2 col-md-8 " style={{ borderRadius: "5px", backgroundColor: "white" }}>
-                            <div>
-                                <p style={{ fontSize: "25px", color: "#504F5A" }}>General information</p>
-                                <hr />
-                                <TextField
-                                    style={{ width: "100%", backgroundColor: "#F1F5F5" }}
-                                    id="outlined-helperText"
-                                    label="Discount Code"
-                                    value={this.state.disscountInfor.code}
-                                    margin="normal"
-                                    variant="outlined"
-
-                                />
-                                <TextField
-                                    style={{ width: "100%", backgroundColor: "#F1F5F5" }}
-                                    id="outlined-helperText"
-                                    label="Decription"
-                                    value= {this.state.disscountInfor.moTa}
-                                    multiline
-                                    margin="normal"
-                                    variant="outlined"
-                                />
-                            </div>
+                        <Paper className="pb-2 col-md-6" style={{ borderRadius: "5px", backgroundColor: "white", padding:15 , minHeight:"370px" }}>
+                            <p style={{ fontSize: "25px", color: "#504F5A" }}>Products List</p>
                              <hr />
-                            <div>
-
-                                <p style={{ fontSize: "22px", color: "#504F5A" }}>Products</p>
                                 <Table >
                                     <TableBody>
                                     {this.state.disscountInfor.dsSanPhamKM.map((item, index)=>{
@@ -105,14 +80,20 @@ import {
                                     </TableBody>
                                 </Table>
 
-                            </div>
                         </Paper>
                         {/* div right  */}
-                        <div className=" col-md-4 ">
+                        <div className=" col-md-6">
                             <Paper style={{ borderRadius: "5px", backgroundColor: "white", padding: 15, height: "100%  " }}>
                                 <p style={{ fontSize: "25px", color: "#504F5A" }}>Organize Discount</p>
                                 <hr />
-                                <p style={{ fontSize: "22px", color: "#504F5A" }}>Attributes</p>
+                                  {/* <p style={{ fontSize: "22px", color: "#504F5A" }}>Active Day</p> */}
+                                  <RangePicker size="large" style={{width:"100% !important"}}
+                                    defaultValue={[moment(this.state.disscountInfor.ngayBD, dateFormat), moment(this.state.disscountInfor.ngayKT, dateFormat)]}
+                                    format={dateFormat}
+                                    showTime
+                                    // disabled={true}
+                                />
+                                {/* <p style={{ fontSize: "22px", color: "#504F5A" }}>Attributes</p> */}
                                 <TextField
                                     id="outlined-number"
                                     label="Discount value (%)"
@@ -122,21 +103,24 @@ import {
                                     margin="normal"
                                     variant="outlined"
                                 />
-                                <hr/>
+                                 <TextField
+                                    style={{ width: "100%", backgroundColor: "#F1F5F5" }}
+                                    id="outlined-helperText"
+                                    label="Decription"
+                                    value= {this.state.disscountInfor.moTa}
+                                    multiline
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                                {/* <hr/>
                                 <p style={{ fontSize: "22px", color: "#504F5A" }}>Status :   {!this.state.disscountInfor.trangThai ? <span>
                                     Openning
                                 </span>: <span>
                                     Finished
-                                </span>}</p>
+                                </span>}</p> */}
                                   
 
-                                <p style={{ fontSize: "22px", color: "#504F5A" }}>Active Day</p>
-                                <RangePicker
-                                    defaultValue={[moment(this.state.disscountInfor.ngayBD, dateFormat), moment(this.state.disscountInfor.ngayKT, dateFormat)]}
-                                    format={dateFormat}
-                                    showTime
-                                    disabled={true}
-                                />
+                              
                                  
                                 <div style={{
                                     display: 'flex',

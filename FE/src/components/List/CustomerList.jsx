@@ -151,8 +151,7 @@ class CustomerListAdmin extends Component {
                <span>Edit</span>
               <Divider type="vertical" />
               <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteUser(record.maND, record.loaiND)}>
-              <span style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
-                              Delete </span>
+              <div className="btn-action">  Delete</div>
               </Popconfirm>
               
             </span>
@@ -173,14 +172,6 @@ class CustomerListAdmin extends Component {
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div className="online-shop-title"> Account </div>
           <div>
-            {/* <TextField className="header-search" style={{ position: "relative", top: -7 }} label="Search" />
-            <Button
-              style={{ marginRight: 20 }}
-              variant="outlined"
-              color="primary">
-              {" "}
-              <SearchIcon color="primary" size="small" />Search
-            </Button> */}
             <Button
               style={{ margin: 5, backgroundColor: "#2BD5C5", color: "white" }}
               onClick={() => {

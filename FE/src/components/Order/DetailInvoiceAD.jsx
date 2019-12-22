@@ -63,7 +63,7 @@ class DetailInvoiceAD extends Component {
                 <div className="d-flex">
                     <div className="col-md-8 " >
                         <div className=" d-flex justify-content-between detail-title-head">
-                            <p style={{ fontSize: 23 }}>INVOICE #{this.state.item.maPN} <br /> <span style={{ fontSize: 15, color: "gray" }}>Placed on {this.state.item.ngayDat}</span></p>
+                            <p style={{ fontSize: 23 }}>INVOICE #{this.state.item.maPN} <br /> <span style={{ fontSize: 15, color: "gray" }}>Placed on {this.state.item.ngayTao}</span></p>
                             <p style={{ fontSize: 15, color: "gray", paddingTop: 10 }}>FULFILLED</p>
                         </div>
 
@@ -80,7 +80,7 @@ class DetailInvoiceAD extends Component {
                                 <TableBody>
                                     {this.state.item.dsSanPhamNhap.map((item, index) => {
                                         return <TableRow key={item.maSP}>
-                                            <TableCell style={{ color: "#2EA5D4" }}>{item.tenSP}</TableCell>
+                                            <TableCell style={{ color: "#2EA5D4", fontSize:17 }}>{item.tenSP}</TableCell>
                                             <TableCell align="right"> {item.donGia.toLocaleString("en-US", {
                                                 style: "currency",
                                                 currency: "USD"
@@ -104,28 +104,31 @@ class DetailInvoiceAD extends Component {
                                 </TableBody>
                             </Table>
                             <hr/>
-                            <p style={{marginLeft:10, fontSize:20}}>Product</p>
+                            {/* <p style={{marginLeft:10, fontSize:20}}>Product</p> */}
                             {this.state.item.dsSanPhamNhap.map((item, index)=>{
                             return(
-                                <div style={{margin:"10px 3px"}} key={index}>
-                                   <span className="productName" >{item.tenSP}</span>
-                                   <br/>
-                                   <span  style={{float:"right", textAlign:"center"}}>
+                                <div style={{margin:"10px 3px", display:"flex",borderBottom : "1px solid gray" , justifyContent:"space-between"}} key={index}>
+                                   <div style={{minWidth:212 }}>
+                                   <p className="productName" >{item.tenSP}</p>
+                                   </div>
+                                   <div  style={{ textAlign:"right"}}>
+                                   <span  style={{ textAlign:"center", color:"white"}}>
                                    {
                                        item.dsSeriSanPham.map((itemsub, indexsub)=>{
                                  //   console.log(itemsub);
-                                    return <span className="invoice-seri" style={{ margin: 5}} key={indexsub}>{itemsub}&nbsp; </span>
+                                    return <span className="invoice-seri" style={{ margin: 5 , padding:"0px 5px"}} key={indexsub}>{itemsub}</span>
                                         
                                 } )
                                    }
                                    </span>
-                                  
+                                   </div>
+                                   <br/>
                                 </div>
                             )  
                             })}
                             {/* <hr/> */}
                             {!this.state.adminAccess ?
-                                (<button className=" w-100 btn" style={{ backgroundColor: "orange", color: "white", marginTop:55 }} onClick={() => this.props.history.push('/dashboard/admin')}>Back Monitor Order Page</button>) : (<button className=" w-100 btn btn-dark" onClick={() => this.props.history.push('/admin')}>Back Admin Page</button>)}
+                                (<button className=" w-100 btn" style={{ backgroundColor: "orange", color: "white", marginTop:67 }} onClick={() => this.props.history.push('/dashboard/admin')}>Back Monitor Order Page</button>) : (<button className=" w-100 btn btn-dark" onClick={() => this.props.history.push('/admin')}>Back Admin Page</button>)}
 
                         </Paper>
 
@@ -158,7 +161,7 @@ class DetailInvoiceAD extends Component {
                         </Paper>
                         <Paper style={{ padding: 15 }}>
                             {/* <div style={{backgroundColor:"white", padding:"15px" , borderRadius:5}}> */}
-                            <p style={{ fontSize: "22px", color: "#504F5A", marginBottom: "0px !important" }}>Invoice Status</p>
+                            <p style={{ fontSize: "22px",margin: "0px", color: "#504F5A" }}>Invoice Status</p>
                             <TextField
                                 label="Handling Status"
                                 fullWidth

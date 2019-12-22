@@ -143,8 +143,7 @@ class WarrantyList extends Component {
               <Popconfirm title="Sure to cancle?" 
             //   onConfirm={() => this.props.deleteUser(record.maND, record.loaiND)}
               >
-              <span style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
-                              Cancle </span>
+              <div className="btn-action"> Delete </div>
               </Popconfirm>
               
             </span>

@@ -1,6 +1,6 @@
 import * as CONSTANTS from "../constants/Data";
 import Swal from 'sweetalert2'
-import { swalMessage } from "../../components/Dialog/Swal";
+import { swalMessage, swalError, swalAddItemSuccess, swalErrOutoffStock } from "../../components/Dialog/Swal";
 
 const initialState = {
     showCartDialog: false,
@@ -66,12 +66,7 @@ const rootReducer = (state = initialState, action) => {
                 let index = state.cartItems.findIndex(x => x.maSP === action.payload.maSP);
                 let store = action.payload.soLuongTon;
                 if (store < 0) {
-                    console.log("ko đủ hàng");
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'Sorry! Out Off Stock ...',
-                    })
+                    swalErrOutoffStock();
                     return { ...state };
                 }
                 // Is the item user wants to add already in the cart?
@@ -84,34 +79,18 @@ const rootReducer = (state = initialState, action) => {
                         soLuongTon: state.cartItems[index].soLuongTon - 1
                     };
 
-                    if (cloneCartItems[index].soLuongTon <= 0) {
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Oops...',
-                            text: 'Sorry! Out Off Stock...',
-                        })
+                    if (cloneCartItems[index].soLuongTon < 0) {
+                        swalErrOutoffStock();
                         return { ...state };
                     }
                     else {
-                        Swal.fire({
-                            type: 'success',
-                            title: 'Add to cart !',
-                            showConfirmButton: false,
-                            timer: 700,
-                            width: 300
-                        })
+                        swalAddItemSuccess();
                         return { ...state, cartItems: cloneCartItems };
                     }
 
                 }
                 // No, add a new item.
-                Swal.fire({
-                    type: 'success',
-                    title: 'Add to cart !',
-                    showConfirmButton: false,
-                    timer: 700,
-                    width: 300
-                })
+                swalAddItemSuccess();
                 return { ...state, cartItems: state.cartItems.concat(action.payload) };
             }
 
@@ -120,14 +99,11 @@ const rootReducer = (state = initialState, action) => {
 
         case CONSTANTS.UPDATE_CART_ITEM_NUMBER:
             {
+                // console.log("update item incart ");
                 let index = state.cartItems.findIndex(x => x.maSP === action.payload.maSP);
-
                 if (index !== -1) {
-                    // let number=0;
                     let cloneCartItems = [...state.cartItems];
-
                   //  console.log(action.payload.soLuong, cloneCartItems[index].soLuong);
-
                     if (action.payload.soLuong > cloneCartItems[index].soLuong) {
                         cloneCartItems[index] = {
                             ...cloneCartItems[index],
@@ -143,17 +119,9 @@ const rootReducer = (state = initialState, action) => {
                         };
 
                     }
-
-
-
                     if (cloneCartItems[index].soLuongTon < 0) {
-                      //  console.log("ko đủ hàng");
                         state.showCartDialog = false;
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Oops...',
-                            text: 'Sorry!Out Off Stock...',
-                        })
+                        swalErrOutoffStock();
                         return { ...state };
                     }
                     else {
@@ -234,17 +202,13 @@ const rootReducer = (state = initialState, action) => {
                 else {
                     sessionStorage.setItem("employee", JSON.stringify(action.result))
                 }
-                state.loginStatus = true;
+                state.loginStatus = action.result.maLoaiND;
                 state.userInfor = action.result;
                 state.loggedInUser = action.result.taiKhoan;
                 return { ...state };
             }
             else {
-                Swal.fire({
-                    type: "error",
-                    title: action.result,
-                    timer: 1000
-                })
+                swalError(action.result);
                 break;
             }
 
@@ -267,11 +231,7 @@ const rootReducer = (state = initialState, action) => {
                 return { ...state };
             }
             else {
-                Swal.fire({
-                    type: "error",
-                    title: action.result,
-                    timer: 1000
-                })
+                swalError(action.result);
                 break;
             }
         }

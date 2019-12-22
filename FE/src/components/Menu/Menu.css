@@ -48,3 +48,18 @@ color: white;
 	background-color: 
 	#001529 !important;
 }
+.userMenu .ant-menu-item a{
+	line-height: 44px !important;	
+	text-decoration: none;
+}
+.userMenu .ant-menu.ant-menu-dark .ant-menu-item-selected{
+	background-color: 
+	orange !important;
+	padding-left: 30px !important;
+	font-weight: bold;
+	
+}
+.userMenu .ant-menu-item-active{
+	padding-left: 30px !important;
+	font-weight: bold;
+}

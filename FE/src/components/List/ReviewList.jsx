@@ -3,7 +3,8 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { 
   Table,
-  Button 
+  Button,
+  Popconfirm
   } from 'antd';
 import {
   getListReviewAction,
@@ -57,11 +58,9 @@ class ReviewListAdmin extends Component {
       title: "Action",
       key: "action",
       render: (text, record)=> 
-      <div style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}
-      key={record.maBL} onClick={()=>{this.props.deleteReview(record.maBL);
-      }}> 
-         Delete </div>
-        
+      <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteReview(record.maBL)}>
+           <div className="btn-action">  Delete</div>
+            </Popconfirm>  
       
     }
   ];

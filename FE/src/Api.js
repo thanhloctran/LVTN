@@ -16,7 +16,6 @@ getListProductAction = () => {
         console.log(error.data);
   
       })
-    
   }
   getItemUsingID(id) {
    this.getListProductAction();

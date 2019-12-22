@@ -162,7 +162,7 @@ class DiscountAction extends Component {
 
         <Form style={{ marginTop: 20 }} {...formItemLayout} onSubmit={this.handleSubmit}>
 
-          <Form.Item label="Discount Code">
+          {/* <Form.Item label="Discount Code">
             {getFieldDecorator('code', {
               rules: [
                 {
@@ -171,7 +171,7 @@ class DiscountAction extends Component {
                 },
               ], initialValue: this.state.discountInfor.code
             })(<Input />)}
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item label="List Product">
             {getFieldDecorator('dsSanPham', {rules: [{ required: true, message: 'Please select product!' }], initialValue: this.state.dsSanPhamSate  })(<Select

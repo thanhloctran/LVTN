@@ -27,6 +27,7 @@ class payment extends Component {
   state = {
     detailUser: {},
     listProduct: [],
+    userInfor: this.props.userInfor
   }
   cartInfor = {}
   checkEmty=()=>{
@@ -100,7 +101,8 @@ class payment extends Component {
     this.cartInfor.dsInMail= dsach;
         setTimeout(() => {
           this.props.addOrder(this.cartInfor);
-        }, 1000)
+        }, 1000);
+       
       }
     });
   }
@@ -207,7 +209,9 @@ class payment extends Component {
     return actions.order.capture();
   }
   render() {
-
+    if (this.props.checkedOutItems.length === 0){
+      this.props.history.push("/");
+    }
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="payment-container">
@@ -325,6 +329,10 @@ class payment extends Component {
                   rules: [{ required: true, message: 'Please input your phone number!' }], initialValue: this.props.userInfor.soDT
                 })(<Input style={{ width: '100%' }} />)}
               </Form.Item>
+
+              <Form.Item  label="Tax code">
+                {getFieldDecorator('maSoThue', )(<Input />)}
+              </Form.Item>
               
            
 
@@ -361,7 +369,7 @@ const mapStateToProps = (state) => {
     paymentInfor: state.rootReducer.paymentInfor,
     checkedOutItems: state.rootReducer.checkedOutItems,
     totalPrice: state.rootReducer.totalPrice,
-    userInfor: state.rootReducerAD.userInfor,
+    userInfor: state.rootReducer.userInfor,
 
 
   }

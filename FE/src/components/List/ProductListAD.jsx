@@ -172,8 +172,7 @@ class ProductListAdmin extends Component {
         render:(text, record) =>
             <span key={record.maSP}>
               <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteProductAD(record.maSP, this.props.match.params.status)}>
-              <div style={{ backgroundColor: "rgb(234, 66, 66)" ,color:"white" , borderRadius:5, textAlign:"center"}}> 
-                             <a href={record.maSP}>Delete</a>  </div>
+              <div className="btn-action">  Delete</div>
               </Popconfirm>
          </span>
       }

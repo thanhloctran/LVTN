@@ -18,7 +18,8 @@ const stateDefault = {
     statisticData: {},
     listOrderByYear: [],
     listInvoiceYear: [],
-    detailWarranty:{}
+    detailWarranty:{},
+    listCategory:[]
     // resultDelete: "",
 };
 
@@ -63,7 +64,7 @@ const rootReducerAD = (state = stateDefault, action) => {
             }
         case types.GET_LISTCATEGORY_AD:  //category
             {
-                state.listDataAD = action.listCategoryAD;
+                state.listCategory = action.listCategoryAD;
                 return { ...state }
             }
         case types.GET_LISTDISCOUNT_AD:  //discount
@@ -127,13 +128,13 @@ const rootReducerAD = (state = stateDefault, action) => {
             }
         case types.GET_DETAILSERI_AD://get product SERI
             {
-                if (typeof action.result == "object") {
-                    state.detail = action.result;
-                    return { ...state }
+                if (typeof(action.result) !== "object") {
+                    swalError(action.result);
+                    break; 
                 }
                 else {
-                    swalError('Seri is incorrect!');
-                    break;
+                    state.detail = action.result;
+                    return { ...state }
                 }
                 
             }
@@ -299,6 +300,19 @@ const rootReducerAD = (state = stateDefault, action) => {
                     state.detail = action.result;
                     return { ...state }
     
+                }
+            case types.UPADTE_WARANTY://get product SERI
+                {
+                    if (typeof(action.result) !== "object") {
+                        swalError(action.result);
+                        break; 
+                    }
+                    else {
+                        showMassage("success", "Check warranty success!")
+                        // state.detail = action.result;
+                        return { ...state }
+                    }
+                    
                 }
         //add product
         case types.ADD_PRODUCT:

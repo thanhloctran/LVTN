@@ -12,7 +12,6 @@ import {
   toggleMenu,
   setLoggedInUser,
 } from "../../redux/actions/Data";
-import { categories } from "../../Data";
 import Person from "@material-ui/icons/PersonOutline";
 import Avatar from "@material-ui/core/Avatar";
 import Menu from "@material-ui/core/Menu";
@@ -26,15 +25,8 @@ class ConnectedHeader extends Component {
   state = {
     searchTerm: "",
     anchorEl: null,
-    categoryFilter: categories[0].patch,
-    employee:{}
+    employee:this.props.userInfor
   };
-  componentDidMount(){
-    let  retrievedObject = JSON.parse(sessionStorage.getItem('employee'));
-    this.setState({
-      employee: retrievedObject
-    })
-  }
   
   render() {
     let { anchorEl } = this.state;
@@ -74,7 +66,7 @@ class ConnectedHeader extends Component {
               <MenuItem
                 onClick={() => {
                   this.setState({ anchorEl: null });
-                  this.props.history.push("/dashboard/accountAD");
+                  this.props.history.push("/dashboard/accountCRUD/"+this.state.employee.taiKhoan);
                 }}
               >
                 Setting Account
@@ -97,10 +89,6 @@ class ConnectedHeader extends Component {
                         this.props.dispatch(setLoggedInUser(null));
                         sessionStorage.removeItem("employee");
                         window.location.reload();
-                        // return(
-                        //   <Redirect  to={"/dashboard/admin"} />
-                        // )
-                        
                     }
                   })
                 }}
@@ -115,9 +103,7 @@ class ConnectedHeader extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    // nrOfItemsInCard: state.rootReducer.cartItems.length,
     userInfor: state.rootReducerAD.userInfor,
-    categories: state.rootReducer.categoryData,
   };
 };
 

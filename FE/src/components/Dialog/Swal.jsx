@@ -50,6 +50,29 @@ export const swalError=(text)=> {
   
 }
 
+export const swalAddItemSuccess=()=> {
+  return(
+    Swal.fire({
+      type: 'success',
+      title: 'Add to cart !',
+      showConfirmButton: false,
+      timer: 700,
+      width: 300
+  })
+  )
+  
+}
+export const swalErrOutoffStock=()=> {
+  return(
+    Swal.fire({
+      type: 'error',
+      title: 'Oops...',
+      text: 'Sorry! Out Off Stock...',
+  })
+  )
+  
+}
+
 export const swalCleartCart=()=>{
   return(
     Swal.fire({

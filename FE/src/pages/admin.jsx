@@ -103,7 +103,7 @@ class Admin extends Component {
                 <p style={{ fontSize: "32px", color: "#3D3D3D" }}>Hello there, {retrievedObject.taiKhoan}</p>
                 <p style={{ color: "#504F5A" }}>Here is some information we gathered about your store</p>
                 <div>
-                    <div className=" d-flex justify-content-between" style={{ flexWrap: "wrap" }}>
+                    {/* <div className=" d-flex justify-content-between" style={{ flexWrap: "wrap" }}>
                     <div className="admin-box-right">
                             <span><b>{this.props.listDataAD.length} Order </b>ready to fullfill</span> <i className="fas fa-angle-right" ></i>
                             <hr />
@@ -114,15 +114,15 @@ class Admin extends Component {
                         <div className="admin-box" >
                             <span className="admin-box-title">Sales</span>
                             <span className="admin-box-number">$62.57</span>
-                            {/* <i className="fas fa-chart-line" className="admin-box-icon"/> */}
+                            <i className="fas fa-chart-line" className="admin-box-icon"/>
                         </div>
                         <div className="admin-box"  >
                             <span className="admin-box-title">Order</span>
         <span className="admin-box-number">{this.props.listDataAD.length}</span>
-                            {/* <i  className="fas fa-file-invoice-dollar"className="admin-box-icon" /> */}
+                            <i  className="fas fa-file-invoice-dollar"className="admin-box-icon" />
                         </div>
                         
-                    </div>
+                    </div> */}
 
                     <Chart
                         height={500}

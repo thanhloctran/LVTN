@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { loadCSS } from "fg-loadcss/src/loadCSS";
 import Icon from "@material-ui/core/Icon";
-import { getMenuDataAction } from './../../redux/actions/Data';
+// import { getMenuDataAction } from './../../redux/actions/Data';
 import { getListOrderAction, getListProductAction } from './../../redux/actions/AdminData';
 import { Menu } from 'antd';
 const { SubMenu } = Menu;
@@ -32,8 +32,6 @@ class ConnectedMenu extends Component {
     loadCSS("https://use.fontawesome.com/releases/v5.1.0/css/all.css");
   }
   handleClick = e => {
-    // console.log(e);
-    
     if(e.keyPath[1]==="sub1"){
       this.props.getListOrderAD(e.key);
       // console.log("sub1");
@@ -313,18 +311,10 @@ class ConnectedMenu extends Component {
 const mapStateToProps = (state) => {
   return {
     showMenu: state.rootReducer.showMenu,
-    checkedOutItems: state.rootReducer.checkedOutItems,
-    loggedInUser: state.rootReducer.loggedInUser,
-    categoryData: state.rootReducer.categoryData,
-    expandedItems: state.rootReducer.expandedItems,
-
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getMenuData: () => {
-      dispatch(getMenuDataAction())
-    },
     getListOrderAD: (trangThai) => {
       dispatch(getListOrderAction(trangThai))
   },
