@@ -148,8 +148,8 @@ class CustomerListAdmin extends Component {
         key: "action",
         render:(text, record) =>
             <span>
-               <span>Edit</span>
-              <Divider type="vertical" />
+               {/* <span>Edit</span>
+              <Divider type="vertical" /> */}
               <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteUser(record.maND, record.loaiND)}>
               <div className="btn-action">  Delete</div>
               </Popconfirm>
