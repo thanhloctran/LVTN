@@ -39,7 +39,7 @@
     "sweetalert2": "^8.19.0",
     "twilio": "^3.37.0",
     "uuid": "^3.3.3",
-    "xlsx": "^0.15.3"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",
